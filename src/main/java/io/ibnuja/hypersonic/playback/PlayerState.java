@@ -1,8 +1,7 @@
 package io.ibnuja.hypersonic.playback;
 
 import io.ibnuja.hypersonic.model.Song;
-import io.ibnuja.hypersonic.service.api.ConnectionState;
-import io.ibnuja.hypersonic.service.audio.Backend;
+import io.ibnuja.hypersonic.service.audio.GstBackend;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +21,9 @@ public class PlayerState extends GObject {
     @Getter
     private Song currentSong;
 
-    private final Backend backend;
-
     public void setPlaying(boolean playing) {
         log.debug("setPlaying {}", playing);
         this.playing = playing;
-        if (playing) {
-            backend.play();
-        } else {
-            backend.pause();
-        }
         notify("playing");
     }
 
@@ -42,9 +34,6 @@ public class PlayerState extends GObject {
     public void setCurrentSong(Song song) {
         log.debug("setCurrentSong {}", song);
         this.currentSong = song;
-        if (song != null) {
-            backend.setUri(ConnectionState.INSTANCE.getApi().streamUrl(song.getId()));
-        }
         notify("current-song");
     }
 
@@ -52,5 +41,14 @@ public class PlayerState extends GObject {
         log.debug("playSong {}", song);
         setCurrentSong(song);
         setPlaying(true);
+    }
+
+    public void setup(GstBackend backend) {
+        backend.onNotify("url", _ -> {
+            String song = backend.getUrl();
+            if (song != null) {
+                log.error("TOLOL {}", song);
+            }
+        });
     }
 }

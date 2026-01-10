@@ -9,7 +9,6 @@ import io.ibnuja.hypersonic.playback.InfoWidget;
 import io.ibnuja.hypersonic.playback.PlaybackWidget;
 import io.ibnuja.hypersonic.playback.PlayerState;
 import io.ibnuja.hypersonic.service.api.ConnectionState;
-import io.ibnuja.hypersonic.service.audio.Backend;
 import io.ibnuja.hypersonic.service.audio.GstBackend;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -90,7 +89,7 @@ public class Hypersonic {
 
         protected PlayerState playerState;
 
-        protected final Backend backend = new GstBackend();
+        protected final GstBackend backend = new GstBackend();
 
         @Override
         public void activate() {
@@ -157,12 +156,15 @@ public class Hypersonic {
             if (!ConnectionState.INSTANCE.isConnected()) {
                 ConnectionState.INSTANCE.connect("http://demo.subsonic.org", "guest", "guest");
             }
-            this.playerState = new PlayerState(backend);
+            this.playerState = new PlayerState();
             ConnectionState.INSTANCE.getApi().getRandomSongs(1).thenAccept(
                     randomSongsResponse -> {
                         var song = randomSongsResponse.getRandomSongs().getSong().getFirst();
                         log.debug("Loaded song: {}", song);
+                        this.playerState.setup(backend);
                         playerState.playSong(new Song(song));
+                        backend.setUrl(ConnectionState.INSTANCE.getApi().streamUrl(song.getId()));
+                        //backend.play();
                     }
             ).exceptionally(throwable -> {
                 log.error("Error loading songs:", throwable);
