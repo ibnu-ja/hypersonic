@@ -1,5 +1,6 @@
 package io.ibnuja.hypersonic.service.audio;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.gstreamer.gst.*;
 import org.gnome.glib.GError;
@@ -17,8 +18,9 @@ import java.util.Set;
 public class GstBackend extends GObject {
 
     private final Element playbin;
-
+    @Getter
     private State state = State.NULL;
+    @Getter
     private String url;
 
     public GstBackend() {
@@ -37,16 +39,6 @@ public class GstBackend extends GObject {
         setupBus();
     }
 
-    @Property(name = "url")
-    public String getUrl() {
-        return url;
-    }
-
-    public State getActualState() {
-        return state;
-    }
-
-    @Property(name = "url")
     public void setUrl(String streamUrl) {
         this.url = streamUrl;
         if (playbin != null) {
@@ -57,19 +49,18 @@ public class GstBackend extends GObject {
 
     @Property(name = "state")
     public int getStateValue() {
-        return state.getValue();
+        return state.getValue(); //GObject int
     }
 
     @Property(name = "state")
     public void setStateValue(int value) {
-        setState(State.of(value));
     }
 
     public void setState(State state) {
         if (playbin != null) {
             playbin.setState(state);
         }
-        //notify using setupBus()
+        //update state in setupBus()
     }
 
     public void play() {
@@ -100,16 +91,18 @@ public class GstBackend extends GObject {
 
             if (msgTypes.contains(MessageType.EOS)) {
                 log.debug("EOS received");
-                //TODO Implement next track logic
+                //TODO Implement next track logic here
                 GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
-            } else if (msgTypes.contains(MessageType.ERROR)) {
+            }
+            else if (msgTypes.contains(MessageType.ERROR)) {
                 Out<GError> errorOut = new Out<>();
                 Out<String> debugOut = new Out<>();
                 msg.parseError(errorOut, debugOut);
                 String errorMsg = errorOut.get() != null ? errorOut.get().readMessage() : "Unknown Error";
                 log.error("GStreamer Error: {} - Debug: {}", errorMsg, debugOut.get());
                 GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
-            } else if (msgTypes.contains(MessageType.STATE_CHANGED)) {
+            }
+            else if (msgTypes.contains(MessageType.STATE_CHANGED)) {
                 // Ensure the message comes from playbin, not a child element
                 if (msg.readSrc().equals(playbin)) {
                     Out<State> oldState = new Out<>();
