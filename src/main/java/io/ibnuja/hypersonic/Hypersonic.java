@@ -156,15 +156,12 @@ public class Hypersonic {
             if (!ConnectionState.INSTANCE.isConnected()) {
                 ConnectionState.INSTANCE.connect("http://demo.subsonic.org", "guest", "guest");
             }
-            this.playerState = new PlayerState();
+            this.playerState = new PlayerState(backend);
             ConnectionState.INSTANCE.getApi().getRandomSongs(1).thenAccept(
                     randomSongsResponse -> {
                         var song = randomSongsResponse.getRandomSongs().getSong().getFirst();
                         log.debug("Loaded song: {}", song);
-                        this.playerState.setup(backend);
                         playerState.playSong(new Song(song));
-                        backend.setUrl(ConnectionState.INSTANCE.getApi().streamUrl(song.getId()));
-                        //backend.play();
                     }
             ).exceptionally(throwable -> {
                 log.error("Error loading songs:", throwable);
