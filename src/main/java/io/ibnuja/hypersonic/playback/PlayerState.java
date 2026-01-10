@@ -33,6 +33,10 @@ public class PlayerState extends GObject {
                 notify("playing");
             }
         });
+
+        this.backend.connect("eos", (GstBackend.EosSignal) () -> {
+            log.info("Song finished, playing next...");
+        });
     }
 
     @SuppressWarnings("unused")

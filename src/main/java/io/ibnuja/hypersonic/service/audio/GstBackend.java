@@ -9,6 +9,7 @@ import org.gnome.gobject.GObject;
 import org.javagi.base.Out;
 import org.javagi.gobject.annotations.Property;
 import org.javagi.gobject.annotations.RegisteredType;
+import org.javagi.gobject.annotations.Signal;
 
 import java.util.Set;
 
@@ -22,6 +23,11 @@ public class GstBackend extends GObject {
     private State state = State.NULL;
     @Getter
     private String url;
+
+    @Signal(name = "eos")
+    public interface EosSignal {
+        void run();
+    }
 
     public GstBackend() {
         playbin = ElementFactory.make("playbin", "audio-player");
@@ -92,6 +98,7 @@ public class GstBackend extends GObject {
             if (msgTypes.contains(MessageType.EOS)) {
                 log.debug("EOS received");
                 //TODO Implement next track logic here
+                emit("eos");
                 GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
             }
             else if (msgTypes.contains(MessageType.ERROR)) {
