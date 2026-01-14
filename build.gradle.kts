@@ -28,18 +28,29 @@ repositories {
 }
 
 glibBuildTools {
-    resourceDirectory.set("src/main/resources")
-    gresourceFile.set("hypersonicapp.gresource.xml")
+    applicationId.set("io.ibnuja.Hypersonic")
+
+    gettextDomain.set("hypersonic")
+
+    resourceDir.set("src/main/resources")
+
+    blueprintSourceDir.set("src/main/resources")
+
+    blueprintOutputDir.set("src/main/resources/blueprint-compiler")
+
+    gresourceXml.set("src/main/resources/hypersonicapp.gresource.xml")
+
+    gresourceOutput.set("src/main/resources/hypersonicapp.gresource")
 
     blueprints(
-        "window.blp",
-        "components/playback/playback_info.blp",
-        "components/playback/playback_controls.blp",
-        "components/playback/playback_widget.blp",
-        "components/selection/selection_toolbar.blp",
-        "components/settings/settings.blp",
-        "components/sidebar/sidebar_row.blp",
-        "pages/home.blp"
+        "src/main/resources/window.blp",
+        "src/main/resources/components/playback/playback_info.blp",
+        "src/main/resources/components/playback/playback_controls.blp",
+        "src/main/resources/components/playback/playback_widget.blp",
+        "src/main/resources/components/selection/selection_toolbar.blp",
+        "src/main/resources/components/settings/settings.blp",
+        "src/main/resources/components/sidebar/sidebar_row.blp",
+        "src/main/resources/pages/home.blp"
     )
 }
 
@@ -51,58 +62,8 @@ java {
 
 val commonJvmArgs = mutableListOf("--enable-native-access=ALL-UNNAMED")
 
-val os = System.getProperty("os.name").lowercase()
-when {
-    os.contains("mac") || os.contains("darwin") -> {
-        commonJvmArgs.add("-XstartOnFirstThread")
-    }
-}
-
-tasks.named("processResources") {
-    dependsOn("compileGResources")
-}
-
-tasks.named<JavaExec>("run") {
-    args("Hypersonic")
-}
-
-val generateConfig by tasks.registering {
-    group = "build"
-    val outputFile = layout.buildDirectory.dir("generated/sources/config/java/main").get().file("io/ibnuja/hypersonic/Config.java").asFile
-    outputs.file(outputFile)
-
-    val prefixProp = providers.gradleProperty("mesonPrefix")
-        .getOrElse("${System.getProperty("user.home")}${File.separator}.local")
-
-    inputs.property("mesonPrefix", prefixProp)
-
-    doLast {
-        val absoluteLocaleDir = (prefixProp.split("/", "\\").filter { it.isNotEmpty() } + "share" + "locale")
-            .joinToString(File.separator, prefix = File.separator)
-
-        outputFile.parentFile.mkdirs()
-        outputFile.writeText(
-            """
-            package io.ibnuja.hypersonic;
-
-            public class Config {
-                public static final String LOCALE_DIR = "$absoluteLocaleDir";
-                private Config() {}
-            }
-        """.trimIndent()
-        )
-    }
-}
-
-sourceSets.main {
-    java.srcDir(layout.buildDirectory.dir("generated/sources/config/java/main"))
-}
-tasks.compileJava { dependsOn(generateConfig) }
-
-tasks.compileKotlin { dependsOn(generateConfig) }
-
 application {
-    applicationDefaultJvmArgs = commonJvmArgs
+    applicationDefaultJvmArgs += commonJvmArgs
     mainClass.set("io.ibnuja.hypersonic.Hypersonic")
 }
 
