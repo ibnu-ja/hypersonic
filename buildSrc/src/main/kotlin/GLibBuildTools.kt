@@ -69,6 +69,7 @@ class GLibBuildTools : Plugin<Project> {
             inputs.file(project.file(gresourceXml))
             outputs.file(project.file(outputFile))
         }
+
         project.tasks.register("generateConfig") {
             group = "build"
             description = "Generate configuration constants for GLib application"
@@ -115,8 +116,11 @@ class GLibBuildTools : Plugin<Project> {
             }
         }
 
-        // Make compileJava depend on it
         project.tasks.named("compileJava") {
+            dependsOn("generateConfig")
+        }
+
+        project.tasks.named("compileKotlin") {
             dependsOn("generateConfig")
         }
 
