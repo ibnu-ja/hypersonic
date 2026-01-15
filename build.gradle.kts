@@ -42,6 +42,8 @@ glibBuildTools {
 
     gresourceOutput.set("src/main/resources/hypersonicapp.gresource")
 
+    gresourceSourceDirs.set(listOf("src/main/resources"))
+
     blueprints(
         "src/main/resources/window.blp",
         "src/main/resources/components/playback/playback_info.blp",
