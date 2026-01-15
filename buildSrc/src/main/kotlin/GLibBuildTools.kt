@@ -1,9 +1,9 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Exec
-import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 
@@ -11,9 +11,8 @@ class GLibBuildTools : Plugin<Project> {
     override fun apply(project: Project) {
         project.plugins.apply(EnvironmentPlugin::class.java)
 
-        val extension = project.extensions.create<GLibBuildToolsExtension>(
-            "glibBuildTools",
-            project
+        val extension = project.extensions.create(
+            "glibBuildTools", GLibBuildToolsExtension::class.java, project
         )
 
         project.afterEvaluate {
@@ -28,87 +27,153 @@ class GLibBuildTools : Plugin<Project> {
             group = "build"
             description = "Compile Blueprint files into GtkBuilder XML"
 
-            val resourceDir = extension.resourceDirectory.get()
-            workingDir = project.file(resourceDir)
+            workingDir = project.projectDir
 
+            val sourceDir = extension.blueprintSourceDir.get()
+            val outputDir = extension.blueprintOutputDir.get()
             val blueprintFiles = extension.blueprintFiles.get()
-            val outputDir = extension.blueprintOutputDirectory.get()
 
             onlyIf { blueprintFiles.isNotEmpty() }
 
             val args = mutableListOf(
-                "blueprint-compiler",
-                "batch-compile",
-                outputDir,
-                "."
+                "blueprint-compiler", "batch-compile", outputDir, sourceDir
             )
+
             args.addAll(blueprintFiles)
-            args.addAll(extension.blueprintArgs.get())
 
-            if (project.hasProperty("gtk.blueprintArgs")) {
-                val extraArgs = project.property("gtk.blueprintArgs") as String
-                args.addAll(extraArgs.split(" ").filter { it.isNotBlank() })
-            }
+            this.executeCommand(env, *args.toTypedArray())
 
-            if (blueprintFiles.isNotEmpty()) {
-                executeCommand(env, *args.toTypedArray())
-            }
-
-            inputs.files(blueprintFiles.map { project.file("$resourceDir/$it") })
-            outputs.dir(project.file("$resourceDir/$outputDir"))
+            inputs.files(blueprintFiles.map { project.file(it) })
+            outputs.dir(project.file(outputDir))
         }
 
         project.tasks.register<Exec>("compileGResources") {
             group = "build"
             description = "Compile GResource XML into binary resource file"
 
-            val resourceDir = extension.resourceDirectory.get()
-            workingDir = project.file(resourceDir)
+            workingDir = project.projectDir
             dependsOn("compileBlueprints")
 
-            val gresourceFile = extension.gresourceFile.get()
+            val sourceDirs = extension.gresourceSourceDirs.get()
+            val gresourceXml = extension.gresourceXml.get()
+            val outputFile = extension.gresourceOutput.get()
 
-            val args = mutableListOf("glib-compile-resources", gresourceFile)
-            args.addAll(extension.gresourceArgs.get())
+            val args = mutableListOf("glib-compile-resources")
 
-            if (project.hasProperty("gtk.gresourceArgs")) {
-                val extraArgs = project.property("gtk.gresourceArgs") as String
-                args.addAll(extraArgs.split(" ").filter { it.isNotBlank() })
+            sourceDirs.forEach { args.add("--sourcedir=$it") }
+            args.add("--target=$outputFile")
+            args.add(gresourceXml)
+
+            this.executeCommand(env, *args.toTypedArray())
+
+            inputs.file(project.file(gresourceXml))
+            outputs.file(project.file(outputFile))
+        }
+
+        project.tasks.register("generateConfig") {
+            group = "build"
+            description = "Generate configuration constants for GLib application"
+
+            val outputDir = project.layout.buildDirectory.dir("generated/sources/config/java/main").get()
+            val packageName = extension.applicationId.get().substringBeforeLast(".")
+            val outputFile = outputDir.file("${packageName.replace(".", "/")}/Config.java").asFile
+
+            outputs.file(outputFile)
+
+            val appId = extension.applicationId.get()
+            val gresourceOutput = extension.gresourceOutput.get()
+            val gresourceFilename = gresourceOutput.substringAfterLast("/")
+            val gettextDomain = extension.gettextDomain.getOrElse(appId.substringAfterLast("."))
+            val localeDir = extension.localeDir.getOrElse("")
+            val resourceDir = extension.resourceDir.get().let {
+                if (it.endsWith("/")) it else "$it/"
             }
 
-            executeCommand(env, *args.toTypedArray())
+            inputs.property("applicationId", appId)
+            inputs.property("gresourceFilename", gresourceFilename)
+            inputs.property("gettextDomain", gettextDomain)
+            inputs.property("localeDir", localeDir)
+            inputs.property("resourceDir", resourceDir)
 
-            inputs.file(project.file("$resourceDir/$gresourceFile"))
-            outputs.file(project.file("$resourceDir/${gresourceFile.replace(".xml", "")}"))
+            doLast {
+                outputFile.parentFile.mkdirs()
+                outputFile.writeText(
+                    """
+            package $packageName;
+
+            public class ${extension.configClassName.get()} {
+
+                public static final String APPLICATION_ID = "$appId";
+                public static final String LOCALE_DIR = "$localeDir";
+                public static final String GETTEXT_DOMAIN = "$gettextDomain";
+                public static final String RESOURCE_DIR = "$resourceDir";
+                public static final String RESOURCE_FILENAME = "$gresourceFilename";
+
+                private ${extension.configClassName.get()}() {}
+            }
+        """.trimIndent()
+                )
+            }
+        }
+
+        project.tasks.named("compileJava") {
+            dependsOn("generateConfig")
+        }
+
+        project.tasks.named("compileKotlin") {
+            dependsOn("generateConfig")
+        }
+
+        // Add generated sources to source set
+        project.extensions.configure<JavaPluginExtension>("java") {
+            sourceSets.getByName("main") {
+                java.srcDir(project.layout.buildDirectory.dir("generated/sources/config/java/main"))
+            }
         }
     }
 }
 
 open class GLibBuildToolsExtension(private val project: Project) {
-    val resourceDirectory: Property<String> = project.objects.property(String::class.java)
-        .convention("src/main/resources")
+    val blueprintSourceDir: Property<String> =
+        project.objects.property(String::class.java).convention("src/main/gresources")
+
+    val blueprintOutputDir: Property<String> =
+        project.objects.property(String::class.java).convention("src/main/gresources/blueprint-compiler")
 
     val blueprintFiles: ListProperty<String> = project.objects.listProperty(String::class.java)
 
-    val blueprintOutputDirectory: Property<String> = project.objects.property(String::class.java)
-        .convention("blueprint-compiler")
+    val configClassName: Property<String> = project.objects.property(String::class.java).convention("Config")
 
-    val gresourceFile: Property<String> = project.objects.property(String::class.java)
+    val applicationId: Property<String> = project.objects.property(String::class.java)
 
-    val blueprintArgs: ListProperty<String> = project.objects.listProperty(String::class.java)
-    val gresourceArgs: ListProperty<String> = project.objects.listProperty(String::class.java)
+    val gettextDomain: Property<String> = project.objects.property(String::class.java)
+
+    val localeDir: Property<String> = project.objects.property(String::class.java)
+
+    val resourceDir: Property<String> = project.objects.property(String::class.java).convention(project.provider {
+        if (blueprintFiles.isPresent && blueprintFiles.get().isNotEmpty()) {
+            blueprintOutputDir.get()
+        } else {
+            blueprintSourceDir.get()
+        }
+    })
+
+    val gresourceSourceDirs: ListProperty<String> =
+        project.objects.listProperty(String::class.java).convention(project.provider {
+            if (blueprintFiles.isPresent && blueprintFiles.get().isNotEmpty()) {
+                listOf(blueprintOutputDir.get())
+            } else {
+                listOf(blueprintSourceDir.get())
+            }
+        })
+
+    val gresourceXml: Property<String> =
+        project.objects.property(String::class.java).convention(applicationId.map { "data/${it}.gresource.xml" })
+
+    val gresourceOutput: Property<String> = project.objects.property(String::class.java)
+        .convention(applicationId.map { "src/main/gresources/${it}.gresource" })
 
     fun blueprints(vararg files: String) {
         blueprintFiles.addAll(*files)
-    }
-
-    @Suppress("unused")
-    fun blueprintArg(vararg args: String) {
-        blueprintArgs.addAll(*args)
-    }
-
-    @Suppress("unused")
-    fun gresourceArg(vararg args: String) {
-        gresourceArgs.addAll(*args)
     }
 }
