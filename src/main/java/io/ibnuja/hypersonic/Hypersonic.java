@@ -25,9 +25,9 @@ import org.javagi.base.Out;
 import org.javagi.gtk.types.TemplateTypes;
 import org.javagi.util.Intl;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
+
+import static io.ibnuja.Config.*;
 
 @Slf4j
 @SuppressWarnings({"java:S1118", "java:S125"})
@@ -48,35 +48,20 @@ public class Hypersonic {
             );
         });
 
-        String appId = "hypersonic";
-        Intl.bindtextdomain(appId, Config.LOCALE_DIR);
+        Intl.bindtextdomain(APPLICATION_ID, LOCALE_DIR);
+        Intl.textdomain(APPLICATION_ID);
+        // Register Template Classes
+        TemplateTypes.register(PlaybackWidget.class);
+        TemplateTypes.register(InfoWidget.class);
+        TemplateTypes.register(ControlsWidget.class);
+        TemplateTypes.register(SelectionToolbarWidget.class);
+        TemplateTypes.register(SidebarRow.class);
 
-        Intl.textdomain(appId);
+        Resource resource = Resource.load(RESOURCE_DIR + RESOURCE_FILENAME);
 
-        try (InputStream in = Hypersonic.class.getResourceAsStream("/hypersonicapp.gresource")) {
-            // Register Template Classes
-            TemplateTypes.register(PlaybackWidget.class);
-            TemplateTypes.register(InfoWidget.class);
-            TemplateTypes.register(ControlsWidget.class);
-            TemplateTypes.register(SelectionToolbarWidget.class);
-            TemplateTypes.register(SidebarRow.class);
+        resource.resourcesRegister();
 
-            Resource resource;
-            if (in != null) {
-                resource = Resource.fromData(in.readAllBytes());
-            } else {
-                // Fallback for dev environment if needed
-                resource = Resource.load("src/main/resources/hypersonicapp.gresource");
-            }
-            resource.resourcesRegister();
-
-            new Application().run(gstArgs.get());
-
-        } catch (IOException e) {
-            log.error("error loading resource:", e);
-        } finally {
-            log.info("Application exited and connections closed.");
-        }
+        new Application().run(gstArgs.get());
     }
 
     @SuppressWarnings("java:S110")
@@ -146,7 +131,7 @@ public class Hypersonic {
         }
 
         public Application() {
-            setApplicationId("io.ibnuja.Hypersonic");
+            setApplicationId(APPLICATION_ID);
             setFlags(ApplicationFlags.HANDLES_OPEN);
         }
     }
