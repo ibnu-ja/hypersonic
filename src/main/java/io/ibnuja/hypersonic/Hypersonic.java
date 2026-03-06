@@ -79,6 +79,9 @@ public class Hypersonic {
             } else {
                 log.error("Display.getDefault() returned null inside activate()!");
             }
+            if (playerState == null) {
+                playerState = new PlayerState();
+            }
             MainWindow win;
             List<Window> windows = super.getWindows();
             if (!windows.isEmpty()) {

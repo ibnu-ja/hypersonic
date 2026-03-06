@@ -35,6 +35,11 @@ install_data(project_id + '.gschema.xml',
   install_dir: gschema_dir
 )
 
+gnome.compile_schemas(
+  build_by_default: true,
+  depend_files: project_id + '.gschema.xml'
+)
+
 compile_schemas = find_program('glib-compile-schemas', required: false, disabler: true)
 if compile_schemas.found()
   test('Validate schema file',

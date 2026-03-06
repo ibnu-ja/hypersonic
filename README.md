@@ -1,27 +1,46 @@
 # Hypersonic
 
 Subsonic client made with Java and GTK4+Libadwaita.
+### Linux
 
-### Build & Install (Default: `~/.local`)
-
+**Development:**
 ```bash
-./gradlew shadowJar
-meson setup mesonBuild --prefix ~/.local
-meson install -C mesonBuild
-
+meson setup builddir
+meson compile -C builddir
+./gradlew run -PmesonPrefix=builddir
 ```
 
-### Custom Install Location
-
-If you change the installation prefix, you must pass the path to Gradle so the application knows where to find resources (locales, etc.).
-
+**Install (system-wide):**
 ```bash
-# Example: Installing to /usr
-./gradlew shadowJar -PmesonPrefix=/usr
-meson setup mesonBuild --prefix /usr
-sudo meson install -C mesonBuild
+./gradlew installShadowDist -PmesonPrefix=/usr/local -PmesonDatadir=/usr/local/share/hypersonic
+meson setup --prefix=/usr/local builddir
+meson compile -C builddir
+sudo meson install -C builddir
 ```
 
-### Flatpak Build
+**Install (user):**
+```bash
+./gradlew installShadowDist -PmesonPrefix=~/.local -PmesonDatadir=~/.local/share/hypersonic
+meson setup --prefix=~/.local builddir
+meson compile -C builddir
+meson install -C builddir
+```
 
-*To be added later.*
+***
+
+### Windows
+
+**Development:**
+```cmd
+meson setup builddir
+meson compile -C builddir
+gradlew.bat run -PmesonPrefix=builddir
+```
+
+**Install:**
+```cmd
+gradlew.bat installShadowDist -PmesonPrefix=%APPDATA%/hypersonic -PmesonDatadir=%APPDATA%/hypersonic/share/hypersonic
+meson setup --prefix=%APPDATA%/hypersonic builddir
+meson compile -C builddir
+meson install -C builddir
+```
