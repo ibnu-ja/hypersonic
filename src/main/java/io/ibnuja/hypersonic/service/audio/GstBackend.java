@@ -1,21 +1,34 @@
 package io.ibnuja.hypersonic.service.audio;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.gstreamer.gst.*;
 import org.gnome.glib.GError;
 import org.gnome.glib.GLib;
+import org.gnome.gobject.GObject;
 import org.javagi.base.Out;
+import org.javagi.gobject.annotations.Property;
+import org.javagi.gobject.annotations.RegisteredType;
+import org.javagi.gobject.annotations.Signal;
 
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @SuppressWarnings("unused")
-public class GstBackend implements Backend {
+@RegisteredType(name = "GstBackend")
+public class GstBackend extends GObject {
 
     private final Element playbin;
+    @Getter
+    private State state = State.NULL;
+    @Getter
+    private String url;
 
-    @SuppressWarnings("unused")
+    @Signal(name = "eos")
+    public interface EosSignal {
+        void run();
+    }
+
     public GstBackend() {
         playbin = ElementFactory.make("playbin", "audio-player");
         if (playbin == null) {
@@ -27,13 +40,47 @@ public class GstBackend implements Backend {
             playbin.set("video-sink", fakesink);
         }
 
+        playbin.set("flags", 0x0002); // GST_PLAY_FLAG_AUDIO
+
         setupBus();
     }
 
-    /**
-     * <a href="https://gitlab.com/esiqveland/subsound-gtk/-/blob/217ba95ef9e8a39a99ff0126d09bf7f68a47928c/src/main/java/com/github/subsound/sound/PlaybinPlayer.java">sorse</a> <br>
-     * See: <a href="https://java-gi.org/javadoc/org/freedesktop/gstreamer/gst/Bus.html">Bus</a>
-     */
+    public void setUrl(String streamUrl) {
+        this.url = streamUrl;
+        if (playbin != null) {
+            playbin.set("uri", streamUrl);
+        }
+        notify("url");
+    }
+
+    @Property(name = "state")
+    public int getStateValue() {
+        return state.getValue(); //GObject int
+    }
+
+    @Property(name = "state")
+    public void setStateValue(int value) {
+    }
+
+    public void setState(State state) {
+        if (playbin != null) {
+            playbin.setState(state);
+        }
+        //update state in setupBus()
+    }
+
+    public void play() {
+        setState(State.PLAYING);
+    }
+
+    public void pause() {
+        setState(State.PAUSED);
+    }
+
+    public void stop() {
+        setState(State.NULL);
+    }
+
     private void setupBus() {
         Bus bus = playbin.getBus();
         if (bus == null) {
@@ -43,67 +90,41 @@ public class GstBackend implements Backend {
 
         bus.addSignalWatch();
 
-        bus.connect(
-                "message", (Bus.MessageCallback) (Message msg) -> {
-                    if (msg == null) return;
+        bus.onMessage(null, (Message msg) -> {
+            if (msg == null) return;
 
-                    // Retrieve the message type synchronously
-                    Set<MessageType> msgTypes = msg.readType();
+            Set<MessageType> msgTypes = msg.readType();
 
-                    if (msgTypes.contains(MessageType.EOS)) {
-                        log.debug("EOS received");
-                        GLib.idleAdd(
-                                GLib.PRIORITY_DEFAULT_IDLE, () -> false
-                        );
-                    } else if (msgTypes.contains(MessageType.ERROR)) {
-                        Out<GError> errorOut = new Out<>();
-                        Out<String> debugOut = new Out<>();
-                        msg.parseError(errorOut, debugOut);
-                        String errorMsg = errorOut.get() != null ? errorOut.get().readMessage() : "Unknown Error";
-                        String debugMsg = debugOut.get();
-                        log.error("GStreamer Error: {} - Debug: {}", errorMsg, debugMsg);
-                        GLib.idleAdd(
-                                GLib.PRIORITY_DEFAULT_IDLE, () -> false
-                        );
+            if (msgTypes.contains(MessageType.EOS)) {
+                log.debug("EOS received");
+                //TODO Implement next track logic here
+                emit("eos");
+                GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
+            }
+            else if (msgTypes.contains(MessageType.ERROR)) {
+                Out<GError> errorOut = new Out<>();
+                Out<String> debugOut = new Out<>();
+                msg.parseError(errorOut, debugOut);
+                String errorMsg = errorOut.get() != null ? errorOut.get().readMessage() : "Unknown Error";
+                log.error("GStreamer Error: {} - Debug: {}", errorMsg, debugOut.get());
+                GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
+            }
+            else if (msgTypes.contains(MessageType.STATE_CHANGED)) {
+                // Ensure the message comes from playbin, not a child element
+                if (msg.readSrc().equals(playbin)) {
+                    Out<State> oldState = new Out<>();
+                    Out<State> newState = new Out<>();
+                    Out<State> pendingState = new Out<>();
+                    msg.parseStateChanged(oldState, newState, pendingState);
+
+                    State current = newState.get();
+                    if (this.state != current) {
+                        log.debug("State changed: {} -> {}", this.state, current);
+                        this.state = current;
+                        notify("state");
                     }
                 }
-        );
-    }
-
-    public void setUri(String uri) {
-        playbin.setState(State.READY);
-        playbin.set("uri", uri);
-    }
-
-    public void play() {
-        playbin.setState(State.PLAYING);
-    }
-
-    public void pause() {
-        playbin.setState(State.PAUSED);
-    }
-
-    public void stop() {
-        playbin.setState(State.NULL);
-    }
-
-    @SuppressWarnings("unused")
-    public long queryPosition() {
-        Out<Long> positionOut = new Out<>();
-        if (playbin.queryPosition(Format.TIME, positionOut)) {
-            Long pos = positionOut.get();
-            return pos != null ? TimeUnit.NANOSECONDS.toSeconds(pos) : 0;
-        }
-        return 0;
-    }
-
-    @SuppressWarnings("unused")
-    public long queryDuration() {
-        Out<Long> durationOut = new Out<>();
-        if (playbin.queryDuration(Format.TIME, durationOut)) {
-            Long dur = durationOut.get();
-            return dur != null ? TimeUnit.NANOSECONDS.toSeconds(dur) : 0;
-        }
-        return 0;
+            }
+        });
     }
 }
