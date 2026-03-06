@@ -9,8 +9,17 @@ project(
 i18n = import('i18n')
 gnome = import('gnome')
 
+shadow_dist_dir = join_paths(meson.project_source_root(), 'build', 'install', meson.project_name() + '-shadow')
+
 jar_name = meson.project_name() + '-' + meson.project_version() + '-all.jar'
-jar_path = join_paths(meson.project_source_root(), 'build/libs', jar_name)
+jar_path = join_paths(shadow_dist_dir, 'lib', jar_name)
+
+script_name = meson.project_name()
+if host_machine.system() == 'windows'
+  script_name += '.bat'
+endif
+script_path = join_paths(shadow_dist_dir, 'bin', script_name)
+
 app_datadir = get_option('datadir') / meson.project_name()
 
 config_h = configuration_data()
@@ -25,14 +34,8 @@ install_data(
   install_dir: app_datadir
 )
 
-launcher_conf = configuration_data()
-launcher_conf.set('jar_path', get_option('prefix') / app_datadir / jar_name)
-
-configure_file(
-  input: 'hypersonic.in',
-  output: 'hypersonic',
-  configuration: launcher_conf,
-  install: true,
+install_data(
+  script_path,
   install_dir: get_option('bindir'),
   install_mode: 'rwxr-xr-x'
 )
