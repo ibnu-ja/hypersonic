@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec java -jar --enable-native-access=ALL-UNNAMED "@jar_path@" "$@"

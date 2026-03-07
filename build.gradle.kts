@@ -6,11 +6,11 @@ plugins {
     id("com.gradleup.shadow") version "9.2.2"
     kotlin("jvm")
 
-    id("io.ibnuja.environment")
-    id("io.ibnuja.glib.buildtools")
+    id("moe.seiga.environment")
+    id("moe.seiga.glib.buildtools")
 }
 
-group = "io.ibnuja"
+group = "moe.seiga"
 version = "1.0-SNAPSHOT"
 
 val slf4jVersion = "2.0.17"
@@ -36,7 +36,7 @@ repositories {
 }
 
 glibBuildTools {
-    applicationId.set("io.ibnuja.Hypersonic")
+    applicationId.set("moe.seiga.Hypersonic")
     gettextDomain.set("hypersonic")
     localeDir.set(mesonLocaledir)
     resourceDir.set(mesonDatadir)
@@ -49,13 +49,7 @@ glibBuildTools {
 
     blueprints(
         "src/main/resources/window.blp",
-        "src/main/resources/components/playback/playback_info.blp",
-        "src/main/resources/components/playback/playback_controls.blp",
-        "src/main/resources/components/playback/playback_widget.blp",
-        "src/main/resources/components/selection/selection_toolbar.blp",
         "src/main/resources/components/settings/settings.blp",
-        "src/main/resources/components/sidebar/sidebar_row.blp",
-        "src/main/resources/pages/home.blp"
     )
 }
 
@@ -69,7 +63,7 @@ val commonJvmArgs = mutableListOf("--enable-native-access=ALL-UNNAMED")
 
 application {
     applicationDefaultJvmArgs += commonJvmArgs
-    mainClass.set("io.ibnuja.hypersonic.Hypersonic")
+    mainClass.set("moe.seiga.hypersonic.Hypersonic")
 }
 
 dependencies {

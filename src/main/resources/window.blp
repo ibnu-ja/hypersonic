@@ -1,126 +1,49 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $MainWindow: Adw.ApplicationWindow {
-  title: _("Example Application");
-  default-width: 600;
-  default-height: 400;
+template $MainWindow : Adw.ApplicationWindow {
+  default-width: 400;
+  default-height: 500;
+  height-request: 640;
+  width-request: 360;
 
-  Adw.Breakpoint {
-    condition("max-width:550sp")
+  // TODO: AdwBreakpoints (responsive)
 
-    setters {
-      split_view.collapsed: true;
-    }
-  }
-
-  Box {
+  content: Box {
     orientation: vertical;
+    halign: fill;
 
-    ShortcutController {
-      scope: local;
-
-      Shortcut {
-        trigger: "space";
-        action: "action(app.toggle_playback)";
-      }
-
-      Shortcut {
-        trigger: "<Ctrl>Q";
-        action: "action(app.quit)";
-      }
-
-      Shortcut {
-        trigger: "P";
-        action: "action(app.player_prev)";
-      }
-
-      Shortcut {
-        trigger: "N";
-        action: "action(app.player_next)";
-      }
-
-      Shortcut {
-        trigger: "<Alt>Left";
-        action: "action(app.nav_pop)";
-      }
-
-      Shortcut {
-        trigger: "<Ctrl>F";
-        action: "action(app.search)";
-      }
-    }
-
-    Adw.NavigationSplitView split_view {
+    Adw.ToastOverlay toast_overlay {
       vexpand: true;
 
-      sidebar: Adw.NavigationPage {
-        title: "Sidebar";
-
-        child: Box {
-          orientation: vertical;
-
-          Adw.HeaderBar {
-            styles ["flat"]
-
-            Button search_button {
-              icon-name: "system-search-symbolic";
+      Adw.OverlaySplitView split_view {
+        sidebar: Adw.NavigationPage {
+          title: "App";
+          child: Adw.ToolbarView {
+            [top]
+            Adw.HeaderBar {
+              title-widget: Adw.WindowTitle title {
+                title: "App";
+              };
+              // TODO: menu button (end)
             }
-
-            [title]
-            Adw.WindowTitle {
-              title: "Hypersonic";
-            }
-
-            [end]
-            MenuButton user {
-              icon-name: "open-menu-symbolic";
-            }
-          }
-
-          ScrolledWindow {
-            hscrollbar-policy: never;
-            ListBox home_listbox {
-              width-request: 200;
-              vexpand: true;
-
-              styles [
-                "navigation-sidebar",
-              ]
-            }
-          }
+            // TODO: sidebar
+          };
         };
-      };
 
-      content: Adw.NavigationPage {
-        tag: "main";
-        title: "Home";
-        child: Box {
-          orientation: vertical;
-          Adw.ToastOverlay main {
-            hexpand: true;
-            vexpand: true;
-            Adw.NavigationView navigation_view {}
-          }
+        content: Adw.NavigationPage {
+          title: "Content";
+          child: Box {
+            // TODO: library/queue views
+          };
         };
-      };
+      }
     }
-    Overlay {
+
+    Revealer player_bar_revealer {
       hexpand: true;
-      $PlaybackWidget playback {
-        hexpand: "1";
-      }
-      [overlay]
-      $SelectionToolbarWidget selection_toolbar {
-        hexpand: "1";
-      }
+      reveal-child: true;
+      // TODO: child: $PlayerBar player_bar {}
     }
-  }
-}
-
-Adw.AboutDialog about {
-  application-name: "Hypersonic";
-  website: "https://github.com/ibnu-ja/hypersonic";
-  application-icon: "io.ibnuja.Hypersonic";
-  license-type: gpl_3_0;
+  };
 }
