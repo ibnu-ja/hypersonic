@@ -16,52 +16,49 @@ public class LoggingBootstrap {
     private static final String ENV_LOGGING_LEVEL_PREFIX = "LOGGING_LEVEL_";
 
     public static void init() {
-        log.trace("Initializing logging configuration...");
-
         LoggerContext context = (LoggerContext) LogManager.getContext(false);
         Configuration config = context.getConfiguration();
+        String simpleLogLevel = System.getenv("LOG_LEVEL");
+        if (simpleLogLevel != null && !simpleLogLevel.isBlank()) {
+            Level level = parseLevel(simpleLogLevel);
+            if (level != null) {
+                setLogLevel(config, "root", level);
+            }
+        }
+        System.getenv().forEach((key, value) -> {
+            if (key.startsWith(ENV_LOGGING_LEVEL_PREFIX)) {
+                String loggerName = key.substring(ENV_LOGGING_LEVEL_PREFIX.length())
+                        .replace("_", ".")
+                        .toLowerCase();  // Package names are lowercase
+                Level level = parseLevel(value);
+                if (level != null) {
+                    setLogLevel(config, loggerName, level);
+                }
+            }
+        });
 
         System.getProperties().forEach((key, value) -> {
             String keyStr = key.toString();
             if (keyStr.startsWith(LOGGING_LEVEL_PREFIX)) {
                 String loggerName = keyStr.substring(LOGGING_LEVEL_PREFIX.length());
-                Level level = Level.toLevel(value.toString().toUpperCase());
-                log.trace(
-                        "Setting logger '{}' to level {} (from system property)",
-                        loggerName,
-                        level
-                );
-                setLogLevel(config, loggerName, level);
+                Level level = parseLevel(value.toString());
+                if (level != null) {
+                    setLogLevel(config, loggerName, level);
+                }
             }
         });
-
-        System.getenv().forEach((key, value) -> {
-            if (key.startsWith(ENV_LOGGING_LEVEL_PREFIX)) {
-                String loggerName = key.substring(ENV_LOGGING_LEVEL_PREFIX.length())
-                        .replace("_", ".")
-                        .toLowerCase();
-                Level level = Level.toLevel(value.toUpperCase());
-                log.trace(
-                        "Setting logger '{}' to level {} (from environment variable {})",
-                        loggerName,
-                        level,
-                        key
-                );
-                setLogLevel(config, loggerName, level);
-            }
-        });
-
-        String simpleLogLevel = System.getenv("LOG_LEVEL");
-        if (simpleLogLevel != null) {
-            log.trace(
-                    "Setting root logger to level {} (from LOG_LEVEL)",
-                    simpleLogLevel.toUpperCase()
-            );
-            setLogLevel(config, "root", Level.toLevel(simpleLogLevel.toUpperCase()));
-        }
 
         context.updateLoggers();
         log.trace("Logging configuration complete.");
+    }
+
+    private static Level parseLevel(String levelStr) {
+        try {
+            return Level.valueOf(levelStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid log level: " + levelStr);
+            return null;
+        }
     }
 
     private static void setLogLevel(Configuration config, String loggerName, Level level) {
@@ -83,7 +80,10 @@ public class LoggingBootstrap {
     public static void setLevel(String loggerName, String level) {
         LoggerContext context = (LoggerContext) LogManager.getContext(false);
         Configuration config = context.getConfiguration();
-        setLogLevel(config, loggerName, Level.toLevel(level.toUpperCase()));
-        context.updateLoggers();
+        Level parsedLevel = parseLevel(level);
+        if (parsedLevel != null) {
+            setLogLevel(config, loggerName, parsedLevel);
+            context.updateLoggers();
+        }
     }
 }

@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="hypersonic">
 	<schema id="moe.seiga.Hypersonic" path="/moe/seiga/Hypersonic/">
-        <key name="font" type="s">
-            <default>'Monospace 12'</default>
-            <summary>Font</summary>
-            <description>The font to be used for content.</description>
+        <key name="window-width" type="i">
+            <default>600</default>
         </key>
-        <key name="transition" type="s">
-            <choices>
-                <choice value='none'/>
-                <choice value='crossfade'/>
-                <choice value='slide-left-right'/>
-            </choices>
-            <default>'none'</default>
-            <summary>Transition</summary>
-            <description>The transition to use when switching tabs.</description>
+        <key name="window-height" type="i">
+            <default>400</default>
+        </key>
+        <key name="is-maximized" type="b">
+            <default>false</default>
+        </key>
+        <key name="is-fullscreen" type="b">
+            <default>false</default>
         </key>
 	</schema>
 </schemalist>

@@ -18,12 +18,12 @@ template $MainWindow : Adw.ApplicationWindow {
 
       Adw.OverlaySplitView split_view {
         sidebar: Adw.NavigationPage {
-          title: "App";
+          title: _("Home");
           child: Adw.ToolbarView {
             [top]
             Adw.HeaderBar {
               title-widget: Adw.WindowTitle title {
-                title: "App";
+                title: _("Home");
               };
               // TODO: menu button (end)
             }

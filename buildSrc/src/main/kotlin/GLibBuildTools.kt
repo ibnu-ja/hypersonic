@@ -103,9 +103,9 @@ class GLibBuildTools : Plugin<Project> {
 
             public class ${extension.configClassName.get()} {
 
-                public static final String APPLICATION_ID = "$appId";
+                public static final String GETTEXT_PACKAGE = "$gettextDomain";
                 public static final String LOCALE_DIR = "$localeDir";
-                public static final String GETTEXT_DOMAIN = "$gettextDomain";
+                public static final String APPLICATION_ID = "$appId";
                 public static final String RESOURCE_DIR = "$resourceDir";
                 public static final String RESOURCE_FILENAME = "$gresourceFilename";
 

@@ -27,7 +27,7 @@ val defaultDatadir   = "src/main/resources"
 
 val mesonPrefix    = project.findProperty("mesonPrefix")?.toString()    ?: defaultPrefix
 val mesonDatadir   = project.findProperty("mesonDatadir")?.toString()   ?: defaultDatadir
-val mesonLocaledir = project.findProperty("mesonLocaledir")?.toString() ?: "$mesonPrefix/share/locale"
+val mesonLocaledir = project.findProperty("mesonLocaledir")?.toString() ?: "$mesonPrefix/po"
 
 repositories {
     mavenCentral()
@@ -63,7 +63,7 @@ val commonJvmArgs = mutableListOf("--enable-native-access=ALL-UNNAMED")
 
 application {
     applicationDefaultJvmArgs += commonJvmArgs
-    mainClass.set("moe.seiga.hypersonic.Hypersonic")
+    mainClass.set("moe.seiga.hypersonic.Main")
 }
 
 dependencies {
