@@ -1,0 +1,125 @@
+using Gtk 4.0;
+
+template $PlayerBar: Box {
+  hexpand: true;
+  spacing: 6;
+  margin-start: 12;
+  margin-end: 12;
+  margin-top: 12;
+  margin-bottom: 12;
+
+  styles [
+    "toolbar",
+  ]
+
+  orientation: vertical;
+
+  // Main player bar
+  CenterBox {
+    hexpand: true;
+
+    start-widget: Box {
+      spacing: 12;
+
+      // Album art placeholder
+      Box album_art_placeholder {
+        width-request: 64;
+        height-request: 64;
+
+        styles [
+          "card",
+        ]
+      }
+
+      // Info box
+      Box info_box {
+        valign: center;
+        orientation: vertical;
+        spacing: 4;
+
+        Label song_name {
+          label: "Song Title";
+          halign: start;
+          ellipsize: end;
+          max-width-chars: 30;
+
+          styles [
+            "heading",
+          ]
+        }
+
+        Box {
+          spacing: 6;
+
+          Image {
+            icon-name: "music-artist-symbolic";
+          }
+
+          Label artist {
+            label: "ArtistName";
+            ellipsize: end;
+            halign: start;
+
+            styles [
+              "caption",
+            ]
+          }
+        }
+
+        Box {
+          spacing: 6;
+
+          Image {
+            icon-name: "library-music-symbolic";
+          }
+
+          Label album {
+            label: "AlbumName";
+            ellipsize: end;
+            halign: start;
+
+            styles [
+              "caption",
+            ]
+          }
+        }
+      }
+    };
+
+    center-widget: $PlaybackControls playback_controls {};
+
+    end-widget: Box {
+      spacing: 6;
+      valign: center;
+
+      // TODO: Volume button
+      Button volume_btn {
+        icon-name: "audio-volume-high-symbolic";
+        tooltip-text: "Volume";
+
+        styles [
+          "flat",
+          "circular",
+        ]
+      }
+
+      // TODO: More options menu
+      Button menu_btn {
+        icon-name: "view-more-symbolic";
+        tooltip-text: "More Options";
+
+        styles [
+          "flat",
+          "circular",
+        ]
+      }
+    };
+  }
+
+  // Seekbar section
+  Box seekbar_section {
+    hexpand: true;
+
+    $Seekbar seekbar {}
+  }
+}

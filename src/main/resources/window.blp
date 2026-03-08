@@ -1,40 +1,240 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $MainWindow : Adw.ApplicationWindow {
+template $Window: Adw.ApplicationWindow {
   default-width: 400;
   default-height: 500;
   height-request: 640;
   width-request: 360;
-
-  // TODO: AdwBreakpoints (responsive)
-
-  content: Box {
-    orientation: vertical;
+  // TODO: AdwBreakpoint children for responsive behavior
+  content: Box content {
     halign: fill;
+    orientation: vertical;
 
     Adw.ToastOverlay toast_overlay {
       vexpand: true;
 
       Adw.OverlaySplitView split_view {
         sidebar: Adw.NavigationPage {
-          title: _("Home");
+          styles [
+            "light-right-edge",
+          ]
+
+          title: "Home";
+
           child: Adw.ToolbarView {
             [top]
             Adw.HeaderBar {
+              [start]
+              // TODO: MenuButton with pending_tasks_popover
+              MenuButton pending_tasks_btn {
+                visible: false;
+                tooltip-text: "Background Tasks";
+
+                child: Adw.Spinner {};
+
+                styles [
+                  "flat",
+                ]
+              }
+
               title-widget: Adw.WindowTitle title {
                 title: _("Home");
               };
-              // TODO: menu button (end)
+
+              [end]
+              MenuButton menu_btn {
+                primary: true;
+                icon-name: "open-menu-symbolic";
+                tooltip-text: _("Menu");
+                // TODO: menu-model for primary_menu
+              }
             }
-            // TODO: sidebar
+
+            // TODO: content should be EuphonicaSidebar widget
+            content: Box {
+              orientation: vertical;
+              spacing: 6;
+              margin-start: 12;
+              margin-end: 12;
+              margin-top: 12;
+
+              Label {
+                label: "Library";
+                halign: start;
+
+                styles [
+                  "title-4",
+                ]
+              }
+
+              // TODO: port from EuphonicaSidebar buttons
+              ListBox {
+                selection-mode: none;
+
+                styles [
+                  "navigation-sidebar",
+                ]
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Recent";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Albums";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Artists";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Folders";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Playlists";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Queue";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+              }
+            };
           };
         };
 
         content: Adw.NavigationPage {
-          title: "Content";
-          child: Box {
-            // TODO: library/queue views
+          title: _("Content");
+
+          child: Stack stack {
+            transition-duration: 200;
+            transition-type: slide_up_down;
+            // TODO: port from EuphonicaRecentView
+            StackPage {
+              name: "recent";
+              title: _("Recent");
+
+              child: Adw.StatusPage {
+                icon-name: "document-open-recent-symbolic";
+                title: "Recent";
+                description: "Recently played tracks";
+              };
+            }
+
+            // TODO: port from EuphonicaAlbumView
+            StackPage {
+              name: "albums";
+              title: _("Albums");
+
+              child: Adw.StatusPage {
+                icon-name: "media-optical-cd-audio-symbolic";
+                title: "Albums";
+                description: "Browse by album";
+              };
+            }
+
+            // TODO: port from EuphonicaArtistView
+            StackPage {
+              name: "artists";
+              title: _("Artists");
+
+              child: Adw.StatusPage {
+                icon-name: "avatar-default-symbolic";
+                title: "Artists";
+                description: "Browse by artist";
+              };
+            }
+
+            // TODO: port from EuphonicaFolderView
+            StackPage {
+              name: "folders";
+              title: _("Folders");
+
+              child: Adw.StatusPage {
+                icon-name: "folder-music-symbolic";
+                title: "Folders";
+                description: "Browse by folder";
+              };
+            }
+
+            // TODO: port from EuphonicaDynamicPlaylistView
+            StackPage {
+              name: "dynamic_playlists";
+              title: _("Dynamic Playlists");
+
+              child: Adw.StatusPage {
+                icon-name: "playlist-shuffle-symbolic";
+                title: "Dynamic Playlists";
+                description: "Auto-generated playlists";
+              };
+            }
+
+            // TODO: port from EuphonicaPlaylistView
+            StackPage {
+              name: "playlists";
+              title: _("Playlists");
+
+              child: Adw.StatusPage {
+                icon-name: "view-list-symbolic";
+                title: "Playlists";
+                description: "Your custom playlists";
+              };
+            }
+
+            // TODO: port from EuphonicaQueueView
+            StackPage {
+              name: "queue";
+              title: _("Queue");
+
+              child: Adw.StatusPage {
+                icon-name: "media-playlist-consecutive-symbolic";
+                title: "Queue";
+                description: "Upcoming tracks";
+              };
+            }
           };
         };
       }
@@ -43,7 +243,10 @@ template $MainWindow : Adw.ApplicationWindow {
     Revealer player_bar_revealer {
       hexpand: true;
       reveal-child: true;
-      // TODO: child: $PlayerBar player_bar {}
+
+      child: $PlayerBar player_bar {};
     }
   };
 }
+
+// TODO: menu id="primary_menu" with theme selector, fullscreen, refresh, preferences, shortcuts, about, quit

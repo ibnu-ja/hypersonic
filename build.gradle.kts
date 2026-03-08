@@ -49,6 +49,9 @@ glibBuildTools {
 
     blueprints(
         "src/main/resources/window.blp",
+        "src/main/resources/components/player/bar.blp",
+        "src/main/resources/components/player/playback-controls.blp",
+        "src/main/resources/components/player/seekbar.blp",
         "src/main/resources/components/settings/settings.blp",
     )
 }

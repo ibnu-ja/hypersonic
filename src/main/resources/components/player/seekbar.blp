@@ -1,0 +1,65 @@
+using Gtk 4.0;
+
+template $Seekbar: Box {
+  spacing: 12;
+  orientation: vertical;
+
+  Scale seekbar {
+    draw-value: false;
+    hexpand: true;
+    orientation: horizontal;
+    width-request: 400;
+
+    adjustment: Adjustment {
+      lower: 0;
+      upper: 245;
+      value: 127;
+    };
+  }
+
+  CenterBox {
+    hexpand: true;
+
+    start-widget: Label elapsed {
+      label: "2:07";
+      margin-start: 11;
+
+      styles [
+        "caption",
+      ]
+    };
+
+    center-widget: Box {
+      spacing: 6;
+
+      Image quality_grade {}
+
+      Label format_desc {
+        label: "FLAC 24-bit";
+
+        styles [
+          "caption",
+        ]
+      }
+
+      Separator {}
+
+      Label bitrate {
+        label: "1411 kbps";
+
+        styles [
+          "caption",
+        ]
+      }
+    };
+
+    end-widget: Label duration {
+      label: "4:05";
+      margin-end: 11;
+
+      styles [
+        "caption",
+      ]
+    };
+  }
+}
