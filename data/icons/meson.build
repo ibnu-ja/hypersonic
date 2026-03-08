@@ -1,4 +1,4 @@
-application_id = 'io.ibnuja.Hypersonic'
+application_id = 'moe.seiga.Hypersonic'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

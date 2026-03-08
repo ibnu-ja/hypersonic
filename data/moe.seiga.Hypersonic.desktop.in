@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=hypersonic
+Exec=hypersonic
+Icon=moe.seiga.Hypersonic
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

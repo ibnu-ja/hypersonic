@@ -6,20 +6,28 @@ plugins {
     id("com.gradleup.shadow") version "9.2.2"
     kotlin("jvm")
 
-    id("io.ibnuja.environment")
-    id("io.ibnuja.glib.buildtools")
+    id("moe.seiga.environment")
+    id("moe.seiga.glib.buildtools")
 }
 
-group = "io.ibnuja"
+group = "moe.seiga"
 version = "1.0-SNAPSHOT"
 
 val slf4jVersion = "2.0.17"
 val log4jVersion = "2.25.3"
 val junitVersion = "5.10.0"
-val jacksonBomVersion = "2.20.0"
-val javaGiVersion = "0.14.0"
+val jacksonBomVersion = "2.21.1"
+val javaGiVersion = "0.14.1"
 val ktorVersion = "3.3.2"
 val subsonicApiVersion = "1.1.1"
+
+val isWindows = System.getProperty("os.name").lowercase().contains("windows")
+val defaultPrefix    = if (isWindows) "C:/hypersonic" else "/usr/local"
+val defaultDatadir   = "src/main/resources"
+
+val mesonPrefix    = project.findProperty("mesonPrefix")?.toString()    ?: defaultPrefix
+val mesonDatadir   = project.findProperty("mesonDatadir")?.toString()   ?: defaultDatadir
+val mesonLocaledir = project.findProperty("mesonLocaledir")?.toString() ?: "$mesonPrefix/po"
 
 repositories {
     mavenCentral()
@@ -28,31 +36,23 @@ repositories {
 }
 
 glibBuildTools {
-    applicationId.set("io.ibnuja.Hypersonic")
-
+    applicationId.set("moe.seiga.Hypersonic")
     gettextDomain.set("hypersonic")
-
-    resourceDir.set("src/main/resources")
+    localeDir.set(mesonLocaledir)
+    resourceDir.set(mesonDatadir)
 
     blueprintSourceDir.set("src/main/resources")
-
     blueprintOutputDir.set("src/main/resources/blueprint-compiler")
-
     gresourceXml.set("src/main/resources/hypersonicapp.gresource.xml")
-
     gresourceOutput.set("src/main/resources/hypersonicapp.gresource")
-
     gresourceSourceDirs.set(listOf("src/main/resources"))
 
     blueprints(
         "src/main/resources/window.blp",
-        "src/main/resources/components/playback/playback_info.blp",
-        "src/main/resources/components/playback/playback_controls.blp",
-        "src/main/resources/components/playback/playback_widget.blp",
-        "src/main/resources/components/selection/selection_toolbar.blp",
+        "src/main/resources/components/player/bar.blp",
+        "src/main/resources/components/player/playback-controls.blp",
+        "src/main/resources/components/player/seekbar.blp",
         "src/main/resources/components/settings/settings.blp",
-        "src/main/resources/components/sidebar/sidebar_row.blp",
-        "src/main/resources/pages/home.blp"
     )
 }
 
@@ -66,22 +66,7 @@ val commonJvmArgs = mutableListOf("--enable-native-access=ALL-UNNAMED")
 
 application {
     applicationDefaultJvmArgs += commonJvmArgs
-    mainClass.set("io.ibnuja.hypersonic.Hypersonic")
-}
-
-afterEvaluate {
-    val libraryPath = environment.libraryPath.get()
-
-    tasks.named<JavaExec>("run") {
-        jvmArgs("-Djava.library.path=$libraryPath")
-    }
-
-    tasks.named<Test>("test") {
-        jvmArgs("-Djava.library.path=$libraryPath")
-    }
-
-    application.applicationDefaultJvmArgs = application.applicationDefaultJvmArgs!! +
-            listOf("-Djava.library.path=$libraryPath")
+    mainClass.set("moe.seiga.hypersonic.Main")
 }
 
 dependencies {
@@ -111,4 +96,8 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.named<JavaExec>("run") {
+    environment("GSETTINGS_SCHEMA_DIR", "$mesonPrefix/data")
 }

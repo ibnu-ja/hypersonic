@@ -1,17 +1,9 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/io.ibnuja.Hypersonic.desktop.in
-data/io.ibnuja.Hypersonic.metainfo.xml.in
-data/io.ibnuja.Hypersonic.gschema.xml
-
-src/main/java/io/ibnuja/hypersonic/ui/pages/HomePage.java
+data/moe.seiga.Hypersonic.desktop.in
+data/moe.seiga.Hypersonic.metainfo.xml.in
+data/moe.seiga.Hypersonic.service.in
 
 # find src -name "*.blp" -print
-src/main/resources/pages/home.blp
-src/main/resources/components/playback/playback_controls.blp
-src/main/resources/components/playback/playback_info.blp
-src/main/resources/components/playback/playback_widget.blp
-src/main/resources/components/sidebar/sidebar_row.blp
 src/main/resources/components/settings/settings.blp
-src/main/resources/components/selection/selection_toolbar.blp
 src/main/resources/window.blp

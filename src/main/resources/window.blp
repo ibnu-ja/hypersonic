@@ -1,126 +1,259 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $MainWindow: Adw.ApplicationWindow {
-  title: _("Example Application");
-  default-width: 600;
-  default-height: 400;
-
-  Adw.Breakpoint {
-    condition("max-width:550sp")
-
-    setters {
-      split_view.collapsed: true;
-    }
-  }
-
-  Box {
+template $Window: Adw.ApplicationWindow {
+  default-width: 400;
+  default-height: 500;
+  height-request: 640;
+  width-request: 360;
+  // TODO: AdwBreakpoint children for responsive behavior
+  content: Box content {
+    halign: fill;
     orientation: vertical;
 
-    ShortcutController {
-      scope: local;
-
-      Shortcut {
-        trigger: "space";
-        action: "action(app.toggle_playback)";
-      }
-
-      Shortcut {
-        trigger: "<Ctrl>Q";
-        action: "action(app.quit)";
-      }
-
-      Shortcut {
-        trigger: "P";
-        action: "action(app.player_prev)";
-      }
-
-      Shortcut {
-        trigger: "N";
-        action: "action(app.player_next)";
-      }
-
-      Shortcut {
-        trigger: "<Alt>Left";
-        action: "action(app.nav_pop)";
-      }
-
-      Shortcut {
-        trigger: "<Ctrl>F";
-        action: "action(app.search)";
-      }
-    }
-
-    Adw.NavigationSplitView split_view {
+    Adw.ToastOverlay toast_overlay {
       vexpand: true;
 
-      sidebar: Adw.NavigationPage {
-        title: "Sidebar";
+      Adw.OverlaySplitView split_view {
+        sidebar: Adw.NavigationPage {
+          styles [
+            "light-right-edge",
+          ]
 
-        child: Box {
-          orientation: vertical;
+          title: "Home";
 
-          Adw.HeaderBar {
-            styles ["flat"]
+          child: Adw.ToolbarView {
+            [top]
+            Adw.HeaderBar {
+              [start]
+              // TODO: MenuButton with pending_tasks_popover
+              MenuButton pending_tasks_btn {
+                visible: false;
+                tooltip-text: "Background Tasks";
 
-            Button search_button {
-              icon-name: "system-search-symbolic";
+                child: Adw.Spinner {};
+
+                styles [
+                  "flat",
+                ]
+              }
+
+              title-widget: Adw.WindowTitle title {
+                title: _("Home");
+              };
+
+              [end]
+              MenuButton menu_btn {
+                primary: true;
+                icon-name: "open-menu-symbolic";
+                tooltip-text: _("Menu");
+                // TODO: menu-model for primary_menu
+              }
             }
 
-            [title]
-            Adw.WindowTitle {
-              title: "Hypersonic";
-            }
+            // TODO: content should be EuphonicaSidebar widget
+            content: Box {
+              orientation: vertical;
+              spacing: 6;
+              margin-start: 12;
+              margin-end: 12;
+              margin-top: 12;
 
-            [end]
-            MenuButton user {
-              icon-name: "open-menu-symbolic";
-            }
-          }
+              Label {
+                label: "Library";
+                halign: start;
 
-          ScrolledWindow {
-            hscrollbar-policy: never;
-            ListBox home_listbox {
-              width-request: 200;
-              vexpand: true;
+                styles [
+                  "title-4",
+                ]
+              }
 
-              styles [
-                "navigation-sidebar",
-              ]
-            }
-          }
+              // TODO: port from EuphonicaSidebar buttons
+              ListBox {
+                selection-mode: none;
+
+                styles [
+                  "navigation-sidebar",
+                ]
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Recent";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Albums";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Artists";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Folders";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Playlists";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+
+                ListBoxRow {
+                  child: Label {
+                    label: "Queue";
+                    halign: start;
+                    margin-start: 6;
+                    margin-end: 6;
+                    margin-top: 6;
+                    margin-bottom: 6;
+                  };
+                }
+              }
+            };
+          };
         };
-      };
 
-      content: Adw.NavigationPage {
-        tag: "main";
-        title: "Home";
-        child: Box {
-          orientation: vertical;
-          Adw.ToastOverlay main {
-            hexpand: true;
-            vexpand: true;
-            Adw.NavigationView navigation_view {}
-          }
+        content: Adw.NavigationPage {
+          title: _("Content");
+
+          child: Stack stack {
+            transition-duration: 200;
+            transition-type: slide_up_down;
+            // TODO: port from EuphonicaRecentView
+            StackPage {
+              name: "recent";
+              title: _("Recent");
+
+              child: Adw.StatusPage {
+                icon-name: "document-open-recent-symbolic";
+                title: "Recent";
+                description: "Recently played tracks";
+              };
+            }
+
+            // TODO: port from EuphonicaAlbumView
+            StackPage {
+              name: "albums";
+              title: _("Albums");
+
+              child: Adw.StatusPage {
+                icon-name: "media-optical-cd-audio-symbolic";
+                title: "Albums";
+                description: "Browse by album";
+              };
+            }
+
+            // TODO: port from EuphonicaArtistView
+            StackPage {
+              name: "artists";
+              title: _("Artists");
+
+              child: Adw.StatusPage {
+                icon-name: "avatar-default-symbolic";
+                title: "Artists";
+                description: "Browse by artist";
+              };
+            }
+
+            // TODO: port from EuphonicaFolderView
+            StackPage {
+              name: "folders";
+              title: _("Folders");
+
+              child: Adw.StatusPage {
+                icon-name: "folder-music-symbolic";
+                title: "Folders";
+                description: "Browse by folder";
+              };
+            }
+
+            // TODO: port from EuphonicaDynamicPlaylistView
+            StackPage {
+              name: "dynamic_playlists";
+              title: _("Dynamic Playlists");
+
+              child: Adw.StatusPage {
+                icon-name: "playlist-shuffle-symbolic";
+                title: "Dynamic Playlists";
+                description: "Auto-generated playlists";
+              };
+            }
+
+            // TODO: port from EuphonicaPlaylistView
+            StackPage {
+              name: "playlists";
+              title: _("Playlists");
+
+              child: Adw.StatusPage {
+                icon-name: "view-list-symbolic";
+                title: "Playlists";
+                description: "Your custom playlists";
+              };
+            }
+
+            // TODO: port from EuphonicaQueueView
+            StackPage {
+              name: "queue";
+              title: _("Queue");
+
+              child: Adw.StatusPage {
+                icon-name: "media-playlist-consecutive-symbolic";
+                title: "Queue";
+                description: "Upcoming tracks";
+              };
+            }
+          };
         };
-      };
+      }
     }
-    Overlay {
+
+    Revealer player_bar_revealer {
       hexpand: true;
-      $PlaybackWidget playback {
-        hexpand: "1";
-      }
-      [overlay]
-      $SelectionToolbarWidget selection_toolbar {
-        hexpand: "1";
-      }
+      reveal-child: true;
+
+      child: $PlayerBar player_bar {};
     }
-  }
+  };
 }
 
 Adw.AboutDialog about {
   application-name: "Hypersonic";
   website: "https://github.com/ibnu-ja/hypersonic";
-  application-icon: "io.ibnuja.Hypersonic";
+  application-icon: "moe.seiga.Hypersonic";
   license-type: gpl_3_0;
 }
+
+// TODO: menu id="primary_menu" with theme selector, fullscreen, refresh, preferences, shortcuts, about, quit
