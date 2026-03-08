@@ -7,20 +7,19 @@ import org.gnome.glib.GError;
 import org.gnome.glib.GLib;
 import org.gnome.gobject.GObject;
 import org.javagi.base.Out;
-import org.javagi.gobject.annotations.Property;
 import org.javagi.gobject.annotations.RegisteredType;
 import org.javagi.gobject.annotations.Signal;
 
 import java.util.Set;
 
 @Slf4j
-@SuppressWarnings("unused")
 @RegisteredType(name = "GstBackend")
 public class GstBackend extends GObject {
 
     private final Element playbin;
     @Getter
     private State state = State.NULL;
+
     @Getter
     private String url;
 
@@ -40,7 +39,7 @@ public class GstBackend extends GObject {
             playbin.set("video-sink", fakesink);
         }
 
-        playbin.set("flags", 0x0002); // GST_PLAY_FLAG_AUDIO
+        playbin.set("flags", 0x0002);
 
         setupBus();
     }
@@ -53,32 +52,25 @@ public class GstBackend extends GObject {
         notify("url");
     }
 
-    @Property(name = "state")
-    public int getStateValue() {
-        return state.getValue(); //GObject int
-    }
-
-    @Property(name = "state")
-    public void setStateValue(int value) {
-    }
-
-    public void setState(State state) {
-        if (playbin != null) {
-            playbin.setState(state);
-        }
-        //update state in setupBus()
-    }
+    @SuppressWarnings("unused")
+    public void setState(State value) {}
 
     public void play() {
-        setState(State.PLAYING);
+        if (playbin != null) {
+            playbin.setState(State.PLAYING);
+        }
     }
 
     public void pause() {
-        setState(State.PAUSED);
+        if (playbin != null) {
+            playbin.setState(State.PAUSED);
+        }
     }
 
     public void stop() {
-        setState(State.NULL);
+        if (playbin != null) {
+            playbin.setState(State.NULL);
+        }
     }
 
     private void setupBus() {
@@ -97,7 +89,6 @@ public class GstBackend extends GObject {
 
             if (msgTypes.contains(MessageType.EOS)) {
                 log.debug("EOS received");
-                //TODO Implement next track logic here
                 emit("eos");
                 GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
             }
@@ -110,7 +101,6 @@ public class GstBackend extends GObject {
                 GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
             }
             else if (msgTypes.contains(MessageType.STATE_CHANGED)) {
-                // Ensure the message comes from playbin, not a child element
                 if (msg.readSrc().equals(playbin)) {
                     Out<State> oldState = new Out<>();
                     Out<State> newState = new Out<>();
@@ -119,12 +109,20 @@ public class GstBackend extends GObject {
 
                     State current = newState.get();
                     if (this.state != current) {
-                        log.debug("State changed: {} -> {}", this.state, current);
+                        log.debug("Backend state changed: {} -> {}", this.state, current);
                         this.state = current;
                         notify("state");
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void dispose() {
+        if (playbin != null) {
+            playbin.setState(State.NULL);
+        }
+        super.dispose();
     }
 }

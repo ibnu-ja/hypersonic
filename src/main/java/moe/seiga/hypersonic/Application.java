@@ -8,6 +8,7 @@ import moe.seiga.hypersonic.navigation.settings.SettingWindow;
 import moe.seiga.hypersonic.player.controller.Player;
 import moe.seiga.hypersonic.player.controller.Song;
 import moe.seiga.hypersonic.service.api.ConnectionState;
+import moe.seiga.hypersonic.service.audio.GstBackend;
 import org.gnome.gdk.Display;
 import org.gnome.gio.ApplicationFlags;
 import org.gnome.gio.File;
@@ -93,7 +94,7 @@ public class Application extends org.gnome.adw.Application {
         ConnectionState.INSTANCE.getApi().getRandomSongs(1).thenAccept(
                 randomSongsResponse -> {
                     var song = new Song(randomSongsResponse.getRandomSongs().getSong().getFirst());
-                    player.setCurrentSong(song);
+                    player.playSong(song);
                     log.debug("Loaded song: {}", song.getTitle());
                 }
         ).exceptionally(throwable -> {

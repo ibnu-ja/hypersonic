@@ -6,8 +6,11 @@ import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.player.PlaybackControls;
 import moe.seiga.hypersonic.player.Seekbar;
 import moe.seiga.hypersonic.player.controller.PlaybackState;
+import org.freedesktop.gstreamer.gst.Gst;
+import org.gnome.gdkpixbuf.Pixbuf;
 import org.gnome.gio.Resource;
 import org.javagi.base.GErrorException;
+import org.javagi.base.Out;
 import org.javagi.gobject.types.Types;
 import org.javagi.gtk.types.TemplateTypes;
 import org.javagi.util.Intl;
@@ -21,6 +24,16 @@ public class Main {
     @SuppressWarnings({"java:S1444", "java:S1104", "java:S1135"})
     static void main(String[] args) throws GErrorException {
         LoggingBootstrap.init();
+        Out<String[]> gstArgs = new Out<>(args);
+        Gst.init(gstArgs);
+        Pixbuf.getFormats().forEach(pixbufFormat -> {
+            assert pixbufFormat != null;
+            log.debug(
+                    "pixbuf Format supported: {}, {} ",
+                    pixbufFormat.getName(),
+                    pixbufFormat.getDescription()
+            );
+        });
 
         Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALE_DIR);
         Intl.textdomain(Config.GETTEXT_PACKAGE);

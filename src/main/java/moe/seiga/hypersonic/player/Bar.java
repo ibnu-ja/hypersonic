@@ -59,5 +59,8 @@ public class Bar extends Box {
                 // playingImage.setVisible(false);
             }
         });
+
+        playbackControls.setup(vm);
+
     }
 }
