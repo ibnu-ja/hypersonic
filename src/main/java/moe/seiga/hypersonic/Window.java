@@ -24,7 +24,7 @@ public class Window extends ApplicationWindow {
     public Window(Application app) {
         log.trace("MainWindow constructor");
         setApplication(app);
-        playerBar = new Bar();
+        playerBar.setup(app.player);
     }
 
     @InstanceInit

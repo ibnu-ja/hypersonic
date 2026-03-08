@@ -1,9 +1,13 @@
 package moe.seiga.hypersonic;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import moe.seiga.hypersonic.navigation.settings.SettingWindow;
+import moe.seiga.hypersonic.player.controller.Player;
+import moe.seiga.hypersonic.player.controller.Song;
+import moe.seiga.hypersonic.service.api.ConnectionState;
 import org.gnome.gdk.Display;
 import org.gnome.gio.ApplicationFlags;
 import org.gnome.gio.File;
@@ -17,6 +21,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
 public class Application extends org.gnome.adw.Application {
+
+    @Getter
+    public Player player;
 
     @Override
     public void activate() {
@@ -77,5 +84,21 @@ public class Application extends org.gnome.adw.Application {
         setApplicationId("moe.seiga.Hypersonic");
         setFlags(ApplicationFlags.HANDLES_OPEN);
         setResourceBasePath("/moe/seiga/Hypersonic");
+
+        this.player = new Player();
+
+        if (!ConnectionState.INSTANCE.isConnected()) {
+            ConnectionState.INSTANCE.connect("http://demo.subsonic.org", "guest", "guest");
+        }
+        ConnectionState.INSTANCE.getApi().getRandomSongs(1).thenAccept(
+                randomSongsResponse -> {
+                    var song = new Song(randomSongsResponse.getRandomSongs().getSong().getFirst());
+                    player.setCurrentSong(song);
+                    log.debug("Loaded song: {}", song.getTitle());
+                }
+        ).exceptionally(throwable -> {
+            log.error("Error loading songs:", throwable);
+            return null;
+        });
     }
 }

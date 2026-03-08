@@ -5,10 +5,13 @@ import moe.seiga.Config;
 import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.player.PlaybackControls;
 import moe.seiga.hypersonic.player.Seekbar;
+import moe.seiga.hypersonic.player.controller.PlaybackState;
 import org.gnome.gio.Resource;
 import org.javagi.base.GErrorException;
+import org.javagi.gobject.types.Types;
 import org.javagi.gtk.types.TemplateTypes;
 import org.javagi.util.Intl;
+
 
 
 @Slf4j
@@ -25,6 +28,8 @@ public class Main {
         TemplateTypes.register(Bar.class);
         TemplateTypes.register(PlaybackControls.class);
         TemplateTypes.register(Seekbar.class);
+
+        Types.register(PlaybackState.class);
 
         Resource resource = Resource.load(Config.RESOURCE_DIR + Config.RESOURCE_FILENAME);
 
