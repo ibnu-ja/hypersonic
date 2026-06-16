@@ -14,10 +14,10 @@ group = "moe.seiga"
 version = "1.0-SNAPSHOT"
 
 val slf4jVersion = "2.0.17"
-val log4jVersion = "2.25.3"
+val log4jVersion = "2.26.0"
 val junitVersion = "5.10.0"
 val jacksonBomVersion = "2.21.1"
-val javaGiVersion = "0.14.1"
+val javaGiVersion = "1.0.0-RC1"
 val ktorVersion = "3.3.2"
 val subsonicApiVersion = "1.1.1"
 
@@ -80,6 +80,7 @@ dependencies {
     implementation("org.java-gi:adw:${javaGiVersion}")
     implementation("org.java-gi:gdkpixbuf:${javaGiVersion}")
     implementation("org.java-gi:gstreamer:${javaGiVersion}")
+    // TODO: might consider dev.zt64.subsonic:subsonic-client (richer Song model, Open Subsonic)
     implementation("ru.stersh:subsonic-api:${subsonicApiVersion}")
     implementation("io.ktor:ktor-client-apache5:${ktorVersion}")
     implementation(kotlin("stdlib-jdk8"))
