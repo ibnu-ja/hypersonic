@@ -24,6 +24,7 @@ open class CompileResourcesConfig {
     var xml: String = ""
     var sourceDirs: List<String> = emptyList()
     var buildDir: String = "build/gresources"
+    var includeBlueprintOutput: Boolean = true
     private var _output: String = ""
     var output: String
         get() {
@@ -38,7 +39,7 @@ open class CompileResourcesConfig {
 
 open class BlueprintConfig {
     var sourceDir: String = "src/main/blueprints"
-    var outputDir: String = "src/main/gresources"
+    var outputDir: String = "build/blueprints"
     var files: List<String> = emptyList()
 }
 
@@ -83,6 +84,9 @@ internal fun registerGnomeTasks(project: Project, env: EnvironmentExtension, gno
             val xmlDir = project.file(rc.xml).parent
             args.add("--sourcedir=$xmlDir")
             rc.sourceDirs.forEach { args.add("--sourcedir=$it") }
+            if (gnome.blueprintConfig != null) {
+                args.add("--sourcedir=${gnome.blueprintConfig!!.outputDir}")
+            }
             args.add("--target=$gresourceOutputPath")
             args.add(rc.xml)
 
