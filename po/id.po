@@ -107,7 +107,7 @@ msgstr "Konten"
 
 #: src/main/blueprints/window.blp:163
 msgid "Recently played tracks"
-msgstr ""
+msgstr "Trek baru diputar"
 
 #: src/main/blueprints/window.blp:175
 msgid "Browse by album"
