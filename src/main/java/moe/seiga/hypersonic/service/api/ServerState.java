@@ -33,6 +33,11 @@ public class ServerState extends GObject {
     private String serverVersion;
 
     private CompletableFuture<Void> pendingPing;
+    private SubsonicApi api;
+
+    public SubsonicApi getApi() {
+        return api;
+    }
 
     public ServerState(Settings settings) {
         this.settings = settings;
@@ -104,7 +109,7 @@ public class ServerState extends GObject {
 
     private void pingServer(String url, String user, String pass) {
         try {
-            var api = SubsonicApi.create(url, user, pass);
+            api = SubsonicApi.create(url, user, pass);
             api.ping().get(15, TimeUnit.SECONDS);
             serverVersion = "";
             setConnectionState(ConnectionState.CONNECTED);

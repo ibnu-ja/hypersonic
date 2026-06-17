@@ -54,130 +54,30 @@ template $Window: Adw.ApplicationWindow {
           vexpand: true;
 
           Adw.OverlaySplitView split_view {
-            sidebar: Adw.NavigationPage {
+            max-sidebar-width: 240;
+            sidebar-width-unit: px;
+            sidebar-width-fraction: 0.2;
+
+            sidebar: Adw.ToolbarView {
               styles [
                 "light-right-edge",
               ]
 
-              title: _("Home");
-
-              child: Adw.ToolbarView {
-                [top]
-                Adw.HeaderBar {
-                  [start]
-                  MenuButton pending_tasks_btn {
-                    visible: false;
-                    tooltip-text: _("Background Tasks");
-
-                    child: Adw.Spinner {};
-
-                    styles [
-                      "flat",
-                    ]
-                  }
-
-                  title-widget: Adw.WindowTitle title {
-                    title: _("Home");
-                  };
-
-                  [end]
-                  MenuButton menu_btn {
-                    primary: true;
-                    icon-name: "open-menu-symbolic";
-                    tooltip-text: _("Menu");
-                  }
-                }
-
-                content: Box {
-                  orientation: vertical;
-                  spacing: 6;
-                  margin-start: 12;
-                  margin-end: 12;
-                  margin-top: 12;
-
-                  Label {
-                    label: _("Library");
-                    halign: start;
-
-                    styles [
-                      "title-4",
-                    ]
-                  }
-
-                  ListBox {
-                    selection-mode: none;
-                    styles [
-                      "navigation-sidebar",
-                    ]
-
-                    ListBoxRow {
-                      child: Label {
-                        label: _("Recent");
-                        halign: start;
-                        margin-start: 6;
-                        margin-end: 6;
-                        margin-top: 6;
-                        margin-bottom: 6;
-                      };
-                    }
-
-                    ListBoxRow {
-                      child: Label {
-                        label: _("Albums");
-                        halign: start;
-                        margin-start: 6;
-                        margin-end: 6;
-                        margin-top: 6;
-                        margin-bottom: 6;
-                      };
-                    }
-
-                    ListBoxRow {
-                      child: Label {
-                        label: _("Artists");
-                        halign: start;
-                        margin-start: 6;
-                        margin-end: 6;
-                        margin-top: 6;
-                        margin-bottom: 6;
-                      };
-                    }
-
-                    ListBoxRow {
-                      child: Label {
-                        label: _("Folders");
-                        halign: start;
-                        margin-start: 6;
-                        margin-end: 6;
-                        margin-top: 6;
-                        margin-bottom: 6;
-                      };
-                    }
-
-                    ListBoxRow {
-                      child: Label {
-                        label: _("Playlists");
-                        halign: start;
-                        margin-start: 6;
-                        margin-end: 6;
-                        margin-top: 6;
-                        margin-bottom: 6;
-                      };
-                    }
-
-                    ListBoxRow {
-                      child: Label {
-                        label: _("Queue");
-                        halign: start;
-                        margin-start: 6;
-                        margin-end: 6;
-                        margin-top: 6;
-                        margin-bottom: 6;
-                      };
-                    }
-                  }
+              [top]
+              Adw.HeaderBar {
+                title-widget: Adw.WindowTitle title {
+                  title: _("Home");
                 };
-              };
+
+                [end]
+                MenuButton menu_btn {
+                  primary: true;
+                  icon-name: "open-menu-symbolic";
+                  tooltip-text: _("Menu");
+                }
+              }
+
+              content: $Sidebar sidebar {};
             };
 
             content: Adw.NavigationPage {
@@ -313,4 +213,5 @@ Adw.AboutDialog about {
   license-type: gpl_3_0;
 }
 
+// TODO: create library-plus-symbolic.svg and library-play-symbolic.svg icons in Inkscape
 // TODO: menu id="primary_menu" with theme selector, fullscreen, refresh, preferences, shortcuts, about, quit

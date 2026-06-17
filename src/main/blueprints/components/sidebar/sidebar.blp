@@ -1,0 +1,205 @@
+using Gtk 4.0;
+
+template $Sidebar: Gtk.Box {
+  orientation: vertical;
+
+  Gtk.ScrolledWindow {
+    hscrollbar-policy: never;
+    hexpand: true;
+    vexpand: true;
+
+    Gtk.ListBox sidebar_list {
+      styles [
+        "navigation-sidebar",
+      ]
+      selection-mode: single;
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "go-home-symbolic";
+          }
+
+          Label {
+            label: _("Home");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        styles [ "section-start" ]
+        selectable: false;
+        activatable: false;
+        child: Box {
+          Label {
+            label: _("Album");
+            xalign: 0;
+            hexpand: true;
+            margin-top: 12;
+            margin-bottom: 3;
+            margin-start: 12;
+            margin-end: 12;
+
+            styles [
+              "heading",
+            ]
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "library-album-symbolic";
+          }
+
+          Label {
+            label: _("All");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "media-playlist-shuffle-symbolic";
+          }
+
+          Label {
+            label: _("Random");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "starred-symbolic";
+          }
+
+          Label {
+            label: _("Favorites");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "list-add-symbolic";
+          }
+
+          Label {
+            label: _("Recently Added");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "document-open-recent-symbolic";
+          }
+
+          Label {
+            label: _("Recently Played");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "media-playlist-repeat-symbolic";
+          }
+
+          Label {
+            label: _("Most Played");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        styles [ "section-start" ]
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "audio-input-microphone-symbolic";
+          }
+
+          Label {
+            label: _("Artist");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            margin-end: 8;
+            icon-name: "library-music-symbolic";
+          }
+
+          Label {
+            label: _("Tracks");
+            xalign: 0;
+            hexpand: true;
+            margin-end: 2;
+          }
+        };
+      }
+
+      ListBoxRow {
+        styles [ "section-start" ]
+        selectable: false;
+        activatable: false;
+        child: Box {
+          Label {
+            label: _("Playlist");
+            xalign: 0;
+            hexpand: true;
+            margin-top: 12;
+            margin-bottom: 3;
+            margin-start: 12;
+            margin-end: 12;
+
+            styles [
+              "heading",
+            ]
+          }
+        };
+      }
+    }
+  }
+}

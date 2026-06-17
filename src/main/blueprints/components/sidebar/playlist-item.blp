@@ -1,0 +1,15 @@
+using Gtk 4.0;
+
+template $PlaylistItem: Gtk.ListBoxRow {
+  child: Gtk.Box {
+    Gtk.Image row_icon {
+      margin-end: 8;
+    }
+
+    Gtk.Label row_label {
+      hexpand: true;
+      xalign: 0;
+      margin-end: 2;
+    }
+  };
+}

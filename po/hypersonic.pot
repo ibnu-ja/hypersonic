@@ -8,18 +8,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 17:16+0700\n"
+"POT-Creation-Date: 2026-06-17 20:13+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/moe.seiga.Hypersonic.desktop.in:2
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:7
 #: src/main/blueprints/components/connection/welcome-page.blp:11
+#: src/main/blueprints/window.blp:98
 msgid "Hypersonic"
 msgstr ""
 
@@ -52,16 +53,61 @@ msgstr ""
 msgid "Server URL"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:32
+#: src/main/blueprints/components/connection/welcome-page.blp:34
 msgid "Username"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:36
+#: src/main/blueprints/components/connection/welcome-page.blp:40
 msgid "Password"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:46
+#: src/main/blueprints/components/connection/welcome-page.blp:51
 msgid "Connect"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:25
+#: src/main/blueprints/window.blp:69
+msgid "Home"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:39
+msgid "Album"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:62
+msgid "All"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:78
+msgid "Random"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:94
+msgid "Favorites"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:110
+msgid "Recently Added"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:126
+msgid "Recently Played"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:142
+msgid "Most Played"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:159
+msgid "Artist"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:175
+msgid "Tracks"
+msgstr ""
+
+#: src/main/blueprints/components/sidebar/sidebar.blp:189
+msgid "Playlist"
 msgstr ""
 
 #: src/main/blueprints/components/player/bar.blp:95
@@ -122,84 +168,78 @@ msgstr ""
 msgid "Slide"
 msgstr ""
 
-#: src/main/blueprints/window.blp:23 src/main/blueprints/window.blp:42
-msgid "Home"
+#: src/main/blueprints/window.blp:36
+msgid "Connecting…"
 msgstr ""
 
-#: src/main/blueprints/window.blp:32
-msgid "Background Tasks"
+#: src/main/blueprints/window.blp:37
+msgid "Connecting to your server"
 msgstr ""
 
-#: src/main/blueprints/window.blp:49
+#: src/main/blueprints/window.blp:76
 msgid "Menu"
 msgstr ""
 
-#: src/main/blueprints/window.blp:63
-msgid "Library"
-msgstr ""
-
-#: src/main/blueprints/window.blp:81 src/main/blueprints/window.blp:158
-#: src/main/blueprints/window.blp:162
-msgid "Recent"
-msgstr ""
-
-#: src/main/blueprints/window.blp:92 src/main/blueprints/window.blp:170
-#: src/main/blueprints/window.blp:174
-msgid "Albums"
-msgstr ""
-
-#: src/main/blueprints/window.blp:103 src/main/blueprints/window.blp:182
-#: src/main/blueprints/window.blp:186
-msgid "Artists"
-msgstr ""
-
-#: src/main/blueprints/window.blp:114 src/main/blueprints/window.blp:194
-#: src/main/blueprints/window.blp:198
-msgid "Folders"
-msgstr ""
-
-#: src/main/blueprints/window.blp:125 src/main/blueprints/window.blp:218
-#: src/main/blueprints/window.blp:222
-msgid "Playlists"
-msgstr ""
-
-#: src/main/blueprints/window.blp:136 src/main/blueprints/window.blp:230
-#: src/main/blueprints/window.blp:234
-msgid "Queue"
-msgstr ""
-
-#: src/main/blueprints/window.blp:150
+#: src/main/blueprints/window.blp:84
 msgid "Content"
 msgstr ""
 
-#: src/main/blueprints/window.blp:163
+#: src/main/blueprints/window.blp:93
+msgid "Show Sidebar"
+msgstr ""
+
+#: src/main/blueprints/window.blp:108 src/main/blueprints/window.blp:112
+msgid "Recent"
+msgstr ""
+
+#: src/main/blueprints/window.blp:113
 msgid "Recently played tracks"
 msgstr ""
 
-#: src/main/blueprints/window.blp:175
+#: src/main/blueprints/window.blp:119 src/main/blueprints/window.blp:123
+msgid "Albums"
+msgstr ""
+
+#: src/main/blueprints/window.blp:124
 msgid "Browse by album"
 msgstr ""
 
-#: src/main/blueprints/window.blp:187
+#: src/main/blueprints/window.blp:130 src/main/blueprints/window.blp:134
+msgid "Artists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:135
 msgid "Browse by artist"
 msgstr ""
 
-#: src/main/blueprints/window.blp:199
+#: src/main/blueprints/window.blp:141 src/main/blueprints/window.blp:145
+msgid "Folders"
+msgstr ""
+
+#: src/main/blueprints/window.blp:146
 msgid "Browse by folder"
 msgstr ""
 
-#: src/main/blueprints/window.blp:206 src/main/blueprints/window.blp:210
+#: src/main/blueprints/window.blp:152 src/main/blueprints/window.blp:156
 msgid "Dynamic Playlists"
 msgstr ""
 
-#: src/main/blueprints/window.blp:211
+#: src/main/blueprints/window.blp:157
 msgid "Auto-generated playlists"
 msgstr ""
 
-#: src/main/blueprints/window.blp:223
+#: src/main/blueprints/window.blp:163 src/main/blueprints/window.blp:167
+msgid "Playlists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:168
 msgid "Your custom playlists"
 msgstr ""
 
-#: src/main/blueprints/window.blp:235
+#: src/main/blueprints/window.blp:174 src/main/blueprints/window.blp:178
+msgid "Queue"
+msgstr ""
+
+#: src/main/blueprints/window.blp:179
 msgid "Upcoming tracks"
 msgstr ""
