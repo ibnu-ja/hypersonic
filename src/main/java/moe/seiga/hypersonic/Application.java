@@ -91,8 +91,8 @@ public class Application extends org.gnome.adw.Application {
             ServerConnection.INSTANCE.connect("http://demo.subsonic.org", "guest", "guest");
         }
         ServerConnection.INSTANCE.getApi().getRandomSongs(1).thenAccept(
-                randomSongsResponse -> {
-                    var song = new Song(randomSongsResponse.getRandomSongs().getSong().getFirst());
+                songs -> {
+                    var song = songs.getFirst();
                     player.playSong(song);
                     log.debug("Loaded song: {}", song.getTitle());
                 }

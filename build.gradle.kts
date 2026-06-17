@@ -5,6 +5,7 @@ plugins {
     id("io.freefair.lombok") version "9.0.0"
     id("com.gradleup.shadow") version "9.2.2"
     kotlin("jvm")
+    kotlin("plugin.lombok")
 
     id("moe.seiga.environment")
     id("moe.seiga.glib.buildtools")
@@ -19,7 +20,7 @@ val junitVersion = "5.10.0"
 val jacksonBomVersion = "2.21.1"
 val javaGiVersion = "1.0.0-RC1"
 val ktorVersion = "3.3.2"
-val subsonicApiVersion = "1.1.1"
+val subsonicClientVersion = "1.0.0-beta05"
 
 repositories {
     mavenCentral()
@@ -118,8 +119,8 @@ dependencies {
     implementation("org.java-gi:adw:${javaGiVersion}")
     implementation("org.java-gi:gdkpixbuf:${javaGiVersion}")
     implementation("org.java-gi:gstreamer:${javaGiVersion}")
-    // TODO: might consider dev.zt64.subsonic:subsonic-client (richer Song model, Open Subsonic)
-    implementation("ru.stersh:subsonic-api:${subsonicApiVersion}")
+    implementation("org.java-gi:secret:${javaGiVersion}")
+    implementation("dev.zt64.subsonic:subsonic-client:${subsonicClientVersion}")
     implementation("io.ktor:ktor-client-apache5:${ktorVersion}")
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.apache.logging.log4j:log4j-api")
