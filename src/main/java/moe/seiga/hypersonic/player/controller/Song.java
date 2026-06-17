@@ -29,12 +29,17 @@ public class Song extends GObject {
     @Setter
     private int duration;
 
+    @Getter
+    @Setter
+    private String coverArtId;
+
     public Song(ru.stersh.subsonic.api.model.Song song) {
         this.id = song.getId();
         this.title = song.getTitle();
         this.artist = song.getArtist();
         this.album = song.getAlbum();
         this.duration = Objects.requireNonNullElse(song.getDuration(), 0);
+        this.coverArtId = song.getCoverArt();
     }
 
     public String getUrl() {
