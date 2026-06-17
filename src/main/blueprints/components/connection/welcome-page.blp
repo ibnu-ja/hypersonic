@@ -26,14 +26,19 @@ template $WelcomePage: Box {
 
         Adw.EntryRow url_entry {
           title: _("Server URL");
+          input-purpose: url;
+          entry-activated => $on_connect();
         }
 
         Adw.EntryRow username_entry {
           title: _("Username");
+          input-purpose: free_form;
+          entry-activated => $on_connect();
         }
 
         Adw.PasswordEntryRow password_entry {
           title: _("Password");
+          input-purpose: password;
           entry-activated => $on_connect();
         }
       }

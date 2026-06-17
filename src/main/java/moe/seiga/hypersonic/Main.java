@@ -41,6 +41,13 @@ public class Main {
 
         Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALE_DIR);
         Intl.textdomain(Config.GETTEXT_PACKAGE);
+
+        // Load GResource first so templates can read from it
+        Resource resource = Resource.load(Config.RESOURCE_DIR + Config.RESOURCE_FILENAME);
+        if (resource != null) {
+            resource.resourcesRegister();
+        }
+
         // Register Template Classes
         TemplateTypes.register(Bar.class);
         TemplateTypes.register(PlaybackControls.class);
@@ -51,10 +58,6 @@ public class Main {
         Types.register(RepeatMode.class);
         Types.register(ConnectionState.class);
         Types.register(ServerState.class);
-
-        Resource resource = Resource.load(Config.RESOURCE_DIR + Config.RESOURCE_FILENAME);
-
-        resource.resourcesRegister();
 
         new Application().run(args);
     }

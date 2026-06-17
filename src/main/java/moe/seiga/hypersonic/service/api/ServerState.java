@@ -94,7 +94,7 @@ public class ServerState extends GObject {
     private void autoLogin() {
         new Thread(() -> {
             String password = passwordStore.lookup();
-            if (password == null) {
+            if (password == null || password.isBlank()) {
                 setConnectionState(ConnectionState.INVALID_CREDENTIALS);
                 return;
             }
@@ -111,9 +111,11 @@ public class ServerState extends GObject {
         } catch (ExecutionException e) {
             var cause = e.getCause();
             if (cause instanceof SSLHandshakeException) {
+                log.warn("SSL error: {}", cause.getMessage());
                 setConnectionState(ConnectionState.SSL_ERROR);
             } else {
                 String msg = cause != null ? cause.getMessage() : "";
+                log.warn("Ping failed: {}", msg, cause);
                 if (msg.contains("40") || msg.contains("41") || msg.contains("50")
                         || msg.contains("401") || msg.contains("403")) {
                     setConnectionState(ConnectionState.INVALID_CREDENTIALS);
@@ -122,9 +124,10 @@ public class ServerState extends GObject {
                 }
             }
         } catch (TimeoutException e) {
+            log.warn("Ping timed out");
             setConnectionState(ConnectionState.SERVER_UNREACHABLE);
         } catch (Exception e) {
-            log.error("Connection failed: {}", e.getMessage());
+            log.error("Connection failed: {}", e.getMessage(), e);
             setConnectionState(ConnectionState.SERVER_UNREACHABLE);
         }
     }

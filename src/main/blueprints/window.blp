@@ -6,246 +6,293 @@ template $Window: Adw.ApplicationWindow {
   default-height: 500;
   height-request: 640;
   width-request: 360;
-  // TODO: AdwBreakpoint children for responsive behavior
-  content: Box content {
-    halign: fill;
-    orientation: vertical;
 
-    Adw.ToastOverlay toast_overlay {
-      vexpand: true;
+  content: Gtk.WindowHandle {
+    child: Stack main_stack {
+      transition-duration: 200;
+      transition-type: crossfade;
 
-      Adw.OverlaySplitView split_view {
-        sidebar: Adw.NavigationPage {
-          styles [
-            "light-right-edge",
-          ]
+      StackPage {
+        name: "welcome";
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar {
+            show-title: false;
+          }
 
-          title: _("Home");
+          content: $WelcomePage welcome_page {};
+        };
+      }
 
-          child: Adw.ToolbarView {
-            [top]
-            Adw.HeaderBar {
-              [start]
-              // TODO: MenuButton with pending_tasks_popover
-              MenuButton pending_tasks_btn {
-                visible: false;
-                tooltip-text: _("Background Tasks");
+      StackPage {
+        name: "loading";
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar {
+            show-title: false;
+          }
 
-                child: Adw.Spinner {};
+          content: Adw.StatusPage {
+            title: _("Connecting…");
+            description: _("Connecting to your server");
 
-                styles [
-                  "flat",
-                ]
-              }
-
-              title-widget: Adw.WindowTitle title {
-                title: _("Home");
-              };
-
-              [end]
-              MenuButton menu_btn {
-                primary: true;
-                icon-name: "open-menu-symbolic";
-                tooltip-text: _("Menu");
-                // TODO: menu-model for primary_menu
-              }
-            }
-
-            // TODO: content should be EuphonicaSidebar widget
-            content: Box {
-              orientation: vertical;
-              spacing: 6;
-              margin-start: 12;
-              margin-end: 12;
-              margin-top: 12;
-
-              Label {
-                label: _("Library");
-                halign: start;
-
-                styles [
-                  "title-4",
-                ]
-              }
-
-              // TODO: port from EuphonicaSidebar buttons
-              ListBox {
-                selection-mode: none;
-
-                styles [
-                  "navigation-sidebar",
-                ]
-
-                ListBoxRow {
-                  child: Label {
-                    label: _("Recent");
-                    halign: start;
-                    margin-start: 6;
-                    margin-end: 6;
-                    margin-top: 6;
-                    margin-bottom: 6;
-                  };
-                }
-
-                ListBoxRow {
-                  child: Label {
-                    label: _("Albums");
-                    halign: start;
-                    margin-start: 6;
-                    margin-end: 6;
-                    margin-top: 6;
-                    margin-bottom: 6;
-                  };
-                }
-
-                ListBoxRow {
-                  child: Label {
-                    label: _("Artists");
-                    halign: start;
-                    margin-start: 6;
-                    margin-end: 6;
-                    margin-top: 6;
-                    margin-bottom: 6;
-                  };
-                }
-
-                ListBoxRow {
-                  child: Label {
-                    label: _("Folders");
-                    halign: start;
-                    margin-start: 6;
-                    margin-end: 6;
-                    margin-top: 6;
-                    margin-bottom: 6;
-                  };
-                }
-
-                ListBoxRow {
-                  child: Label {
-                    label: _("Playlists");
-                    halign: start;
-                    margin-start: 6;
-                    margin-end: 6;
-                    margin-top: 6;
-                    margin-bottom: 6;
-                  };
-                }
-
-                ListBoxRow {
-                  child: Label {
-                    label: _("Queue");
-                    halign: start;
-                    margin-start: 6;
-                    margin-end: 6;
-                    margin-top: 6;
-                    margin-bottom: 6;
-                  };
-                }
-              }
+            child: Gtk.Spinner {
+              spinning: true;
+              halign: center;
             };
           };
         };
-
-        content: Adw.NavigationPage {
-          title: _("Content");
-
-          child: Stack stack {
-            transition-duration: 200;
-            transition-type: slide_up_down;
-            // TODO: port from EuphonicaRecentView
-            StackPage {
-              name: "recent";
-              title: _("Recent");
-
-              child: Adw.StatusPage {
-                icon-name: "document-open-recent-symbolic";
-                title: _("Recent");
-                description: _("Recently played tracks");
-              };
-            }
-
-            // TODO: port from EuphonicaAlbumView
-            StackPage {
-              name: "albums";
-              title: _("Albums");
-
-              child: Adw.StatusPage {
-                icon-name: "media-optical-cd-audio-symbolic";
-                title: _("Albums");
-                description: _("Browse by album");
-              };
-            }
-
-            // TODO: port from EuphonicaArtistView
-            StackPage {
-              name: "artists";
-              title: _("Artists");
-
-              child: Adw.StatusPage {
-                icon-name: "avatar-default-symbolic";
-                title: _("Artists");
-                description: _("Browse by artist");
-              };
-            }
-
-            // TODO: port from EuphonicaFolderView
-            StackPage {
-              name: "folders";
-              title: _("Folders");
-
-              child: Adw.StatusPage {
-                icon-name: "folder-music-symbolic";
-                title: _("Folders");
-                description: _("Browse by folder");
-              };
-            }
-
-            // TODO: port from EuphonicaDynamicPlaylistView
-            StackPage {
-              name: "dynamic_playlists";
-              title: _("Dynamic Playlists");
-
-              child: Adw.StatusPage {
-                icon-name: "playlist-shuffle-symbolic";
-                title: _("Dynamic Playlists");
-                description: _("Auto-generated playlists");
-              };
-            }
-
-            // TODO: port from EuphonicaPlaylistView
-            StackPage {
-              name: "playlists";
-              title: _("Playlists");
-
-              child: Adw.StatusPage {
-                icon-name: "view-list-symbolic";
-                title: _("Playlists");
-                description: _("Your custom playlists");
-              };
-            }
-
-            // TODO: port from EuphonicaQueueView
-            StackPage {
-              name: "queue";
-              title: _("Queue");
-
-              child: Adw.StatusPage {
-                icon-name: "media-playlist-consecutive-symbolic";
-                title: _("Queue");
-                description: _("Upcoming tracks");
-              };
-            }
-          };
-        };
       }
-    }
 
-    Revealer player_bar_revealer {
-      hexpand: true;
-      reveal-child: true;
+    StackPage {
+      name: "content";
+      child: Box {
+        halign: fill;
+        orientation: vertical;
 
-      child: $PlayerBar player_bar {};
+        Adw.ToastOverlay {
+          vexpand: true;
+
+          Adw.OverlaySplitView {
+            sidebar: Adw.NavigationPage {
+              styles [
+                "light-right-edge",
+              ]
+
+              title: _("Home");
+
+              child: Adw.ToolbarView {
+                [top]
+                Adw.HeaderBar {
+                  [start]
+                  MenuButton pending_tasks_btn {
+                    visible: false;
+                    tooltip-text: _("Background Tasks");
+
+                    child: Adw.Spinner {};
+
+                    styles [
+                      "flat",
+                    ]
+                  }
+
+                  title-widget: Adw.WindowTitle title {
+                    title: _("Home");
+                  };
+
+                  [end]
+                  MenuButton menu_btn {
+                    primary: true;
+                    icon-name: "open-menu-symbolic";
+                    tooltip-text: _("Menu");
+                  }
+                }
+
+                content: Box {
+                  orientation: vertical;
+                  spacing: 6;
+                  margin-start: 12;
+                  margin-end: 12;
+                  margin-top: 12;
+
+                  Label {
+                    label: _("Library");
+                    halign: start;
+
+                    styles [
+                      "title-4",
+                    ]
+                  }
+
+                  ListBox {
+                    selection-mode: none;
+                    styles [
+                      "navigation-sidebar",
+                    ]
+
+                    ListBoxRow {
+                      child: Label {
+                        label: _("Recent");
+                        halign: start;
+                        margin-start: 6;
+                        margin-end: 6;
+                        margin-top: 6;
+                        margin-bottom: 6;
+                      };
+                    }
+
+                    ListBoxRow {
+                      child: Label {
+                        label: _("Albums");
+                        halign: start;
+                        margin-start: 6;
+                        margin-end: 6;
+                        margin-top: 6;
+                        margin-bottom: 6;
+                      };
+                    }
+
+                    ListBoxRow {
+                      child: Label {
+                        label: _("Artists");
+                        halign: start;
+                        margin-start: 6;
+                        margin-end: 6;
+                        margin-top: 6;
+                        margin-bottom: 6;
+                      };
+                    }
+
+                    ListBoxRow {
+                      child: Label {
+                        label: _("Folders");
+                        halign: start;
+                        margin-start: 6;
+                        margin-end: 6;
+                        margin-top: 6;
+                        margin-bottom: 6;
+                      };
+                    }
+
+                    ListBoxRow {
+                      child: Label {
+                        label: _("Playlists");
+                        halign: start;
+                        margin-start: 6;
+                        margin-end: 6;
+                        margin-top: 6;
+                        margin-bottom: 6;
+                      };
+                    }
+
+                    ListBoxRow {
+                      child: Label {
+                        label: _("Queue");
+                        halign: start;
+                        margin-start: 6;
+                        margin-end: 6;
+                        margin-top: 6;
+                        margin-bottom: 6;
+                      };
+                    }
+                  }
+                };
+              };
+            };
+
+            content: Adw.NavigationPage {
+              title: _("Content");
+
+              child: Adw.ToolbarView {
+                [top]
+                Adw.HeaderBar {
+                  [start]
+                  MenuButton main_menu_btn {
+                    primary: true;
+                    icon-name: "open-menu-symbolic";
+                    tooltip-text: _("Menu");
+                  }
+
+                  title-widget: Adw.WindowTitle content_title {
+                    title: _("Hypersonic");
+                  };
+                }
+
+                content: Stack stack {
+                  transition-duration: 200;
+                transition-type: slide_up_down;
+
+                StackPage {
+                  name: "recent";
+                  title: _("Recent");
+
+                  child: Adw.StatusPage {
+                    icon-name: "document-open-recent-symbolic";
+                    title: _("Recent");
+                    description: _("Recently played tracks");
+                  };
+                }
+
+                StackPage {
+                  name: "albums";
+                  title: _("Albums");
+
+                  child: Adw.StatusPage {
+                    icon-name: "media-optical-cd-audio-symbolic";
+                    title: _("Albums");
+                    description: _("Browse by album");
+                  };
+                }
+
+                StackPage {
+                  name: "artists";
+                  title: _("Artists");
+
+                  child: Adw.StatusPage {
+                    icon-name: "avatar-default-symbolic";
+                    title: _("Artists");
+                    description: _("Browse by artist");
+                  };
+                }
+
+                StackPage {
+                  name: "folders";
+                  title: _("Folders");
+
+                  child: Adw.StatusPage {
+                    icon-name: "folder-music-symbolic";
+                    title: _("Folders");
+                    description: _("Browse by folder");
+                  };
+                }
+
+                StackPage {
+                  name: "dynamic_playlists";
+                  title: _("Dynamic Playlists");
+
+                  child: Adw.StatusPage {
+                    icon-name: "playlist-shuffle-symbolic";
+                    title: _("Dynamic Playlists");
+                    description: _("Auto-generated playlists");
+                  };
+                }
+
+                StackPage {
+                  name: "playlists";
+                  title: _("Playlists");
+
+                  child: Adw.StatusPage {
+                    icon-name: "view-list-symbolic";
+                    title: _("Playlists");
+                    description: _("Your custom playlists");
+                  };
+                }
+
+                StackPage {
+                  name: "queue";
+                  title: _("Queue");
+
+                  child: Adw.StatusPage {
+                    icon-name: "media-playlist-consecutive-symbolic";
+                    title: _("Queue");
+                    description: _("Upcoming tracks");
+                  };
+                }
+              };
+            };
+          };
+          }
+        }
+
+        Revealer player_bar_revealer {
+          hexpand: true;
+          reveal-child: true;
+
+          child: $PlayerBar player_bar {};
+        }
+      };
     }
+  };
   };
 }
 
