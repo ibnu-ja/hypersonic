@@ -41,7 +41,7 @@ public class SettingWindow extends PreferencesDialog {
 
     public SettingWindow() {
         super();
-        settings = new org.gnome.gio.Settings("io.ibnuja.Hypersonic");
+        settings = new org.gnome.gio.Settings("moe.seiga.Hypersonic");
     }
 
     @InstanceInit
