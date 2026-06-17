@@ -7,8 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import moe.seiga.hypersonic.navigation.settings.SettingWindow;
 import moe.seiga.hypersonic.player.controller.Player;
 import moe.seiga.hypersonic.player.controller.Song;
-import moe.seiga.hypersonic.service.api.ConnectionState;
-import moe.seiga.hypersonic.service.audio.GstBackend;
+import moe.seiga.hypersonic.service.api.ServerConnection;
 import org.gnome.gdk.Display;
 import org.gnome.gio.ApplicationFlags;
 import org.gnome.gio.File;
@@ -88,10 +87,10 @@ public class Application extends org.gnome.adw.Application {
 
         this.player = new Player();
 
-        if (!ConnectionState.INSTANCE.isConnected()) {
-            ConnectionState.INSTANCE.connect("http://demo.subsonic.org", "guest", "guest");
+        if (!ServerConnection.INSTANCE.isConnected()) {
+            ServerConnection.INSTANCE.connect("http://demo.subsonic.org", "guest", "guest");
         }
-        ConnectionState.INSTANCE.getApi().getRandomSongs(1).thenAccept(
+        ServerConnection.INSTANCE.getApi().getRandomSongs(1).thenAccept(
                 randomSongsResponse -> {
                     var song = new Song(randomSongsResponse.getRandomSongs().getSong().getFirst());
                     player.playSong(song);

@@ -6,6 +6,8 @@ import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.player.PlaybackControls;
 import moe.seiga.hypersonic.player.Seekbar;
 import moe.seiga.hypersonic.player.controller.PlaybackState;
+import moe.seiga.hypersonic.player.controller.RepeatMode;
+import moe.seiga.hypersonic.service.api.ConnectionState;
 import org.freedesktop.gstreamer.gst.Gst;
 import org.gnome.gdkpixbuf.Pixbuf;
 import org.gnome.gio.Resource;
@@ -43,6 +45,8 @@ public class Main {
         TemplateTypes.register(Seekbar.class);
 
         Types.register(PlaybackState.class);
+        Types.register(RepeatMode.class);
+        Types.register(ConnectionState.class);
 
         Resource resource = Resource.load(Config.RESOURCE_DIR + Config.RESOURCE_FILENAME);
 

@@ -7,7 +7,7 @@ import ru.stersh.subsonic.api.SubsonicApi as RawSubsonicApi
 import java.lang.IllegalStateException
 
 @Suppress("unused")
-object ConnectionState {
+object ServerConnection {
     private var client: HttpClient? = null
     private var _api: SubsonicApi? = null
 

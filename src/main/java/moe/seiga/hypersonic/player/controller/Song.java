@@ -3,7 +3,7 @@ package moe.seiga.hypersonic.player.controller;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import moe.seiga.hypersonic.service.api.ConnectionState;
+import moe.seiga.hypersonic.service.api.ServerConnection;
 import org.gnome.gobject.GObject;
 import org.javagi.gobject.annotations.RegisteredType;
 
@@ -40,7 +40,7 @@ public class Song extends GObject {
     public String getUrl() {
         if (id == null) return null;
 
-        return ConnectionState.INSTANCE.getApi().streamUrl(id);
+        return ServerConnection.INSTANCE.getApi().streamUrl(id);
     }
 }
 
