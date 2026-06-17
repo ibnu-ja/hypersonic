@@ -20,7 +20,7 @@ template $Window: Adw.ApplicationWindow {
             "light-right-edge",
           ]
 
-          title: "Home";
+          title: _("Home");
 
           child: Adw.ToolbarView {
             [top]
@@ -29,7 +29,7 @@ template $Window: Adw.ApplicationWindow {
               // TODO: MenuButton with pending_tasks_popover
               MenuButton pending_tasks_btn {
                 visible: false;
-                tooltip-text: "Background Tasks";
+                tooltip-text: _("Background Tasks");
 
                 child: Adw.Spinner {};
 
@@ -60,7 +60,7 @@ template $Window: Adw.ApplicationWindow {
               margin-top: 12;
 
               Label {
-                label: "Library";
+                label: _("Library");
                 halign: start;
 
                 styles [
@@ -78,7 +78,7 @@ template $Window: Adw.ApplicationWindow {
 
                 ListBoxRow {
                   child: Label {
-                    label: "Recent";
+                    label: _("Recent");
                     halign: start;
                     margin-start: 6;
                     margin-end: 6;
@@ -89,7 +89,7 @@ template $Window: Adw.ApplicationWindow {
 
                 ListBoxRow {
                   child: Label {
-                    label: "Albums";
+                    label: _("Albums");
                     halign: start;
                     margin-start: 6;
                     margin-end: 6;
@@ -100,7 +100,7 @@ template $Window: Adw.ApplicationWindow {
 
                 ListBoxRow {
                   child: Label {
-                    label: "Artists";
+                    label: _("Artists");
                     halign: start;
                     margin-start: 6;
                     margin-end: 6;
@@ -111,7 +111,7 @@ template $Window: Adw.ApplicationWindow {
 
                 ListBoxRow {
                   child: Label {
-                    label: "Folders";
+                    label: _("Folders");
                     halign: start;
                     margin-start: 6;
                     margin-end: 6;
@@ -122,7 +122,7 @@ template $Window: Adw.ApplicationWindow {
 
                 ListBoxRow {
                   child: Label {
-                    label: "Playlists";
+                    label: _("Playlists");
                     halign: start;
                     margin-start: 6;
                     margin-end: 6;
@@ -133,7 +133,7 @@ template $Window: Adw.ApplicationWindow {
 
                 ListBoxRow {
                   child: Label {
-                    label: "Queue";
+                    label: _("Queue");
                     halign: start;
                     margin-start: 6;
                     margin-end: 6;
@@ -159,8 +159,8 @@ template $Window: Adw.ApplicationWindow {
 
               child: Adw.StatusPage {
                 icon-name: "document-open-recent-symbolic";
-                title: "Recent";
-                description: "Recently played tracks";
+                title: _("Recent");
+                description: _("Recently played tracks");
               };
             }
 
@@ -171,8 +171,8 @@ template $Window: Adw.ApplicationWindow {
 
               child: Adw.StatusPage {
                 icon-name: "media-optical-cd-audio-symbolic";
-                title: "Albums";
-                description: "Browse by album";
+                title: _("Albums");
+                description: _("Browse by album");
               };
             }
 
@@ -183,8 +183,8 @@ template $Window: Adw.ApplicationWindow {
 
               child: Adw.StatusPage {
                 icon-name: "avatar-default-symbolic";
-                title: "Artists";
-                description: "Browse by artist";
+                title: _("Artists");
+                description: _("Browse by artist");
               };
             }
 
@@ -195,8 +195,8 @@ template $Window: Adw.ApplicationWindow {
 
               child: Adw.StatusPage {
                 icon-name: "folder-music-symbolic";
-                title: "Folders";
-                description: "Browse by folder";
+                title: _("Folders");
+                description: _("Browse by folder");
               };
             }
 
@@ -207,8 +207,8 @@ template $Window: Adw.ApplicationWindow {
 
               child: Adw.StatusPage {
                 icon-name: "playlist-shuffle-symbolic";
-                title: "Dynamic Playlists";
-                description: "Auto-generated playlists";
+                title: _("Dynamic Playlists");
+                description: _("Auto-generated playlists");
               };
             }
 
@@ -219,8 +219,8 @@ template $Window: Adw.ApplicationWindow {
 
               child: Adw.StatusPage {
                 icon-name: "view-list-symbolic";
-                title: "Playlists";
-                description: "Your custom playlists";
+                title: _("Playlists");
+                description: _("Your custom playlists");
               };
             }
 
@@ -231,8 +231,8 @@ template $Window: Adw.ApplicationWindow {
 
               child: Adw.StatusPage {
                 icon-name: "media-playlist-consecutive-symbolic";
-                title: "Queue";
-                description: "Upcoming tracks";
+                title: _("Queue");
+                description: _("Upcoming tracks");
               };
             }
           };

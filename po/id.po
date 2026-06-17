@@ -25,5 +25,72 @@ msgstr ""
 msgid "A caption"
 msgstr ""
 
-#~ msgid "Home"
-#~ msgstr "Beranda"
+#: src/main/blueprints/components/settings/settings.blp:5
+msgid "Preferences"
+msgstr ""
+
+#: src/main/blueprints/components/settings/settings.blp:9
+msgid "General"
+msgstr ""
+
+#: src/main/blueprints/components/settings/settings.blp:12
+#: src/main/blueprints/components/settings/settings.blp:15
+msgid "Font"
+msgstr ""
+
+#: src/main/blueprints/components/settings/settings.blp:25
+#: src/main/blueprints/components/settings/settings.blp:28
+msgid "Transition"
+msgstr ""
+
+#: src/main/blueprints/components/settings/settings.blp:32
+msgid "None"
+msgstr ""
+
+#: src/main/blueprints/components/settings/settings.blp:33
+msgid "Fade"
+msgstr ""
+
+#: src/main/blueprints/components/settings/settings.blp:34
+msgid "Slide"
+msgstr ""
+
+#: src/main/blueprints/window.blp:42
+msgid "Home"
+msgstr "Beranda"
+
+#: src/main/blueprints/window.blp:49
+msgid "Menu"
+msgstr ""
+
+#: src/main/blueprints/window.blp:150
+msgid "Content"
+msgstr "Konten"
+
+#: src/main/blueprints/window.blp:158
+msgid "Recent"
+msgstr "Terakhir dibuka"
+
+#: src/main/blueprints/window.blp:170
+msgid "Albums"
+msgstr ""
+
+#: src/main/blueprints/window.blp:182
+msgid "Artists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:194
+msgid "Folders"
+msgstr ""
+
+#: src/main/blueprints/window.blp:206
+msgid "Dynamic Playlists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:218
+msgid "Playlists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:230
+msgid "Queue"
+msgstr ""
