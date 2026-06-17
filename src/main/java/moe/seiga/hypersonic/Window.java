@@ -16,26 +16,30 @@ import org.javagi.gtk.annotations.GtkTemplate;
 @Slf4j
 public class Window extends ApplicationWindow {
 
-    public Settings settings;
+    private Settings settings;
+
+    public Settings getAppSettings() {
+        return settings;
+    }
 
     @GtkChild(name = "player_bar")
     public Bar playerBar;
 
     public Window(Application app) {
-        log.trace("MainWindow constructor");
+        super();
         setApplication(app);
-        playerBar.setup(app.player);
-    }
-
-    @InstanceInit
-    @SuppressWarnings("unused")
-    public void init() {
-        log.trace("MainWindow init");
-        settings = new Settings("moe.seiga.Hypersonic");
+        settings = app.getSettings();
 
         settings.bind("window-width", this, "default-width", SettingsBindFlags.DEFAULT);
         settings.bind("window-height", this, "default-height", SettingsBindFlags.DEFAULT);
         settings.bind("is-maximized", this, "maximized", SettingsBindFlags.DEFAULT);
         settings.bind("is-fullscreen", this, "fullscreened", SettingsBindFlags.DEFAULT);
+
+        playerBar.setup(app.getPlayer());
+    }
+
+    @InstanceInit
+    @SuppressWarnings("unused")
+    public void init() {
     }
 }

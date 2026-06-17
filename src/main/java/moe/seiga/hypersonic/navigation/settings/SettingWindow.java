@@ -1,5 +1,6 @@
 package moe.seiga.hypersonic.navigation.settings;
 
+import org.gnome.gio.Settings;
 import org.javagi.gobject.annotations.InstanceInit;
 import org.javagi.gtk.annotations.GtkChild;
 import org.javagi.gtk.annotations.GtkTemplate;
@@ -31,7 +32,11 @@ public class SettingWindow extends PreferencesDialog {
     @GtkChild(name = "transition")
     ComboRow transition;
 
-    org.gnome.gio.Settings settings;
+    private Settings settings;
+
+    public Settings getAppSettings() {
+        return settings;
+    }
 
     private static final List<String> TRANSITION_IDS = Arrays.asList(
             "none",
@@ -39,9 +44,9 @@ public class SettingWindow extends PreferencesDialog {
             "slide-left-right"
     );
 
-    public SettingWindow() {
+    public SettingWindow(Settings settings) {
         super();
-        settings = new org.gnome.gio.Settings("moe.seiga.Hypersonic");
+        this.settings = settings;
     }
 
     @InstanceInit

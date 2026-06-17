@@ -15,7 +15,7 @@ class SubsonicApi(private val client: SubsonicClient) : AutoCloseable {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    fun ping(): CompletableFuture<Unit> = scope.future { client.ping() }
+    fun ping(): CompletableFuture<*> = scope.future { client.ping() }
 
     fun getSong(id: String): CompletableFuture<Song> = scope.future {
         client.getSong(id).toSong()
@@ -58,6 +58,7 @@ class SubsonicApi(private val client: SubsonicClient) : AutoCloseable {
     }
 
     companion object {
+        @JvmStatic
         fun create(baseUrl: String, username: String, password: String): SubsonicApi {
             val client = SubsonicClient(
                 baseUrl = baseUrl,

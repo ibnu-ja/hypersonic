@@ -7,17 +7,14 @@ object ServerConnection {
     private var _api: SubsonicApi? = null
 
     val api: SubsonicApi
-        get() = _api ?: throw IllegalStateException("Subsonic API is not connected. Call connect() first.")
+        get() = _api ?: throw IllegalStateException("Subsonic API is not connected")
 
-    val isConnected: Boolean
-        get() = _api != null
-
-    fun connect(url: String, user: String, pass: String) {
+    fun setApi(subsonicApi: SubsonicApi) {
         _api?.close()
-        _api = SubsonicApi.create(url, user, pass)
+        _api = subsonicApi
     }
 
-    fun disconnect() {
+    fun clear() {
         _api?.close()
         _api = null
     }

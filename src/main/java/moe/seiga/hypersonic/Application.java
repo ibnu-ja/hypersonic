@@ -4,13 +4,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import moe.seiga.Config;
 import moe.seiga.hypersonic.navigation.settings.SettingWindow;
 import moe.seiga.hypersonic.player.controller.Player;
-import moe.seiga.hypersonic.player.controller.Song;
-import moe.seiga.hypersonic.service.api.ServerConnection;
+import moe.seiga.hypersonic.service.api.ServerState;
 import org.gnome.gdk.Display;
 import org.gnome.gio.ApplicationFlags;
 import org.gnome.gio.File;
+import org.gnome.gio.Settings;
 import org.gnome.gio.SimpleAction;
 import org.gnome.glib.Variant;
 import org.gnome.gtk.IconTheme;
@@ -23,7 +24,13 @@ import java.util.List;
 public class Application extends org.gnome.adw.Application {
 
     @Getter
-    public Player player;
+    private Settings settings;
+
+    @Getter
+    private Player player;
+
+    @Getter
+    private ServerState serverState;
 
     @Override
     public void activate() {
@@ -56,7 +63,7 @@ public class Application extends org.gnome.adw.Application {
 
     public void preferencesActivated(Variant parameter) {
         Window win = (Window) getActiveWindow();
-        SettingWindow settingWindow = new SettingWindow();
+        SettingWindow settingWindow = new SettingWindow(settings);
         settingWindow.present(win);
     }
 
@@ -81,24 +88,12 @@ public class Application extends org.gnome.adw.Application {
     }
 
     public Application() {
-        setApplicationId("moe.seiga.Hypersonic");
+        setApplicationId(Config.APPLICATION_ID);
         setFlags(ApplicationFlags.HANDLES_OPEN);
         setResourceBasePath("/moe/seiga/Hypersonic");
 
+        this.settings = new Settings(Config.APPLICATION_ID);
         this.player = new Player();
-
-        if (!ServerConnection.INSTANCE.isConnected()) {
-            ServerConnection.INSTANCE.connect("http://demo.subsonic.org", "guest", "guest");
-        }
-        ServerConnection.INSTANCE.getApi().getRandomSongs(1).thenAccept(
-                songs -> {
-                    var song = songs.getFirst();
-                    player.playSong(song);
-                    log.debug("Loaded song: {}", song.getTitle());
-                }
-        ).exceptionally(throwable -> {
-            log.error("Error loading songs:", throwable);
-            return null;
-        });
+        this.serverState = new ServerState(settings);
     }
 }
