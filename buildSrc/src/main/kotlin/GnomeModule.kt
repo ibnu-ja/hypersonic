@@ -93,6 +93,17 @@ internal fun registerGnomeTasks(project: Project, env: EnvironmentExtension, gno
             this.executeCommand(env, *args.toTypedArray())
 
             inputs.file(project.file(rc.xml))
+            // Track all .ui files in source directories
+            val uiDirs = mutableListOf(project.file(xmlDir))
+            uiDirs.addAll(rc.sourceDirs.map { project.file(it) })
+            if (dependsOnBlueprints) {
+                uiDirs.add(project.file(gnome.blueprintConfig!!.outputDir))
+            }
+            uiDirs.forEach { dir ->
+                if (dir.exists()) {
+                    inputs.dir(dir)
+                }
+            }
             outputs.file(project.file(gresourceOutputPath))
         }
 
