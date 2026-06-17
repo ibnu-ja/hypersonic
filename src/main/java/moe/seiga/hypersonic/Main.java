@@ -2,6 +2,7 @@ package moe.seiga.hypersonic;
 
 import lombok.extern.slf4j.Slf4j;
 import moe.seiga.Config;
+import moe.seiga.hypersonic.navigation.connection.WelcomePage;
 import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.player.PlaybackControls;
 import moe.seiga.hypersonic.player.Seekbar;
@@ -44,6 +45,7 @@ public class Main {
         TemplateTypes.register(Bar.class);
         TemplateTypes.register(PlaybackControls.class);
         TemplateTypes.register(Seekbar.class);
+        TemplateTypes.register(WelcomePage.class);
 
         Types.register(PlaybackState.class);
         Types.register(RepeatMode.class);

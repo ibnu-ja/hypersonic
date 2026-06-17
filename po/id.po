@@ -1,5 +1,6 @@
 #: data/moe.seiga.Hypersonic.desktop.in:2
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:7
+#: src/main/blueprints/components/connection/welcome-page.blp:11
 #, fuzzy
 msgid "Hypersonic"
 msgstr "Selamat datang di Hypersonic!"
@@ -23,6 +24,54 @@ msgstr ""
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:52
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:56
 msgid "A caption"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:12
+msgid "Connect to your Subsonic-compatible server"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:28
+msgid "Server URL"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:32
+msgid "Username"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:36
+msgid "Password"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:46
+msgid "Connect"
+msgstr ""
+
+#: src/main/blueprints/components/player/bar.blp:95
+msgid "Volume"
+msgstr ""
+
+#: src/main/blueprints/components/player/bar.blp:106
+msgid "More Options"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:12
+msgid "Repeat Mode"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:23
+msgid "Previous"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:34
+msgid "Play"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:45
+msgid "Next"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:57
+msgid "Shuffle Queue"
 msgstr ""
 
 #: src/main/blueprints/components/settings/settings.blp:5
@@ -135,32 +184,4 @@ msgstr ""
 
 #: src/main/blueprints/window.blp:235
 msgid "Upcoming tracks"
-msgstr ""
-
-#: src/main/blueprints/components/player/bar.blp:95
-msgid "Volume"
-msgstr ""
-
-#: src/main/blueprints/components/player/bar.blp:106
-msgid "More Options"
-msgstr ""
-
-#: src/main/blueprints/components/player/playback-controls.blp:12
-msgid "Repeat Mode"
-msgstr ""
-
-#: src/main/blueprints/components/player/playback-controls.blp:23
-msgid "Previous"
-msgstr ""
-
-#: src/main/blueprints/components/player/playback-controls.blp:34
-msgid "Play"
-msgstr ""
-
-#: src/main/blueprints/components/player/playback-controls.blp:45
-msgid "Next"
-msgstr ""
-
-#: src/main/blueprints/components/player/playback-controls.blp:57
-msgid "Shuffle Queue"
 msgstr ""

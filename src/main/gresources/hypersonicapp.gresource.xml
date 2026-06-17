@@ -7,6 +7,7 @@
         <file preprocess="xml-stripblanks">components/player/playback-controls.ui</file>
         <file preprocess="xml-stripblanks">components/player/seekbar.ui</file>
         <file preprocess="xml-stripblanks">components/settings/settings.ui</file>
+        <file preprocess="xml-stripblanks">components/connection/welcome-page.ui</file>
         <!--pages-->
     </gresource>
 </gresources>

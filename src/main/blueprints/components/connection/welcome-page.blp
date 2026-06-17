@@ -1,0 +1,57 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $WelcomePage: Box {
+  hexpand: true;
+  vexpand: true;
+  orientation: vertical;
+
+  Adw.StatusPage {
+    icon-name: "network-server-symbolic";
+    title: _("Hypersonic");
+    description: _("Connect to your Subsonic-compatible server");
+
+    child: Gtk.Box {
+      spacing: 20;
+      orientation: vertical;
+      halign: center;
+      width-request: 360;
+
+      Gtk.ListBox {
+        styles [
+          "boxed-list"
+        ]
+        hexpand: true;
+        selection-mode: none;
+
+        Adw.EntryRow url_entry {
+          title: _("Server URL");
+        }
+
+        Adw.EntryRow username_entry {
+          title: _("Username");
+        }
+
+        Adw.PasswordEntryRow password_entry {
+          title: _("Password");
+          entry-activated => $on_connect();
+        }
+      }
+
+      Gtk.Button connect_button {
+        styles [
+          "suggested-action",
+          "pill"
+        ]
+        label: _("Connect");
+        clicked => $on_connect();
+        halign: center;
+      }
+
+      Gtk.Spinner spinner {
+        halign: center;
+        visible: false;
+      }
+    };
+  }
+}
