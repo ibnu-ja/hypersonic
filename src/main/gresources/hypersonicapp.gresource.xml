@@ -10,6 +10,9 @@
         <file preprocess="xml-stripblanks">components/connection/welcome-page.ui</file>
         <file preprocess="xml-stripblanks">components/sidebar/playlist-item.ui</file>
         <file preprocess="xml-stripblanks">components/sidebar/sidebar.ui</file>
+        <!--icons-->
+        <file>icons/scalable/actions/library-album-symbolic.svg</file>
+        <file>icons/scalable/actions/library-music-symbolic.svg</file>
         <!--pages-->
     </gresource>
 </gresources>

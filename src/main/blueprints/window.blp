@@ -66,7 +66,7 @@ template $Window: Adw.ApplicationWindow {
               [top]
               Adw.HeaderBar {
                 title-widget: Adw.WindowTitle title {
-                  title: _("Home");
+                  title: _("Hypersonic");
                 };
 
                 [end]
@@ -99,84 +99,106 @@ template $Window: Adw.ApplicationWindow {
                   };
                 }
 
-                content: Stack stack {
+                content: Stack content_stack {
                   transition-duration: 200;
                 transition-type: slide_up_down;
 
                 StackPage {
-                  name: "recent";
-                  title: _("Recent");
+                  name: "home";
+                  title: _("Home");
+
+                  child: Adw.StatusPage {
+                    icon-name: "go-home-symbolic";
+                    title: _("Home");
+                    description: _("Welcome");
+                  };
+                }
+
+                StackPage {
+                  name: "all";
+                  title: _("All");
+
+                  child: Adw.StatusPage {
+                    icon-name: "media-optical-cd-audio-symbolic";
+                    title: _("All");
+                    description: _("Browse all albums");
+                  };
+                }
+
+                StackPage {
+                  name: "random";
+                  title: _("Random");
+
+                  child: Adw.StatusPage {
+                    icon-name: "media-playlist-shuffle-symbolic";
+                    title: _("Random");
+                    description: _("Random songs");
+                  };
+                }
+
+                StackPage {
+                  name: "favorites";
+                  title: _("Favorites");
+
+                  child: Adw.StatusPage {
+                    icon-name: "starred-symbolic";
+                    title: _("Favorites");
+                    description: _("Your favorite tracks");
+                  };
+                }
+
+                StackPage {
+                  name: "recently-added";
+                  title: _("Recently Added");
+
+                  child: Adw.StatusPage {
+                    icon-name: "list-add-symbolic";
+                    title: _("Recently Added");
+                    description: _("Recently added tracks");
+                  };
+                }
+
+                StackPage {
+                  name: "recently-played";
+                  title: _("Recently Played");
 
                   child: Adw.StatusPage {
                     icon-name: "document-open-recent-symbolic";
-                    title: _("Recent");
+                    title: _("Recently Played");
                     description: _("Recently played tracks");
                   };
                 }
 
                 StackPage {
-                  name: "albums";
-                  title: _("Albums");
+                  name: "most-played";
+                  title: _("Most Played");
 
                   child: Adw.StatusPage {
-                    icon-name: "media-optical-cd-audio-symbolic";
-                    title: _("Albums");
-                    description: _("Browse by album");
+                    icon-name: "media-playlist-repeat-symbolic";
+                    title: _("Most Played");
+                    description: _("Your most played tracks");
                   };
                 }
 
                 StackPage {
-                  name: "artists";
-                  title: _("Artists");
+                  name: "artist";
+                  title: _("Artist");
 
                   child: Adw.StatusPage {
                     icon-name: "avatar-default-symbolic";
-                    title: _("Artists");
+                    title: _("Artist");
                     description: _("Browse by artist");
                   };
                 }
 
                 StackPage {
-                  name: "folders";
-                  title: _("Folders");
+                  name: "tracks";
+                  title: _("Tracks");
 
                   child: Adw.StatusPage {
-                    icon-name: "folder-music-symbolic";
-                    title: _("Folders");
-                    description: _("Browse by folder");
-                  };
-                }
-
-                StackPage {
-                  name: "dynamic_playlists";
-                  title: _("Dynamic Playlists");
-
-                  child: Adw.StatusPage {
-                    icon-name: "playlist-shuffle-symbolic";
-                    title: _("Dynamic Playlists");
-                    description: _("Auto-generated playlists");
-                  };
-                }
-
-                StackPage {
-                  name: "playlists";
-                  title: _("Playlists");
-
-                  child: Adw.StatusPage {
-                    icon-name: "view-list-symbolic";
-                    title: _("Playlists");
-                    description: _("Your custom playlists");
-                  };
-                }
-
-                StackPage {
-                  name: "queue";
-                  title: _("Queue");
-
-                  child: Adw.StatusPage {
-                    icon-name: "media-playlist-consecutive-symbolic";
-                    title: _("Queue");
-                    description: _("Upcoming tracks");
+                    icon-name: "library-music-symbolic";
+                    title: _("Tracks");
+                    description: _("All tracks");
                   };
                 }
               };

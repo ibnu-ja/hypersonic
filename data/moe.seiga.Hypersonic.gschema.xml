@@ -19,5 +19,8 @@
         <key name="is-fullscreen" type="b">
             <default>false</default>
         </key>
+        <key name="last-page" type="s">
+            <default>'home'</default>
+        </key>
 	</schema>
 </schemalist>

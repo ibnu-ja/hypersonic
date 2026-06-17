@@ -93,8 +93,6 @@ glibBuildTools {
 
         icon("data/icons/hicolor/scalable/apps/moe.seiga.Hypersonic.svg")
         icon("data/icons/hicolor/symbolic/apps/moe.seiga.Hypersonic-symbolic.svg")
-        icon("data/icons/hicolor/scalable/actions/library-album-symbolic.svg")
-        icon("data/icons/hicolor/scalable/actions/library-music-symbolic.svg")
     }
 }
 

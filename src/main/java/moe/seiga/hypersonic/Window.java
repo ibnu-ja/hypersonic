@@ -8,9 +8,12 @@ import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.service.api.ConnectionState;
 import moe.seiga.hypersonic.service.api.ServerState;
 import org.gnome.adw.ApplicationWindow;
+import org.gnome.adw.WindowTitle;
 import org.gnome.gio.Settings;
 import org.gnome.gio.SettingsBindFlags;
 import org.gnome.glib.GLib;
+import org.gnome.gtk.Label;
+import org.gnome.gtk.ListBoxRow;
 import org.gnome.gtk.Stack;
 import org.javagi.gobject.annotations.InstanceInit;
 import org.javagi.gtk.annotations.GtkChild;
@@ -34,6 +37,12 @@ public class Window extends ApplicationWindow {
 
     @GtkChild(name = "sidebar")
     public Sidebar sidebar;
+
+    @GtkChild(name = "content_stack")
+    public Stack contentStack;
+
+    @GtkChild(name = "content_title")
+    public WindowTitle contentTitle;
 
     @GtkChild(name = "player_bar")
     public Bar playerBar;
@@ -59,6 +68,20 @@ public class Window extends ApplicationWindow {
         var ss = app.getServerState();
         welcomePage.setup(ss);
 
+        sidebar.sidebar_list.connect("selected-rows-changed", (Runnable) () -> {
+            var row = sidebar.sidebar_list.getSelectedRow();
+            if (row == null) return;
+            var label = findLabel(row);
+            if (label != null) {
+                var pageName = mapSidebarToPage(label);
+                if (pageName != null) {
+                    contentStack.setVisibleChildName(pageName);
+                    contentTitle.setTitle(label);
+                    settings.setString("last-page", pageName);
+                }
+            }
+        });
+
         ss.onNotify("connection-state", pspec -> {
             var state = ss.getConnectionState();
             switch (state) {
@@ -69,6 +92,11 @@ public class Window extends ApplicationWindow {
                     mainStack.setVisibleChildName("content");
                     populateSidebar(ss);
                     playerBar.setup(app.getPlayer());
+                    var last = settings.getString("last-page");
+                    if (last != null && !last.isBlank()) {
+                        contentStack.setVisibleChildName(last);
+                        selectSidebarRow(last);
+                    }
                 }
             }
         });
@@ -76,6 +104,45 @@ public class Window extends ApplicationWindow {
         if (ss.getConnectionState() == ConnectionState.CONNECTING) {
             mainStack.setVisibleChildName("loading");
         }
+    }
+
+    private String findLabel(ListBoxRow row) {
+        var child = row.getChild();
+        if (child instanceof org.gnome.gtk.Box box) {
+            for (var c = box.getFirstChild(); c != null; c = c.getNextSibling()) {
+                if (c instanceof Label l) return l.getText();
+            }
+        }
+        return null;
+    }
+
+    private void selectSidebarRow(String pageName) {
+        for (int i = 0; ; i++) {
+            var row = sidebar.sidebar_list.getRowAtIndex(i);
+            if (row == null) break;
+            if (row.getSelectable()) {
+                var label = findLabel(row);
+                if (label != null && pageName.equals(mapSidebarToPage(label))) {
+                    sidebar.sidebar_list.selectRow(row);
+                    return;
+                }
+            }
+        }
+    }
+
+    private String mapSidebarToPage(String label) {
+        return switch (label) {
+            case "Home" -> "home";
+            case "All" -> "all";
+            case "Random" -> "random";
+            case "Favorites" -> "favorites";
+            case "Recently Added" -> "recently-added";
+            case "Recently Played" -> "recently-played";
+            case "Most Played" -> "most-played";
+            case "Artist" -> "artist";
+            case "Tracks" -> "tracks";
+            default -> null;
+        };
     }
 
     private void populateSidebar(ServerState ss) {
