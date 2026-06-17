@@ -21,14 +21,6 @@ val javaGiVersion = "1.0.0-RC1"
 val ktorVersion = "3.3.2"
 val subsonicApiVersion = "1.1.1"
 
-val isWindows = System.getProperty("os.name").lowercase().contains("windows")
-val defaultPrefix    = if (isWindows) "C:/hypersonic" else "/usr/local"
-val defaultDatadir   = "src/main/resources"
-
-val mesonPrefix    = project.findProperty("mesonPrefix")?.toString()    ?: defaultPrefix
-val mesonDatadir   = project.findProperty("mesonDatadir")?.toString()   ?: defaultDatadir
-val mesonLocaledir = project.findProperty("mesonLocaledir")?.toString() ?: "$mesonPrefix/po"
-
 repositories {
     mavenCentral()
     mavenLocal()
@@ -36,24 +28,70 @@ repositories {
 }
 
 glibBuildTools {
-    applicationId.set("moe.seiga.Hypersonic")
-    gettextDomain.set("hypersonic")
-    localeDir.set(mesonLocaledir)
-    resourceDir.set(mesonDatadir)
+    config {
+        applicationId = "$group.Hypersonic"
+        gettextDomain = "hypersonic"
+    }
 
-    blueprintSourceDir.set("src/main/resources")
-    blueprintOutputDir.set("src/main/resources/blueprint-compiler")
-    gresourceXml.set("src/main/resources/hypersonicapp.gresource.xml")
-    gresourceOutput.set("src/main/resources/hypersonicapp.gresource")
-    gresourceSourceDirs.set(listOf("src/main/resources"))
+    gnome {
+        compileResources {
+            xml = "src/main/gresources/hypersonicapp.gresource.xml"
+        }
 
-    blueprints(
-        "src/main/resources/window.blp",
-        "src/main/resources/components/player/bar.blp",
-        "src/main/resources/components/player/playback-controls.blp",
-        "src/main/resources/components/player/seekbar.blp",
-        "src/main/resources/components/settings/settings.blp",
-    )
+        blueprints {
+            sourceDir = "src/main/blueprints"
+            files = listOf(
+                "src/main/blueprints/window.blp",
+                "src/main/blueprints/components/player/bar.blp",
+                "src/main/blueprints/components/player/playback-controls.blp",
+                "src/main/blueprints/components/player/seekbar.blp",
+                "src/main/blueprints/components/settings/settings.blp",
+            )
+        }
+
+        postInstall {
+            compileSchemas = true
+            updateIconCache = true
+            updateDesktopDatabase = true
+        }
+    }
+
+    i18n {
+        gettext {
+            preset = "glib"
+            poDir  = "po"
+            extraArgs = listOf("--add-comments", "--keyword=i18n", "--keyword=i18n:1,2c")
+        }
+
+        mergeFile {
+            input  = "data/moe.seiga.Hypersonic.desktop.in"
+            output = "moe.seiga.Hypersonic.desktop"
+            type   = "desktop"
+            poDir  = "po"
+        }
+
+        mergeFile {
+            input  = "data/moe.seiga.Hypersonic.metainfo.xml.in"
+            output = "moe.seiga.Hypersonic.metainfo.xml"
+            type   = "xml"
+            poDir  = "po"
+        }
+    }
+
+    data {
+        gschema("data/moe.seiga.Hypersonic.gschema.xml") {
+            validate = true
+        }
+
+        dbusService("data/moe.seiga.Hypersonic.service.in") {
+            bindir = "/usr/local/bin"
+        }
+
+        icon("data/icons/hicolor/scalable/apps/moe.seiga.Hypersonic.svg")
+        icon("data/icons/hicolor/symbolic/apps/moe.seiga.Hypersonic-symbolic.svg")
+        icon("data/icons/hicolor/scalable/actions/library-album-symbolic.svg")
+        icon("data/icons/hicolor/scalable/actions/library-music-symbolic.svg")
+    }
 }
 
 java {
@@ -99,6 +137,4 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.named<JavaExec>("run") {
-    environment("GSETTINGS_SCHEMA_DIR", "$mesonPrefix/data")
-}
+

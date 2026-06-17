@@ -1,0 +1,44 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-17 12:58+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/moe.seiga.Hypersonic.desktop.in:2
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:7
+msgid "Hypersonic"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.desktop.in:8
+msgid "GTK;"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:8
+msgid "Keep the summary shorter, between 10 and 35 characters"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:10
+msgid "No description"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:14
+msgid "Developer name"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:52
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:56
+msgid "A caption"
+msgstr ""

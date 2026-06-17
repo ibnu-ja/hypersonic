@@ -1,5 +1,29 @@
-msgid "Welcome to Hypersonic!"
+#: data/moe.seiga.Hypersonic.desktop.in:2
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:7
+#, fuzzy
+msgid "Hypersonic"
 msgstr "Selamat datang di Hypersonic!"
 
-msgid "Home"
-msgstr "Beranda"
+#: data/moe.seiga.Hypersonic.desktop.in:8
+msgid "GTK;"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:8
+msgid "Keep the summary shorter, between 10 and 35 characters"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:10
+msgid "No description"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:14
+msgid "Developer name"
+msgstr ""
+
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:52
+#: data/moe.seiga.Hypersonic.metainfo.xml.in:56
+msgid "A caption"
+msgstr ""
+
+#~ msgid "Home"
+#~ msgstr "Beranda"

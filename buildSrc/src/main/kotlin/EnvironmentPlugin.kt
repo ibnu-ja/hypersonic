@@ -26,9 +26,15 @@ class EnvironmentPlugin : Plugin<Project> {
             })
         }
 
+        val cliPrefix = project.findProperty("prefix")?.toString()
+
+        if (cliPrefix != null) {
+            extension.installLocation.set(InstallLocation.CUSTOM)
+        }
+
         if (!extension.installLocation.isPresent) {
             extension.installLocation.set(when (extension.type.get()) {
-                EnvironmentType.NATIVE_POSIX -> InstallLocation.HOME_LOCAL
+                EnvironmentType.NATIVE_POSIX -> InstallLocation.SYSTEM
                 EnvironmentType.MSYS2_MINGW64 -> InstallLocation.APPDATA_LOCAL
                 // TODO: NATIVE_WINDOWS support
             })
@@ -56,11 +62,14 @@ class EnvironmentPlugin : Plugin<Project> {
                 }
             }
             InstallLocation.BUILD_DIR -> {
-                project.layout.buildDirectory.get().asFile.absolutePath.replace("\\", "/") + "/install"
+                project.layout.buildDirectory.get().asFile.absolutePath.replace("\\", "/") + "/install/" + project.name
             }
             InstallLocation.APPDATA_LOCAL -> {
                 val localAppData = System.getenv("LOCALAPPDATA") ?: "${System.getProperty("user.home")}/AppData/Local"
                 localAppData.replace("\\", "/")
+            }
+            InstallLocation.CUSTOM -> {
+                cliPrefix ?: extension.prefix.getOrElse("/usr/local")
             }
             // TODO: CUSTOM support
         }
@@ -117,5 +126,5 @@ enum class InstallLocation {
     SYSTEM,
     BUILD_DIR,
     APPDATA_LOCAL,
-    // TODO: CUSTOM
+    CUSTOM,
 }
