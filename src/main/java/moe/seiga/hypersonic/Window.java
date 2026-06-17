@@ -70,4 +70,5 @@ public class Window extends ApplicationWindow {
             mainStack.setVisibleChildName("loading");
         }
     }
+
 }

@@ -53,7 +53,7 @@ template $Window: Adw.ApplicationWindow {
         Adw.ToastOverlay {
           vexpand: true;
 
-          Adw.OverlaySplitView {
+          Adw.OverlaySplitView split_view {
             sidebar: Adw.NavigationPage {
               styles [
                 "light-right-edge",
@@ -187,10 +187,11 @@ template $Window: Adw.ApplicationWindow {
                 [top]
                 Adw.HeaderBar {
                   [start]
-                  MenuButton main_menu_btn {
-                    primary: true;
-                    icon-name: "open-menu-symbolic";
-                    tooltip-text: _("Menu");
+                  ToggleButton sidebar_toggle {
+                    visible: bind split_view.collapsed;
+                    icon-name: "sidebar-show-symbolic";
+                    tooltip-text: _("Show Sidebar");
+                    active: bind split_view.show-sidebar bidirectional;
                   }
 
                   title-widget: Adw.WindowTitle content_title {
@@ -294,6 +295,15 @@ template $Window: Adw.ApplicationWindow {
     }
   };
   };
+
+  Adw.Breakpoint {
+    condition ("max-width: 600sp")
+    setters {
+      split_view.collapsed: true;
+      split_view.enable-show-gesture: true;
+      split_view.enable-hide-gesture: true;
+    }
+  }
 }
 
 Adw.AboutDialog about {
