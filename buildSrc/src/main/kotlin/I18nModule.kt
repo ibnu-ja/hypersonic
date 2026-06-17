@@ -30,7 +30,12 @@ open class MergeFileConfig {
     var validate: Boolean = false
 }
 
-internal fun registerI18nTasks(project: Project, env: EnvironmentExtension, i18n: I18nExtension, config: ConfigExtension? = null) {
+internal fun registerI18nTasks(
+    project: Project,
+    env: EnvironmentExtension,
+    i18n: I18nExtension,
+    config: ConfigExtension? = null
+) {
 
     i18n.gettextConfig?.let { gt ->
         val domain = gt.domain
@@ -82,6 +87,11 @@ internal fun registerI18nTasks(project: Project, env: EnvironmentExtension, i18n
             this.executeCommand(env, *args.toTypedArray())
 
             inputs.file(project.file(potfilesIn))
+            if (project.file(potfilesIn).exists()) {
+                project.file(potfilesIn).readLines()
+                    .filter { it.isNotBlank() && !it.startsWith("#") }
+                    .forEach { inputs.file(project.file(it)) }
+            }
             outputs.file(project.file(potFile))
         }
 
@@ -147,8 +157,8 @@ internal fun registerI18nTasks(project: Project, env: EnvironmentExtension, i18n
         val outputFile = project.layout.buildDirectory.file("i18n/${mf.output}").get().asFile
         val taskName = when (mf.type) {
             "desktop" -> "mergeDesktopFile"
-            "xml"     -> "mergeAppstreamFile"
-            else      -> "mergeFile_${mf.output.substringBeforeLast(".")}"
+            "xml" -> "mergeAppstreamFile"
+            else -> "mergeFile_${mf.output.substringBeforeLast(".")}"
         }
 
         project.tasks.register<Exec>(taskName) {
@@ -157,7 +167,8 @@ internal fun registerI18nTasks(project: Project, env: EnvironmentExtension, i18n
 
             workingDir = project.projectDir
 
-            commandLine("msgfmt",
+            commandLine(
+                "msgfmt",
                 "--${mf.type}",
                 "--template", mf.input,
                 "-d", mf.poDir,
@@ -184,8 +195,8 @@ internal fun registerI18nTasks(project: Project, env: EnvironmentExtension, i18n
         if (mf.validate) {
             val validateCmd = when (mf.type) {
                 "desktop" -> "desktop-file-validate"
-                "xml"     -> "appstreamcli"
-                else      -> null
+                "xml" -> "appstreamcli"
+                else -> null
             }
 
             if (validateCmd != null) {
