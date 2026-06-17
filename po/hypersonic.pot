@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 14:26+0700\n"
+"POT-Creation-Date: 2026-06-17 15:23+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,42 +73,112 @@ msgstr ""
 msgid "Slide"
 msgstr ""
 
-#: src/main/blueprints/window.blp:42
+#: src/main/blueprints/window.blp:23 src/main/blueprints/window.blp:42
 msgid "Home"
+msgstr ""
+
+#: src/main/blueprints/window.blp:32
+msgid "Background Tasks"
 msgstr ""
 
 #: src/main/blueprints/window.blp:49
 msgid "Menu"
 msgstr ""
 
+#: src/main/blueprints/window.blp:63
+msgid "Library"
+msgstr ""
+
+#: src/main/blueprints/window.blp:81 src/main/blueprints/window.blp:158
+#: src/main/blueprints/window.blp:162
+msgid "Recent"
+msgstr ""
+
+#: src/main/blueprints/window.blp:92 src/main/blueprints/window.blp:170
+#: src/main/blueprints/window.blp:174
+msgid "Albums"
+msgstr ""
+
+#: src/main/blueprints/window.blp:103 src/main/blueprints/window.blp:182
+#: src/main/blueprints/window.blp:186
+msgid "Artists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:114 src/main/blueprints/window.blp:194
+#: src/main/blueprints/window.blp:198
+msgid "Folders"
+msgstr ""
+
+#: src/main/blueprints/window.blp:125 src/main/blueprints/window.blp:218
+#: src/main/blueprints/window.blp:222
+msgid "Playlists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:136 src/main/blueprints/window.blp:230
+#: src/main/blueprints/window.blp:234
+msgid "Queue"
+msgstr ""
+
 #: src/main/blueprints/window.blp:150
 msgid "Content"
 msgstr ""
 
-#: src/main/blueprints/window.blp:158
-msgid "Recent"
+#: src/main/blueprints/window.blp:163
+msgid "Recently played tracks"
 msgstr ""
 
-#: src/main/blueprints/window.blp:170
-msgid "Albums"
+#: src/main/blueprints/window.blp:175
+msgid "Browse by album"
 msgstr ""
 
-#: src/main/blueprints/window.blp:182
-msgid "Artists"
+#: src/main/blueprints/window.blp:187
+msgid "Browse by artist"
 msgstr ""
 
-#: src/main/blueprints/window.blp:194
-msgid "Folders"
+#: src/main/blueprints/window.blp:199
+msgid "Browse by folder"
 msgstr ""
 
-#: src/main/blueprints/window.blp:206
+#: src/main/blueprints/window.blp:206 src/main/blueprints/window.blp:210
 msgid "Dynamic Playlists"
 msgstr ""
 
-#: src/main/blueprints/window.blp:218
-msgid "Playlists"
+#: src/main/blueprints/window.blp:211
+msgid "Auto-generated playlists"
 msgstr ""
 
-#: src/main/blueprints/window.blp:230
-msgid "Queue"
+#: src/main/blueprints/window.blp:223
+msgid "Your custom playlists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:235
+msgid "Upcoming tracks"
+msgstr ""
+
+#: src/main/blueprints/components/player/bar.blp:95
+msgid "Volume"
+msgstr ""
+
+#: src/main/blueprints/components/player/bar.blp:106
+msgid "More Options"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:12
+msgid "Repeat Mode"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:23
+msgid "Previous"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:34
+msgid "Play"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:45
+msgid "Next"
+msgstr ""
+
+#: src/main/blueprints/components/player/playback-controls.blp:57
+msgid "Shuffle Queue"
 msgstr ""
