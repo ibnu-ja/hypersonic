@@ -102,6 +102,10 @@ java {
     }
 }
 
+kotlin {
+    jvmToolchain(25)
+}
+
 val commonJvmArgs = mutableListOf("--enable-native-access=ALL-UNNAMED")
 
 application {
