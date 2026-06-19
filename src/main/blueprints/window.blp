@@ -50,109 +50,124 @@ template $Window: Adw.ApplicationWindow {
             vexpand: true;
 
             Adw.OverlaySplitView split_view {
-              content: Adw.NavigationPage {
-                child: Stack content_stack {
-                  transition-type: slide_up_down;
+              content: Box {
+                orientation: vertical;
 
-                  StackPage {
-                    child: Adw.ToolbarView {
-                      [top]
-                      Adw.HeaderBar {
-                        title-widget: Adw.WindowTitle {
-                          title: "Home_Page";
-                        };
+                Adw.NavigationPage {
+                  child: Stack content_stack {
+                    transition-type: slide_up_down;
+                    vexpand: true;
 
-                        ToggleButton {
-                          active: bind split_view.show-sidebar bidirectional;
-                          icon-name: "sidebar-show-symbolic";
-                          visible: bind split_view.collapsed bidirectional;
-                        }
-                      }
-                    };
-
-                    name: "home_page";
-                  }
-
-                  StackPage {
-                    child: Adw.NavigationSplitView player_split_view {
-                      content: Adw.NavigationPage {
-                        Adw.ToolbarView {
-                          [top]
-                          Adw.HeaderBar {
-                            title-widget: Adw.WindowTitle {
-                              subtitle: "player";
-                              title: "subtitle";
-                            };
-
-                            [start]
-                            ToggleButton sidebar_toggle {
-                              active: bind split_view.show-sidebar bidirectional;
-                              icon-name: "sidebar-show-symbolic";
-                              visible: bind split_view.collapsed bidirectional;
-                            }
-
-                            [end]
-                            Button back {
-                              action-name: "navigation.push";
-                              action-target: "'queue'";
-                              has-frame: false;
-                              icon-name: "view-more-symbolic";
-                            }
-                          }
-
-                          Label {
-                            label: "test";
-                          }
-                        }
-                      };
-
-                      max-sidebar-width: 1000;
-                      min-sidebar-width: 0;
-
-                      sidebar: Adw.NavigationPage {
-                        child: Adw.ToolbarView {
-                          content: Label {
-                            label: "test";
+                    StackPage {
+                      child: Adw.ToolbarView {
+                        [top]
+                        Adw.HeaderBar {
+                          title-widget: Adw.WindowTitle {
+                            title: "Home_Page";
                           };
 
-                          [top]
-                          Adw.HeaderBar {
-                            title-widget: Adw.WindowTitle {
-                              subtitle: "Queue";
-                              title: "subtitle";
-                            };
+                          ToggleButton {
+                            active: bind split_view.show-sidebar bidirectional;
+                            icon-name: "sidebar-show-symbolic";
+                            visible: bind split_view.collapsed bidirectional;
+                          }
+                        }
+                      };
+
+                      name: "home_page";
+                    }
+
+                    StackPage {
+                      child: Adw.NavigationSplitView player_split_view {
+                        content: Adw.NavigationPage {
+                          Adw.ToolbarView {
+                            [top]
+                            Adw.HeaderBar {
+                              title-widget: Adw.WindowTitle {
+                                subtitle: "player";
+                                title: "subtitle";
+                              };
+
+                              [start]
+                              ToggleButton sidebar_toggle {
+                                active: bind split_view.show-sidebar bidirectional;
+                                icon-name: "sidebar-show-symbolic";
+                                visible: bind split_view.collapsed bidirectional;
+                              }
+
+                              [end]
+                              Button {
+                                action-name: "navigation.push";
+                                action-target: "'queue'";
+                                has-frame: false;
+                                icon-name: "view-more-symbolic";
+                                visible: bind player_split_view.collapsed;
+                              }
+                            }
+
+                            Label {
+                              label: "test";
+                            }
                           }
                         };
 
-                        tag: "queue";
+                        max-sidebar-width: 1000;
+                        min-sidebar-width: 0;
+
+                        sidebar: Adw.NavigationPage {
+                          child: Adw.ToolbarView {
+                            content: Label {
+                              label: "test";
+                            };
+
+                            [top]
+                            Adw.HeaderBar {
+                              title-widget: Adw.WindowTitle {
+                                subtitle: "Queue";
+                                title: "subtitle";
+                              };
+                            }
+                          };
+
+                          tag: "queue";
+                        };
+
+                        sidebar-position: end;
+                        sidebar-width-fraction: 0.5;
                       };
 
-                      sidebar-position: end;
-                      sidebar-width-fraction: 0.5;
-                    };
+                      name: "player_page";
+                    }
 
-                    name: "player_page";
-                  }
+                    StackPage {
+                      child: Adw.ToolbarView {
+                        content: Adw.StatusPage {
+                          description: "testing";
+                          icon-name: "application-x-executable";
+                          title: "Testing page";
+                        };
 
-                  StackPage {
-                    child: Adw.ToolbarView {
-                      content: Adw.StatusPage {
-                        description: "testing";
-                        icon-name: "application-x-executable";
-                        title: "Testing page";
+                        [top]
+                        Adw.HeaderBar {
+                          title-widget: Adw.WindowTitle {};
+                        }
                       };
 
-                      [top]
-                      Adw.HeaderBar {
-                        title-widget: Adw.WindowTitle {};
-                      }
-                    };
+                      name: "testing_page";
+                    }
+                  };
 
-                    name: "testing_page";
-                  }
-                };
+                  title: _("Content");
+                }
 
-                title: _("Content");
+                Revealer player_bar_revealer {
+                  child: $PlayerBar player_bar {};
+
+                  halign: baseline;
+                  hexpand: true;
+                  reveal-child: true;
+                  transition-type: slide_up;
+                }
               };
 
               max-sidebar-width: 240;
@@ -186,14 +201,6 @@ template $Window: Adw.ApplicationWindow {
                 "light-right-edge",
               ]
             }
-          }
-
-          Revealer player_bar_revealer {
-            child: $PlayerBar player_bar {};
-
-            hexpand: true;
-            reveal-child: true;
-            transition-type: slide_up;
           }
         };
 
