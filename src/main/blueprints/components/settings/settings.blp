@@ -3,7 +3,6 @@ using Adw 1;
 
 template $Settings: Adw.PreferencesDialog {
   title: _("Preferences");
-  modal: "true";
 
   Adw.PreferencesPage page_general {
     title: _("General");
@@ -25,8 +24,6 @@ template $Settings: Adw.PreferencesDialog {
       title: _("Transition");
 
       Adw.ComboRow transition {
-        title: _("Transition");
-
         model: StringList {
           strings [
             _("None"),
@@ -34,7 +31,11 @@ template $Settings: Adw.PreferencesDialog {
             _("Slide"),
           ]
         };
+
+        title: _("Transition");
       }
     }
   }
+
+  modal: "true";
 }

@@ -1,205 +1,235 @@
 using Gtk 4.0;
 
-template $Sidebar: Gtk.Box {
+template $Sidebar: Box {
   orientation: vertical;
 
-  Gtk.ScrolledWindow {
-    hscrollbar-policy: never;
+  ScrolledWindow {
     hexpand: true;
+    hscrollbar-policy: never;
     vexpand: true;
 
-    Gtk.ListBox sidebar_list {
-      styles [
-        "navigation-sidebar",
-      ]
+    ListBox sidebar_list {
       selection-mode: single;
 
       ListBoxRow {
         child: Box {
           Image {
-            margin-end: 8;
             icon-name: "go-home-symbolic";
+            margin-end: 8;
           }
 
           Label {
+            hexpand: true;
             label: _("Home");
-            xalign: 0;
-            hexpand: true;
             margin-end: 2;
+            xalign: 0;
           }
         };
       }
 
       ListBoxRow {
-        styles [ "section-start" ]
-        selectable: false;
+        child: Box {
+          Image {
+            icon-name: "sound-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Player");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
         activatable: false;
+
         child: Box {
           Label {
+            hexpand: true;
             label: _("Album");
-            xalign: 0;
-            hexpand: true;
-            margin-top: 12;
             margin-bottom: 3;
-            margin-start: 12;
             margin-end: 12;
+            margin-start: 12;
+            margin-top: 12;
+            xalign: 0;
 
             styles [
               "heading",
             ]
           }
         };
-      }
 
-      ListBoxRow {
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "library-album-symbolic";
-          }
-
-          Label {
-            label: _("All");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "media-playlist-shuffle-symbolic";
-          }
-
-          Label {
-            label: _("Random");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "starred-symbolic";
-          }
-
-          Label {
-            label: _("Favorites");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "list-add-symbolic";
-          }
-
-          Label {
-            label: _("Recently Added");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "document-open-recent-symbolic";
-          }
-
-          Label {
-            label: _("Recently Played");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "media-playlist-repeat-symbolic";
-          }
-
-          Label {
-            label: _("Most Played");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        styles [ "section-start" ]
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "audio-input-microphone-symbolic";
-          }
-
-          Label {
-            label: _("Artist");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        child: Box {
-          Image {
-            margin-end: 8;
-            icon-name: "library-music-symbolic";
-          }
-
-          Label {
-            label: _("Tracks");
-            xalign: 0;
-            hexpand: true;
-            margin-end: 2;
-          }
-        };
-      }
-
-      ListBoxRow {
-        styles [ "section-start" ]
         selectable: false;
+
+        styles [
+          "section-start",
+        ]
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "library-album-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("All");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "media-playlist-shuffle-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Random");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "starred-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Favorites");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "list-add-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Recently Added");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "document-open-recent-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Recently Played");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "media-playlist-repeat-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Most Played");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "audio-input-microphone-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Artist");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+
+        styles [
+          "section-start",
+        ]
+      }
+
+      ListBoxRow {
+        child: Box {
+          Image {
+            icon-name: "library-music-symbolic";
+            margin-end: 8;
+          }
+
+          Label {
+            hexpand: true;
+            label: _("Tracks");
+            margin-end: 2;
+            xalign: 0;
+          }
+        };
+      }
+
+      ListBoxRow {
         activatable: false;
+
         child: Box {
           Label {
-            label: _("Playlist");
-            xalign: 0;
             hexpand: true;
-            margin-top: 12;
+            label: _("Playlist");
             margin-bottom: 3;
-            margin-start: 12;
             margin-end: 12;
+            margin-start: 12;
+            margin-top: 12;
+            xalign: 0;
 
             styles [
               "heading",
             ]
           }
         };
+
+        selectable: false;
+
+        styles [
+          "section-start",
+        ]
       }
+
+      styles [
+        "navigation-sidebar",
+      ]
     }
   }
 }

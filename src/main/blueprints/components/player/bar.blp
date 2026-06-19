@@ -2,44 +2,63 @@ using Gtk 4.0;
 
 template $PlayerBar: Box {
   hexpand: true;
-  spacing: 6;
-  margin-start: 12;
-  margin-end: 12;
-  margin-top: 12;
   margin-bottom: 12;
-
-  styles [
-    "toolbar",
-  ]
-
+  margin-end: 12;
+  margin-start: 12;
+  margin-top: 12;
   orientation: vertical;
+  spacing: 6;
 
-  // Main player bar
   CenterBox {
+    center-widget: $PlaybackControls playback_controls {};
+
+    end-widget: Box {
+      spacing: 6;
+      valign: center;
+
+      Button volume_btn {
+        icon-name: "audio-volume-high-symbolic";
+        tooltip-text: _("Volume");
+
+        styles [
+          "flat",
+          "circular",
+        ]
+      }
+
+      Button menu_btn {
+        icon-name: "view-more-symbolic";
+        tooltip-text: _("More Options");
+
+        styles [
+          "flat",
+          "circular",
+        ]
+      }
+    };
+
     hexpand: true;
 
     start-widget: Box {
       spacing: 12;
 
-      // Album art placeholder
       Box album_art_placeholder {
-        width-request: 64;
         height-request: 64;
+        width-request: 64;
 
         styles [
           "card",
         ]
       }
 
-      // Info box
       Box info_box {
-        valign: center;
         orientation: vertical;
         spacing: 4;
+        valign: center;
 
         Label song_name {
-          halign: start;
           ellipsize: end;
+          halign: start;
           max-width-chars: 30;
 
           styles [
@@ -82,41 +101,15 @@ template $PlayerBar: Box {
         }
       }
     };
-
-    center-widget: $PlaybackControls playback_controls {};
-
-    end-widget: Box {
-      spacing: 6;
-      valign: center;
-
-      // TODO: Volume button
-      Button volume_btn {
-        icon-name: "audio-volume-high-symbolic";
-        tooltip-text: _("Volume");
-
-        styles [
-          "flat",
-          "circular",
-        ]
-      }
-
-      // TODO: More options menu
-      Button menu_btn {
-        icon-name: "view-more-symbolic";
-        tooltip-text: _("More Options");
-
-        styles [
-          "flat",
-          "circular",
-        ]
-      }
-    };
   }
 
-  // Seekbar section
   Box seekbar_section {
     hexpand: true;
 
     $Seekbar seekbar {}
   }
+
+  styles [
+    "toolbar",
+  ]
 }

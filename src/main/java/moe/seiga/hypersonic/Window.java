@@ -14,6 +14,7 @@ import org.gnome.gio.SettingsBindFlags;
 import org.gnome.glib.GLib;
 import org.gnome.gtk.Label;
 import org.gnome.gtk.ListBoxRow;
+import org.gnome.gtk.Revealer;
 import org.gnome.gtk.Stack;
 import org.javagi.gobject.annotations.InstanceInit;
 import org.javagi.gtk.annotations.GtkChild;
@@ -47,6 +48,9 @@ public class Window extends ApplicationWindow {
     @GtkChild(name = "player_bar")
     public Bar playerBar;
 
+    @GtkChild(name = "player_bar_revealer")
+    public Revealer playerBarRevealer;
+
     public Window(Application app) {
         initApp = app;
         super();
@@ -68,7 +72,8 @@ public class Window extends ApplicationWindow {
         var ss = app.getServerState();
         welcomePage.setup(ss);
 
-        sidebar.sidebar_list.connect("selected-rows-changed", (Runnable) () -> {
+            sidebar.sidebar_list.connect("selected-rows-changed", (Runnable) () -> {
+            log.debug("changed sidebar item");
             var row = sidebar.sidebar_list.getSelectedRow();
             if (row == null) return;
             var label = findLabel(row);
@@ -91,9 +96,12 @@ public class Window extends ApplicationWindow {
                 case CONNECTED -> {
                     mainStack.setVisibleChildName("content");
                     populateSidebar(ss);
+                    contentStack.onNotify("visible-child-name", _ -> {
+                        playerBarRevealer.setRevealChild(!"player_page".equals(contentStack.getVisibleChildName()));
+                    });
                     playerBar.setup(app.getPlayer());
                     var last = settings.getString("last-page");
-                    if (last != null && !last.isBlank()) {
+                    if (!last.isBlank()) {
                         contentStack.setVisibleChildName(last);
                         selectSidebarRow(last);
                     }
@@ -132,15 +140,9 @@ public class Window extends ApplicationWindow {
 
     private String mapSidebarToPage(String label) {
         return switch (label) {
-            case "Home" -> "home";
-            case "All" -> "all";
-            case "Random" -> "random";
-            case "Favorites" -> "favorites";
-            case "Recently Added" -> "recently-added";
-            case "Recently Played" -> "recently-played";
-            case "Most Played" -> "most-played";
-            case "Artist" -> "artist";
-            case "Tracks" -> "tracks";
+            case "Home" -> "home_page";
+            case "Player" -> "player_page";
+            case "All", "Random", "Favorites", "Recently Played", "Recently Added", "Artist", "Most Played", "Tracks" -> "testing_page";
             default -> null;
         };
     }

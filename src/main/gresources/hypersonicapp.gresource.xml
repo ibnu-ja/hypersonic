@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 1.0.2 -->
 <gresources>
-    <gresource prefix="/moe/seiga/Hypersonic">
-        <file preprocess="xml-stripblanks">window.ui</file>
-        <!--components-->
-        <file preprocess="xml-stripblanks">components/player/bar.ui</file>
-        <file preprocess="xml-stripblanks">components/player/playback-controls.ui</file>
-        <file preprocess="xml-stripblanks">components/player/seekbar.ui</file>
-        <file preprocess="xml-stripblanks">components/settings/settings.ui</file>
-        <file preprocess="xml-stripblanks">components/connection/welcome-page.ui</file>
-        <file preprocess="xml-stripblanks">components/sidebar/playlist-item.ui</file>
-        <file preprocess="xml-stripblanks">components/sidebar/sidebar.ui</file>
-        <!--icons-->
-        <file>icons/scalable/actions/library-album-symbolic.svg</file>
-        <file>icons/scalable/actions/library-music-symbolic.svg</file>
-        <!--pages-->
-    </gresource>
+  <gresource prefix="/moe/seiga/Hypersonic">
+    <file preprocess="xml-stripblanks">window.ui</file>
+    <file preprocess="xml-stripblanks">components/player/bar.ui</file>
+    <file preprocess="xml-stripblanks">components/player/playback-controls.ui</file>
+    <file preprocess="xml-stripblanks">components/player/seekbar.ui</file>
+    <file preprocess="xml-stripblanks">components/settings/settings.ui</file>
+    <file preprocess="xml-stripblanks">components/connection/welcome-page.ui</file>
+    <file preprocess="xml-stripblanks">components/sidebar/playlist-item.ui</file>
+    <file preprocess="xml-stripblanks">components/sidebar/sidebar.ui</file>
+    <file>icons/scalable/actions/library-album-symbolic.svg</file>
+    <file>icons/scalable/actions/library-music-symbolic.svg</file>
+    <file>icons/scalable/actions/sound-symbolic.svg</file>
+  </gresource>
 </gresources>

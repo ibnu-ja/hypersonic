@@ -2,238 +2,228 @@ using Gtk 4.0;
 using Adw 1;
 
 template $Window: Adw.ApplicationWindow {
-  default-width: 400;
-  default-height: 500;
-  height-request: 640;
-  width-request: 360;
-
-  content: Gtk.WindowHandle {
+  content: WindowHandle {
     child: Stack main_stack {
       transition-duration: 200;
       transition-type: crossfade;
 
       StackPage {
-        name: "welcome";
         child: Adw.ToolbarView {
+          content: $WelcomePage welcome_page {};
+
           [top]
           Adw.HeaderBar {
             show-title: false;
           }
-
-          content: $WelcomePage welcome_page {};
         };
+
+        name: "welcome";
       }
 
       StackPage {
-        name: "loading";
         child: Adw.ToolbarView {
+          content: Adw.StatusPage {
+            child: Spinner {
+              halign: center;
+              spinning: true;
+            };
+
+            description: _("Connecting to your server");
+            title: _("Connecting…");
+          };
+
           [top]
           Adw.HeaderBar {
             show-title: false;
           }
-
-          content: Adw.StatusPage {
-            title: _("Connecting…");
-            description: _("Connecting to your server");
-
-            child: Gtk.Spinner {
-              spinning: true;
-              halign: center;
-            };
-          };
         };
+
+        name: "loading";
       }
 
-    StackPage {
-      name: "content";
-      child: Box {
-        halign: fill;
-        orientation: vertical;
+      StackPage {
+        child: Box {
+          halign: fill;
+          orientation: vertical;
 
-        Adw.ToastOverlay {
-          vexpand: true;
+          Adw.ToastOverlay {
+            vexpand: true;
 
-          Adw.OverlaySplitView split_view {
-            max-sidebar-width: 240;
-            sidebar-width-unit: px;
-            sidebar-width-fraction: 0.2;
+            Adw.OverlaySplitView split_view {
+              content: Adw.NavigationPage {
+                child: Stack content_stack {
+                  transition-type: slide_up_down;
 
-            sidebar: Adw.ToolbarView {
-              styles [
-                "light-right-edge",
-              ]
+                  StackPage {
+                    child: Adw.ToolbarView {
+                      [top]
+                      Adw.HeaderBar {
+                        title-widget: Adw.WindowTitle {
+                          title: "Home_Page";
+                        };
 
-              [top]
-              Adw.HeaderBar {
-                title-widget: Adw.WindowTitle title {
-                  title: _("Hypersonic");
-                };
+                        ToggleButton {
+                          active: bind split_view.show-sidebar bidirectional;
+                          icon-name: "sidebar-show-symbolic";
+                          visible: bind split_view.collapsed bidirectional;
+                        }
+                      }
+                    };
 
-                [end]
-                MenuButton menu_btn {
-                  primary: true;
-                  icon-name: "open-menu-symbolic";
-                  tooltip-text: _("Menu");
-                }
-              }
-
-              content: $Sidebar sidebar {};
-            };
-
-            content: Adw.NavigationPage {
-              title: _("Content");
-
-              child: Adw.ToolbarView {
-                [top]
-                Adw.HeaderBar {
-                  [start]
-                  ToggleButton sidebar_toggle {
-                    visible: bind split_view.collapsed;
-                    icon-name: "sidebar-show-symbolic";
-                    tooltip-text: _("Show Sidebar");
-                    active: bind split_view.show-sidebar bidirectional;
+                    name: "home_page";
                   }
 
+                  StackPage {
+                    child: Adw.NavigationSplitView player_split_view {
+                      content: Adw.NavigationPage {
+                        Adw.ToolbarView {
+                          [top]
+                          Adw.HeaderBar {
+                            title-widget: Adw.WindowTitle {
+                              subtitle: "player";
+                              title: "subtitle";
+                            };
+
+                            [start]
+                            ToggleButton sidebar_toggle {
+                              active: bind split_view.show-sidebar bidirectional;
+                              icon-name: "sidebar-show-symbolic";
+                              visible: bind split_view.collapsed bidirectional;
+                            }
+
+                            [end]
+                            Button back {
+                              action-name: "navigation.push";
+                              action-target: "'queue'";
+                              has-frame: false;
+                              icon-name: "view-more-symbolic";
+                            }
+                          }
+
+                          Label {
+                            label: "test";
+                          }
+                        }
+                      };
+
+                      max-sidebar-width: 1000;
+                      min-sidebar-width: 0;
+
+                      sidebar: Adw.NavigationPage {
+                        child: Adw.ToolbarView {
+                          content: Label {
+                            label: "test";
+                          };
+
+                          [top]
+                          Adw.HeaderBar {
+                            title-widget: Adw.WindowTitle {
+                              subtitle: "Queue";
+                              title: "subtitle";
+                            };
+                          }
+                        };
+
+                        tag: "queue";
+                      };
+
+                      sidebar-position: end;
+                      sidebar-width-fraction: 0.5;
+                    };
+
+                    name: "player_page";
+                  }
+
+                  StackPage {
+                    child: Adw.ToolbarView {
+                      content: Adw.StatusPage {
+                        description: "testing";
+                        icon-name: "application-x-executable";
+                        title: "Testing page";
+                      };
+
+                      [top]
+                      Adw.HeaderBar {
+                        title-widget: Adw.WindowTitle {};
+                      }
+                    };
+
+                    name: "testing_page";
+                  }
+                };
+
+                title: _("Content");
+              };
+
+              max-sidebar-width: 240;
+
+              sidebar: Adw.ToolbarView {
+                content: $Sidebar sidebar {};
+
+                [top]
+                Adw.HeaderBar {
                   title-widget: Adw.WindowTitle content_title {
                     title: _("Hypersonic");
                   };
+
+                  [end]
+                  MenuButton menu_btn {
+                    icon-name: "open-menu-symbolic";
+                    primary: true;
+                    tooltip-text: _("Menu");
+                  }
                 }
 
-                content: Stack content_stack {
-                  transition-duration: 200;
-                transition-type: slide_up_down;
-
-                StackPage {
-                  name: "home";
-                  title: _("Home");
-
-                  child: Adw.StatusPage {
-                    icon-name: "go-home-symbolic";
-                    title: _("Home");
-                    description: _("Welcome");
-                  };
-                }
-
-                StackPage {
-                  name: "all";
-                  title: _("All");
-
-                  child: Adw.StatusPage {
-                    icon-name: "media-optical-cd-audio-symbolic";
-                    title: _("All");
-                    description: _("Browse all albums");
-                  };
-                }
-
-                StackPage {
-                  name: "random";
-                  title: _("Random");
-
-                  child: Adw.StatusPage {
-                    icon-name: "media-playlist-shuffle-symbolic";
-                    title: _("Random");
-                    description: _("Random songs");
-                  };
-                }
-
-                StackPage {
-                  name: "favorites";
-                  title: _("Favorites");
-
-                  child: Adw.StatusPage {
-                    icon-name: "starred-symbolic";
-                    title: _("Favorites");
-                    description: _("Your favorite tracks");
-                  };
-                }
-
-                StackPage {
-                  name: "recently-added";
-                  title: _("Recently Added");
-
-                  child: Adw.StatusPage {
-                    icon-name: "list-add-symbolic";
-                    title: _("Recently Added");
-                    description: _("Recently added tracks");
-                  };
-                }
-
-                StackPage {
-                  name: "recently-played";
-                  title: _("Recently Played");
-
-                  child: Adw.StatusPage {
-                    icon-name: "document-open-recent-symbolic";
-                    title: _("Recently Played");
-                    description: _("Recently played tracks");
-                  };
-                }
-
-                StackPage {
-                  name: "most-played";
-                  title: _("Most Played");
-
-                  child: Adw.StatusPage {
-                    icon-name: "media-playlist-repeat-symbolic";
-                    title: _("Most Played");
-                    description: _("Your most played tracks");
-                  };
-                }
-
-                StackPage {
-                  name: "artist";
-                  title: _("Artist");
-
-                  child: Adw.StatusPage {
-                    icon-name: "avatar-default-symbolic";
-                    title: _("Artist");
-                    description: _("Browse by artist");
-                  };
-                }
-
-                StackPage {
-                  name: "tracks";
-                  title: _("Tracks");
-
-                  child: Adw.StatusPage {
-                    icon-name: "library-music-symbolic";
-                    title: _("Tracks");
-                    description: _("All tracks");
-                  };
-                }
+                styles [
+                  "light-right-edge",
+                ]
               };
-            };
-          };
+
+              sidebar-width-fraction: 0.2;
+              sidebar-width-unit: px;
+
+              styles [
+                "light-right-edge",
+              ]
+            }
           }
-        }
 
-        Revealer player_bar_revealer {
-          hexpand: true;
-          reveal-child: true;
+          Revealer player_bar_revealer {
+            child: $PlayerBar player_bar {};
 
-          child: $PlayerBar player_bar {};
-        }
-      };
-    }
+            hexpand: true;
+            reveal-child: true;
+            transition-type: slide_up;
+          }
+        };
+
+        name: "content";
+      }
+    };
   };
-  };
+
+  default-height: 500;
+  default-width: 600;
+  height-request: 640;
+  width-request: 360;
 
   Adw.Breakpoint {
     condition ("max-width: 600sp")
+
     setters {
       split_view.collapsed: true;
       split_view.enable-show-gesture: true;
       split_view.enable-hide-gesture: true;
+      player_split_view.collapsed: true;
     }
   }
 }
 
 Adw.AboutDialog about {
-  application-name: "Hypersonic";
-  website: "https://github.com/ibnu-ja/hypersonic";
   application-icon: "moe.seiga.Hypersonic";
+  application-name: "Hypersonic";
   license-type: gpl_3_0;
+  website: "https://github.com/ibnu-ja/hypersonic";
 }
 
-// TODO: create library-plus-symbolic.svg and library-play-symbolic.svg icons in Inkscape
-// TODO: menu id="primary_menu" with theme selector, fullscreen, refresh, preferences, shortcuts, about, quit
+Adw.Toggle {}

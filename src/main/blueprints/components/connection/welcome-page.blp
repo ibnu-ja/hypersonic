@@ -3,60 +3,62 @@ using Adw 1;
 
 template $WelcomePage: Box {
   hexpand: true;
-  vexpand: true;
   orientation: vertical;
+  vexpand: true;
 
   Adw.StatusPage {
-    icon-name: "network-server-symbolic";
-    title: _("Hypersonic");
-    description: _("Connect to your Subsonic-compatible server");
-
-    child: Gtk.Box {
-      spacing: 20;
-      orientation: vertical;
+    child: Box {
       halign: center;
+      orientation: vertical;
+      spacing: 20;
       width-request: 360;
 
-      Gtk.ListBox {
-        styles [
-          "boxed-list"
-        ]
+      ListBox {
         hexpand: true;
         selection-mode: none;
 
         Adw.EntryRow url_entry {
-          title: _("Server URL");
           input-purpose: url;
+          title: _("Server URL");
           entry-activated => $on_connect();
         }
 
         Adw.EntryRow username_entry {
-          title: _("Username");
           input-purpose: free_form;
+          title: _("Username");
           entry-activated => $on_connect();
         }
 
         Adw.PasswordEntryRow password_entry {
-          title: _("Password");
           input-purpose: password;
+          title: _("Password");
           entry-activated => $on_connect();
         }
+
+        styles [
+          "boxed-list",
+        ]
       }
 
-      Gtk.Button connect_button {
-        styles [
-          "suggested-action",
-          "pill"
-        ]
+      Button connect_button {
+        halign: center;
         label: _("Connect");
         clicked => $on_connect();
-        halign: center;
+
+        styles [
+          "suggested-action",
+          "pill",
+        ]
       }
 
-      Gtk.Spinner spinner {
+      Spinner spinner {
         halign: center;
         visible: false;
       }
     };
+
+    description: _("Connect to your Subsonic-compatible server");
+    icon-name: "network-server-symbolic";
+    title: _("Hypersonic");
   }
 }
