@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
+<!-- Created with Cambalache 1.0.2 -->
+<cambalache-project version="1.0.0" target_tk="gtk-4.0" depends="libadwaita-1">
+  <gresources filename="src/main/gresources/hypersonicapp.gresource.xml" sha256="0d95d4cb97b0076741ed9b4a903e6ac94f1a147aae54d5b611874ab57384b240"/>
+  <ui template-class="Seekbar" filename="src/main/blueprints/components/player/seekbar.blp" sha256="769583cfd24a170aa27ef3a95eaf9c0341abc8881fd13fd9836e7e625adec98e"/>
+  <ui template-class="PlaybackControls" filename="src/main/blueprints/components/player/playback-controls.blp" sha256="d7e586847b8003e9c507be270167d7cf7d74b256f63120d2a70603ee692bd045"/>
+  <ui template-class="WelcomePage" filename="src/main/blueprints/components/connection/welcome-page.blp" sha256="ce3ab7d60a2e0b07e7ee9323d424e5d84931d0c17f4280872eedb343a122911f"/>
+  <ui template-class="PlaylistItem" filename="src/main/blueprints/components/sidebar/playlist-item.blp" sha256="2efe59ad93749971954677f7d26b771cdfd69baa5908684dd2ca9881907b91e4"/>
+  <ui template-class="Sidebar" filename="src/main/blueprints/components/sidebar/sidebar.blp" sha256="77b2a3b54b5d186f357cc18969cec14318b7c4e022baceb52925829e80bd2b1e"/>
+  <ui template-class="Settings" filename="src/main/blueprints/components/settings/settings.blp" sha256="3eef6bd324274c86cb8b3ffad24f5012169b465e272cfdb8acb8a2d1aa154f2c"/>
+  <ui template-class="PlayerBar" filename="src/main/blueprints/components/player/bar.blp" sha256="0d19de7d143866d5714faf4f67beee3c0558c67a5d4733859bf04ad04f692330">
+    <requires>PlaybackControls</requires>
+    <requires>Seekbar</requires>
+  </ui>
+  <ui template-class="Window" filename="src/main/blueprints/window.blp" sha256="48fe7b343c711f5554c9a78f30dc063ee27030749ead1e44605f96c89b1447ad">
+    <requires>WelcomePage</requires>
+    <requires>PlayerBar</requires>
+    <requires>Sidebar</requires>
+  </ui>
+</cambalache-project>
