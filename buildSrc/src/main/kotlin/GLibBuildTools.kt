@@ -111,26 +111,29 @@ class GLibBuildTools : Plugin<Project> {
     }
 
     private fun configureInstallDependencies(project: Project, env: EnvironmentExtension) {
-        project.tasks.matching { it.name == "installDist" }.configureEach {
-            val glibData = project.tasks.findByName("installGlibData")
-            if (glibData != null) dependsOn(glibData)
+        val syncTasks = project.tasks.matching { it.name in listOf("installDist", "installShadowDist") }
+
+        project.tasks.matching { it.name.startsWith("installFile_") }.configureEach {
+            dependsOn(syncTasks)
         }
 
-        if (env.installLocation.get() == InstallLocation.SYSTEM) {
-            project.tasks.register("installSystem") {
-                group = "install"
-                description = "Install to system prefix and run post-install hooks"
-                dependsOn("installDist")
+        project.tasks.register("install") {
+            group = "install"
+            description = "Install the application and GNOME data files to the prefix"
 
-                doLast {
-                    val prefix = env.prefix.get()
-                    val staging = project.layout.buildDirectory.dir("install/${project.name}").get().asFile.path
-                    val postInstall = project.tasks.findByName("gnomePostInstall")
+            val useShadow = project.tasks.findByName("installShadowDist") != null
+            val stagingDir = if (useShadow) "${project.name}-shadow" else project.name
 
-                    project.copy { from(staging); into(prefix) }
+            dependsOn("installGlibData")
+            finalizedBy("gnomePostInstall")
 
-                    postInstall?.actions?.forEach { it.execute(postInstall) }
-                }
+            doLast {
+                val destdir = System.getenv("DESTDIR") ?: ""
+                val prefix = env.prefix.get()
+                val installTarget = destdir + prefix
+                val staging = project.layout.buildDirectory.dir("install/$stagingDir").get().asFile.path
+
+                project.copy { from(staging); into(installTarget) }
             }
         }
     }

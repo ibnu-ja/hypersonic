@@ -136,16 +136,18 @@ internal fun registerI18nTasks(
                 description = "Install $lang.mo to locale directory"
                 dependsOn("compileMo_$lang")
                 doLast {
-                    val installLocaleDir = if (config?.localeDir?.isPresent == true) {
-                        config.localeDir.get()
-                    } else {
-                        "${env.prefix.get()}/share/locale"
-                    }
-                    val installMoFile = "$installLocaleDir/$lang/LC_MESSAGES/$domain.mo"
-                    project.file(installMoFile).parentFile.mkdirs()
-                    project.copy {
-                        from(project.file("$buildLocaleDir/$lang/LC_MESSAGES/$domain.mo"))
-                        into(project.file(installMoFile).parentFile)
+                    val dirs = mutableListOf<String>()
+                    if (project.tasks.findByName("installDist") != null) dirs.add(project.name)
+                    if (project.tasks.findByName("installShadowDist") != null) dirs.add("${project.name}-shadow")
+
+                    dirs.forEach { dirName ->
+                        val installLocaleDir = "${project.layout.buildDirectory.get().asFile.path}/install/$dirName/share/locale"
+                        val installMoFile = "$installLocaleDir/$lang/LC_MESSAGES/$domain.mo"
+                        project.file(installMoFile).parentFile.mkdirs()
+                        project.copy {
+                            from(project.file("$buildLocaleDir/$lang/LC_MESSAGES/$domain.mo"))
+                            into(project.file(installMoFile).parentFile)
+                        }
                     }
                 }
             }
@@ -180,14 +182,22 @@ internal fun registerI18nTasks(
         }
 
         if (mf.installDir.isNotEmpty()) {
-            val installTarget = "${env.prefix.get()}/share/${mf.installDir}"
             val installTaskName = "installFile_$taskName"
 
             project.tasks.register(installTaskName) {
                 group = "install"
-                description = "Install merged file to $installTarget"
+                description = "Install merged file to staging"
                 dependsOn(taskName)
-                doLast { project.copy { from(outputFile); into(installTarget) } }
+                doLast {
+                    val dirs = mutableListOf<String>()
+                    if (project.tasks.findByName("installDist") != null) dirs.add(project.name)
+                    if (project.tasks.findByName("installShadowDist") != null) dirs.add("${project.name}-shadow")
+
+                    dirs.forEach { dirName ->
+                        val installTarget = "${project.layout.buildDirectory.get().asFile.path}/install/$dirName/share/${mf.installDir}"
+                        project.copy { from(outputFile); into(installTarget) }
+                    }
+                }
             }
             ensureInstallGlibData(project).dependsOn(installTaskName)
         }

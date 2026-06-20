@@ -113,13 +113,15 @@ internal fun registerGnomeTasks(project: Project, env: EnvironmentExtension, gno
             description = "Install compiled GResource bundle"
             dependsOn("compileGResources")
             doLast {
-                val targetDir = if (config?.resourceDir?.isPresent == true) {
-                    config.resourceDir.get()
-                } else {
-                    "${env.prefix.get()}/share/$domain"
-                }
-                project.file(gresourceOutputPath).let { src ->
-                    project.copy { from(src); into(targetDir) }
+                val stagingDirs = mutableListOf<String>()
+                if (project.tasks.findByName("installDist") != null) stagingDirs.add(project.name)
+                if (project.tasks.findByName("installShadowDist") != null) stagingDirs.add("${project.name}-shadow")
+
+                stagingDirs.forEach { dirName ->
+                    val targetDir = "${project.layout.buildDirectory.get().asFile.path}/install/$dirName/share/$domain"
+                    project.file(gresourceOutputPath).let { src ->
+                        project.copy { from(src); into(targetDir) }
+                    }
                 }
             }
         }
@@ -131,7 +133,10 @@ internal fun registerGnomeTasks(project: Project, env: EnvironmentExtension, gno
             group = "install"
             description = "Run GNOME post-install hooks (compile schemas, update caches)"
 
-            onlyIf { env.installLocation.get() == InstallLocation.SYSTEM }
+            onlyIf {
+                val destdir = System.getenv("DESTDIR")
+                (destdir == null || destdir.isEmpty()) && env.type.get() == EnvironmentType.NATIVE_POSIX
+            }
 
             doLast {
                 val destdir = System.getenv("DESTDIR")

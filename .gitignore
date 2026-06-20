@@ -3,7 +3,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-mesonBuild/
 .kotlin
 
 ### IntelliJ IDEA ###
@@ -52,7 +51,8 @@ bin/
 
 /logs
 
-builddir/
-
+# Flatpak build and cache directories
+build-dir/
+.flatpak-builder/
 
 *.log

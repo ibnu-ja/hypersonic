@@ -1,0 +1,34 @@
+id: moe.seiga.Hypersonic.Devel
+runtime: org.gnome.Platform
+runtime-version: '50'
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk25
+command: hypersonic
+
+finish-args:
+  - --device=dri
+  - --socket=wayland
+  - --share=ipc
+  - --socket=fallback-x11
+  - --share=network
+  - --socket=pulseaudio
+  - --env=JAVA_HOME=/app/jre
+  - --env=PATH=/app/jre/bin:/app/bin:/usr/bin
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk25/install.sh
+
+  - name: hypersonic
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    build-commands:
+      - env JAVA_HOME=/usr/lib/sdk/openjdk25 PATH=/usr/lib/sdk/openjdk25/bin:$PATH ./gradlew install -Pprefix=/app --no-daemon
+    sources:
+      - type: dir
+        path: .

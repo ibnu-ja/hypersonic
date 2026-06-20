@@ -72,6 +72,8 @@ glibBuildTools {
             output = "moe.seiga.Hypersonic.desktop"
             type   = "desktop"
             poDir  = "po"
+            installDir = "applications"
+            validate = true
         }
 
         mergeFile {
@@ -79,6 +81,8 @@ glibBuildTools {
             output = "moe.seiga.Hypersonic.metainfo.xml"
             type   = "xml"
             poDir  = "po"
+            installDir = "metainfo"
+            validate = true
         }
     }
 
@@ -87,9 +91,7 @@ glibBuildTools {
             validate = true
         }
 
-        dbusService("data/moe.seiga.Hypersonic.service.in") {
-            bindir = "/usr/local/bin"
-        }
+        dbusService("data/moe.seiga.Hypersonic.service.in")
 
         icon("data/icons/hicolor/scalable/apps/moe.seiga.Hypersonic.svg")
         icon("data/icons/hicolor/symbolic/apps/moe.seiga.Hypersonic-symbolic.svg")
