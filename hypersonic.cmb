@@ -13,7 +13,7 @@
     <requires>PlaybackControls</requires>
     <requires>Seekbar</requires>
   </ui>
-  <ui template-class="Window" filename="src/main/blueprints/window.blp" sha256="48fe7b343c711f5554c9a78f30dc063ee27030749ead1e44605f96c89b1447ad">
+  <ui template-class="Window" filename="src/main/blueprints/window.blp" sha256="72f8ad2a0470e146fe93859645478f07ac559f1c417eaa43d8309156cd74deb3">
     <requires>WelcomePage</requires>
     <requires>PlayerBar</requires>
     <requires>Sidebar</requires>

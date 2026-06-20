@@ -42,9 +42,6 @@ public class Window extends ApplicationWindow {
     @GtkChild(name = "content_stack")
     public Stack contentStack;
 
-    @GtkChild(name = "content_title")
-    public WindowTitle contentTitle;
-
     @GtkChild(name = "player_bar")
     public Bar playerBar;
 
@@ -81,7 +78,6 @@ public class Window extends ApplicationWindow {
                 var pageName = mapSidebarToPage(label);
                 if (pageName != null) {
                     contentStack.setVisibleChildName(pageName);
-                    contentTitle.setTitle(label);
                     settings.setString("last-page", pageName);
                 }
             }
