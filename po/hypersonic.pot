@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-20 17:44+0700\n"
+"POT-Creation-Date: 2026-06-20 19:01+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: data/moe.seiga.Hypersonic.desktop.in:2
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:7
 #: src/main/blueprints/components/connection/welcome-page.blp:63
-#: src/main/blueprints/window.blp:179
+#: src/main/blueprints/window.blp:185
 msgid "Hypersonic"
 msgstr ""
 
@@ -66,50 +66,52 @@ msgid "Connect to your Subsonic-compatible server"
 msgstr ""
 
 #: src/main/blueprints/components/sidebar/sidebar.blp:23
+#: src/main/blueprints/window.blp:77
 msgid "Home"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:39
+#: src/main/blueprints/components/sidebar/sidebar.blp:41
+#: src/main/blueprints/window.blp:143
 msgid "Player"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:52
+#: src/main/blueprints/components/sidebar/sidebar.blp:56
 msgid "Album"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:81
+#: src/main/blueprints/components/sidebar/sidebar.blp:85
 msgid "All"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:97
+#: src/main/blueprints/components/sidebar/sidebar.blp:103
 msgid "Random"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:113
+#: src/main/blueprints/components/sidebar/sidebar.blp:121
 msgid "Favorites"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:129
+#: src/main/blueprints/components/sidebar/sidebar.blp:139
 msgid "Recently Added"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:145
+#: src/main/blueprints/components/sidebar/sidebar.blp:157
 msgid "Recently Played"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:161
+#: src/main/blueprints/components/sidebar/sidebar.blp:175
 msgid "Most Played"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:177
+#: src/main/blueprints/components/sidebar/sidebar.blp:193
 msgid "Artist"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:197
+#: src/main/blueprints/components/sidebar/sidebar.blp:215
 msgid "Tracks"
 msgstr ""
 
-#: src/main/blueprints/components/sidebar/sidebar.blp:210
+#: src/main/blueprints/components/sidebar/sidebar.blp:230
 msgid "Playlist"
 msgstr ""
 
@@ -179,6 +181,6 @@ msgstr ""
 msgid "Connecting…"
 msgstr ""
 
-#: src/main/blueprints/window.blp:186
+#: src/main/blueprints/window.blp:192
 msgid "Menu"
 msgstr ""

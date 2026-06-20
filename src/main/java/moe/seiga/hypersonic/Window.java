@@ -8,12 +8,9 @@ import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.service.api.ConnectionState;
 import moe.seiga.hypersonic.service.api.ServerState;
 import org.gnome.adw.ApplicationWindow;
-import org.gnome.adw.WindowTitle;
 import org.gnome.gio.Settings;
 import org.gnome.gio.SettingsBindFlags;
 import org.gnome.glib.GLib;
-import org.gnome.gtk.Label;
-import org.gnome.gtk.ListBoxRow;
 import org.gnome.gtk.Revealer;
 import org.gnome.gtk.Stack;
 import org.javagi.gobject.annotations.InstanceInit;
@@ -69,17 +66,15 @@ public class Window extends ApplicationWindow {
         var ss = app.getServerState();
         welcomePage.setup(ss);
 
-            sidebar.sidebar_list.connect("selected-rows-changed", (Runnable) () -> {
+        sidebar.sidebarList.connect("selected-rows-changed", (Runnable) () -> {
             log.debug("changed sidebar item");
-            var row = sidebar.sidebar_list.getSelectedRow();
+            var row = sidebar.sidebarList.getSelectedRow();
             if (row == null) return;
-            var label = findLabel(row);
-            if (label != null) {
-                var pageName = mapSidebarToPage(label);
-                if (pageName != null) {
-                    contentStack.setVisibleChildName(pageName);
-                    settings.setString("last-page", pageName);
-                }
+            var name = row.getName();
+            var pageName = mapSidebarNameToPage(name);
+            if (pageName != null) {
+                contentStack.setVisibleChildName(pageName);
+                settings.setString("last-page", pageName);
             }
         });
 
@@ -87,7 +82,7 @@ public class Window extends ApplicationWindow {
             var state = ss.getConnectionState();
             switch (state) {
                 case NOT_CONNECTED, INVALID_CREDENTIALS, SERVER_UNREACHABLE, SSL_ERROR ->
-                    mainStack.setVisibleChildName("welcome");
+                        mainStack.setVisibleChildName("welcome");
                 case CONNECTING -> mainStack.setVisibleChildName("loading");
                 case CONNECTED -> {
                     mainStack.setVisibleChildName("content");
@@ -110,35 +105,27 @@ public class Window extends ApplicationWindow {
         }
     }
 
-    private String findLabel(ListBoxRow row) {
-        var child = row.getChild();
-        if (child instanceof org.gnome.gtk.Box box) {
-            for (var c = box.getFirstChild(); c != null; c = c.getNextSibling()) {
-                if (c instanceof Label l) return l.getText();
-            }
-        }
-        return null;
-    }
-
     private void selectSidebarRow(String pageName) {
         for (int i = 0; ; i++) {
-            var row = sidebar.sidebar_list.getRowAtIndex(i);
+            var row = sidebar.sidebarList.getRowAtIndex(i);
             if (row == null) break;
             if (row.getSelectable()) {
-                var label = findLabel(row);
-                if (label != null && pageName.equals(mapSidebarToPage(label))) {
-                    sidebar.sidebar_list.selectRow(row);
+                var name = row.getName();
+                if (pageName.equals(mapSidebarNameToPage(name))) {
+                    sidebar.sidebarList.selectRow(row);
                     return;
                 }
             }
         }
     }
 
-    private String mapSidebarToPage(String label) {
-        return switch (label) {
-            case "Home" -> "home_page";
-            case "Player" -> "player_page";
-            case "All", "Random", "Favorites", "Recently Played", "Recently Added", "Artist", "Most Played", "Tracks" -> "testing_page";
+    private String mapSidebarNameToPage(String name) {
+        if (name == null) return null;
+        return switch (name) {
+            case "home" -> "home_page";
+            case "player" -> "player_page";
+            case "album_all", "album_random", "album_fav", "album_recently_added",
+                 "album_recently_played", "album_most_played", "artists", "tracks" -> "testing_page";
             default -> null;
         };
     }

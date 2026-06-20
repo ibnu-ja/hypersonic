@@ -7,7 +7,7 @@
   <ui template-class="PlaybackControls" filename="src/main/blueprints/components/player/playback-controls.blp" sha256="d7e586847b8003e9c507be270167d7cf7d74b256f63120d2a70603ee692bd045"/>
   <ui template-class="WelcomePage" filename="src/main/blueprints/components/connection/welcome-page.blp" sha256="ce3ab7d60a2e0b07e7ee9323d424e5d84931d0c17f4280872eedb343a122911f"/>
   <ui template-class="PlaylistItem" filename="src/main/blueprints/components/sidebar/playlist-item.blp" sha256="2efe59ad93749971954677f7d26b771cdfd69baa5908684dd2ca9881907b91e4"/>
-  <ui template-class="Sidebar" filename="src/main/blueprints/components/sidebar/sidebar.blp" sha256="77b2a3b54b5d186f357cc18969cec14318b7c4e022baceb52925829e80bd2b1e"/>
+  <ui template-class="Sidebar" filename="src/main/blueprints/components/sidebar/sidebar.blp" sha256="95960d34ba51d04c04034d5a5a5ff4caae650e773e3563ca0fa5630e404bf00b"/>
   <ui template-class="Settings" filename="src/main/blueprints/components/settings/settings.blp" sha256="3eef6bd324274c86cb8b3ffad24f5012169b465e272cfdb8acb8a2d1aa154f2c"/>
   <ui template-class="PlayerBar" filename="src/main/blueprints/components/player/bar.blp" sha256="0d19de7d143866d5714faf4f67beee3c0558c67a5d4733859bf04ad04f692330">
     <requires>PlaybackControls</requires>

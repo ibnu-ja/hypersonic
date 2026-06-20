@@ -2,8 +2,6 @@ package moe.seiga.hypersonic.navigation.sidebar;
 
 import org.gnome.gtk.Box;
 import org.gnome.gtk.ListBox;
-import org.gnome.gtk.ListBoxRow;
-import org.gnome.gtk.ListBoxUpdateHeaderFunc;
 import org.gnome.gtk.Orientation;
 import org.gnome.gtk.Separator;
 import org.javagi.gobject.annotations.InstanceInit;
@@ -17,8 +15,8 @@ import java.util.List;
 @GtkTemplate(ui = "/moe/seiga/Hypersonic/components/sidebar/sidebar.ui", name = "Sidebar")
 public class Sidebar extends Box {
 
-    @GtkChild
-    public ListBox sidebar_list;
+    @GtkChild(name = "sidebar_list")
+    public ListBox sidebarList;
 
     public Sidebar() {
         super();
@@ -31,7 +29,7 @@ public class Sidebar extends Box {
     @InstanceInit
     @SuppressWarnings("unused")
     public void init() {
-        sidebar_list.setHeaderFunc((ListBoxUpdateHeaderFunc) (row, before) -> {
+        sidebarList.setHeaderFunc((row, before) -> {
             row.setHeader(null);
             if (before != null && row.hasCssClass("section-start")) {
                 row.setHeader(new Separator(Orientation.HORIZONTAL));
@@ -41,23 +39,22 @@ public class Sidebar extends Box {
 
     private final List<PlaylistItem> items = new ArrayList<>();
 
-    public PlaylistItem addItem(String iconName, String label) {
+    public void addItem(String iconName, String label) {
         var item = new PlaylistItem(iconName, label);
-        sidebar_list.append(item);
+        sidebarList.append(item);
         items.add(item);
-        return item;
     }
 
     public void clearItems() {
         for (var item : items) {
-            sidebar_list.remove(item);
+            sidebarList.remove(item);
         }
         items.clear();
     }
 
     public void onItemSelected(java.util.function.Consumer<PlaylistItem> callback) {
-        sidebar_list.connect("selected-rows-changed", (Runnable) () -> {
-            var selected = sidebar_list.getSelectedRow();
+        sidebarList.connect("selected-rows-changed", (Runnable) () -> {
+            var selected = sidebarList.getSelectedRow();
             if (selected instanceof PlaylistItem pi) {
                 callback.accept(pi);
             }
