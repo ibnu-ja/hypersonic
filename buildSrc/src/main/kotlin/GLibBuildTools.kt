@@ -54,6 +54,7 @@ class GLibBuildTools : Plugin<Project> {
         project.tasks.findByName("compileBlueprints")?.let { glibTasks.add(it) }
         project.tasks.findByName("mergeDesktopFile")?.let { glibTasks.add(it) }
         project.tasks.findByName("mergeAppstreamFile")?.let { glibTasks.add(it) }
+        project.tasks.findByName("compileTranslations")?.let { glibTasks.add(it) }
 
         // GSchema compilation for run
         val dataExt = extension.dataExtension
@@ -104,6 +105,7 @@ class GLibBuildTools : Plugin<Project> {
         if (project.tasks.findByName("compileBlueprints") != null) buildDeps.add("compileBlueprints")
         if (project.tasks.findByName("mergeDesktopFile") != null) buildDeps.add("mergeDesktopFile")
         if (project.tasks.findByName("mergeAppstreamFile") != null) buildDeps.add("mergeAppstreamFile")
+        if (project.tasks.findByName("compileTranslations") != null) buildDeps.add("compileTranslations")
 
         if (buildDeps.isNotEmpty()) {
             project.tasks.named("build") { dependsOn(buildDeps) }

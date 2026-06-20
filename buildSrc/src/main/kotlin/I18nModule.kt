@@ -153,6 +153,13 @@ internal fun registerI18nTasks(
             }
             ensureInstallGlibData(project).dependsOn(installTaskName)
         }
+
+        val compileMoTasks = poFiles.map { "compileMo_${it.nameWithoutExtension}" }
+        project.tasks.register("compileTranslations") {
+            group = "build"
+            description = "Compile all .po translation files to .mo binary"
+            dependsOn(compileMoTasks)
+        }
     }
 
     i18n.mergeFileConfigs.forEach { mf ->
