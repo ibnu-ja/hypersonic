@@ -42,13 +42,13 @@ glibBuildTools {
         blueprints {
             sourceDir = "src/main/blueprints"
             files = listOf(
+                "src/main/blueprints/player/player-bar.blp",
+                "src/main/blueprints/player/playback-controls.blp",
+                "src/main/blueprints/player/seekbar.blp",
+                "src/main/blueprints/welcome-page.blp",
+                "src/main/blueprints/settings.blp",
+                "src/main/blueprints/sidebar-item.blp",
                 "src/main/blueprints/window.blp",
-                "src/main/blueprints/components/player/bar.blp",
-                "src/main/blueprints/components/player/playback-controls.blp",
-                "src/main/blueprints/components/player/seekbar.blp",
-                "src/main/blueprints/components/settings/settings.blp",
-                "src/main/blueprints/components/connection/welcome-page.blp",
-                "src/main/blueprints/components/sidebar/sidebar-item.blp",
             )
         }
 

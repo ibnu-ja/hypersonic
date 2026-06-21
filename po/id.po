@@ -1,7 +1,6 @@
 #: data/moe.seiga.Hypersonic.desktop.in:2
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:7
-#: src/main/blueprints/components/connection/welcome-page.blp:63
-#: src/main/blueprints/window.blp:247
+#: src/main/blueprints/welcome-page.blp:63 src/main/blueprints/window.blp:247
 #, fuzzy
 msgid "Hypersonic"
 msgstr "Selamat datang di Hypersonic!"
@@ -27,81 +26,79 @@ msgstr ""
 msgid "A caption"
 msgstr ""
 
-#: src/main/blueprints/components/player/bar.blp:21
-msgid "Volume"
-msgstr ""
-
-#: src/main/blueprints/components/player/bar.blp:31
-msgid "More Options"
-msgstr ""
-
-#: src/main/blueprints/components/player/playback-controls.blp:10
+#: src/main/blueprints/player/playback-controls.blp:10
 msgid "Repeat Mode"
 msgstr ""
 
-#: src/main/blueprints/components/player/playback-controls.blp:21
+#: src/main/blueprints/player/playback-controls.blp:21
 msgid "Previous"
 msgstr ""
 
-#: src/main/blueprints/components/player/playback-controls.blp:32
+#: src/main/blueprints/player/playback-controls.blp:32
 msgid "Play"
 msgstr ""
 
-#: src/main/blueprints/components/player/playback-controls.blp:43
+#: src/main/blueprints/player/playback-controls.blp:43
 msgid "Next"
 msgstr ""
 
-#: src/main/blueprints/components/player/playback-controls.blp:54
+#: src/main/blueprints/player/playback-controls.blp:54
 msgid "Shuffle Queue"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:23
+#: src/main/blueprints/player/player-bar.blp:21
+msgid "Volume"
+msgstr ""
+
+#: src/main/blueprints/player/player-bar.blp:31
+msgid "More Options"
+msgstr ""
+
+#: src/main/blueprints/welcome-page.blp:23
 msgid "Server URL"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:29
+#: src/main/blueprints/welcome-page.blp:29
 msgid "Username"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:35
+#: src/main/blueprints/welcome-page.blp:35
 msgid "Password"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:46
+#: src/main/blueprints/welcome-page.blp:46
 msgid "Connect"
 msgstr ""
 
-#: src/main/blueprints/components/connection/welcome-page.blp:61
+#: src/main/blueprints/welcome-page.blp:61
 msgid "Connect to your Subsonic-compatible server"
 msgstr ""
 
-#: src/main/blueprints/components/settings/settings.blp:5
+#: src/main/blueprints/settings.blp:5
 msgid "Preferences"
 msgstr ""
 
-#: src/main/blueprints/components/settings/settings.blp:8
+#: src/main/blueprints/settings.blp:8
 msgid "General"
 msgstr ""
 
-#: src/main/blueprints/components/settings/settings.blp:11
-#: src/main/blueprints/components/settings/settings.blp:14
+#: src/main/blueprints/settings.blp:11 src/main/blueprints/settings.blp:14
 msgid "Font"
 msgstr ""
 
-#: src/main/blueprints/components/settings/settings.blp:24
-#: src/main/blueprints/components/settings/settings.blp:35
+#: src/main/blueprints/settings.blp:24 src/main/blueprints/settings.blp:35
 msgid "Transition"
 msgstr ""
 
-#: src/main/blueprints/components/settings/settings.blp:29
+#: src/main/blueprints/settings.blp:29
 msgid "None"
 msgstr ""
 
-#: src/main/blueprints/components/settings/settings.blp:30
+#: src/main/blueprints/settings.blp:30
 msgid "Fade"
 msgstr ""
 
-#: src/main/blueprints/components/settings/settings.blp:31
+#: src/main/blueprints/settings.blp:31
 msgid "Slide"
 msgstr ""
 

@@ -1,4 +1,4 @@
-package moe.seiga.hypersonic.player.controller;
+package moe.seiga.hypersonic.playback;
 
 import org.javagi.gobject.annotations.RegisteredType;
 

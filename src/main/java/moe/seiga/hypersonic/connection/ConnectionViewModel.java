@@ -1,4 +1,4 @@
-package moe.seiga.hypersonic.service.api;
+package moe.seiga.hypersonic.connection;
 
 import dev.zt64.subsonic.api.model.Playlist;
 import lombok.Getter;
@@ -12,7 +12,6 @@ import org.javagi.gobject.annotations.Signal;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -20,8 +19,8 @@ import java.util.concurrent.TimeoutException;
 import javax.net.ssl.SSLHandshakeException;
 
 @Slf4j
-@RegisteredType(name = "ServerState")
-public class ServerState extends GObject {
+@RegisteredType(name = "ConnectionViewModel")
+public class ConnectionViewModel extends GObject {
 
     @Signal(name = "playlists-changed")
     public interface PlaylistsChanged {
@@ -50,7 +49,7 @@ public class ServerState extends GObject {
     @Getter
     private List<Playlist> playlists = Collections.emptyList();
 
-    public ServerState(Settings settings) {
+    public ConnectionViewModel(Settings settings) {
         this.settings = settings;
         this.passwordStore = new PasswordStore();
         this.serverUrl = settings.getString("server-url");

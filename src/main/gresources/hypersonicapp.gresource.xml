@@ -2,15 +2,16 @@
 <!-- Created with Cambalache 1.0.2 -->
 <gresources>
   <gresource prefix="/moe/seiga/Hypersonic">
+    <file preprocess="xml-stripblanks">player/player-bar.ui</file>
+    <file preprocess="xml-stripblanks">player/playback-controls.ui</file>
+    <file preprocess="xml-stripblanks">player/seekbar.ui</file>
+    <file preprocess="xml-stripblanks">settings.ui</file>
+    <file preprocess="xml-stripblanks">sidebar-item.ui</file>
+    <file preprocess="xml-stripblanks">welcome-page.ui</file>
     <file preprocess="xml-stripblanks">window.ui</file>
-    <file preprocess="xml-stripblanks">components/player/bar.ui</file>
-    <file preprocess="xml-stripblanks">components/player/playback-controls.ui</file>
-    <file preprocess="xml-stripblanks">components/player/seekbar.ui</file>
-    <file preprocess="xml-stripblanks">components/settings/settings.ui</file>
-    <file preprocess="xml-stripblanks">components/connection/welcome-page.ui</file>
-    <file preprocess="xml-stripblanks">components/sidebar/sidebar-item.ui</file>
     <file>icons/scalable/actions/library-album-symbolic.svg</file>
     <file>icons/scalable/actions/library-music-symbolic.svg</file>
     <file>icons/scalable/actions/sound-symbolic.svg</file>
   </gresource>
 </gresources>
+

@@ -1,7 +1,7 @@
-package moe.seiga.hypersonic.navigation.connection;
+package moe.seiga.hypersonic.ui;
 
 import lombok.extern.slf4j.Slf4j;
-import moe.seiga.hypersonic.service.api.ServerState;
+import moe.seiga.hypersonic.connection.ConnectionViewModel;
 import org.gnome.adw.EntryRow;
 import org.gnome.adw.PasswordEntryRow;
 import org.gnome.gtk.Box;
@@ -13,7 +13,7 @@ import org.javagi.gtk.annotations.GtkTemplate;
 import java.lang.foreign.MemorySegment;
 
 @Slf4j
-@GtkTemplate(ui = "/moe/seiga/Hypersonic/components/connection/welcome-page.ui", name = "WelcomePage")
+@GtkTemplate(ui = "/moe/seiga/Hypersonic/welcome-page.ui", name = "WelcomePage")
 public class WelcomePage extends Box {
 
     @GtkChild
@@ -31,7 +31,7 @@ public class WelcomePage extends Box {
     @GtkChild
     public Spinner spinner;
 
-    private ServerState serverState;
+    private ConnectionViewModel connectionViewModel;
 
     public WelcomePage() {
         super();
@@ -41,8 +41,8 @@ public class WelcomePage extends Box {
         super(address);
     }
 
-    public void setup(ServerState ss) {
-        this.serverState = ss;
+    public void setup(ConnectionViewModel vm) {
+        this.connectionViewModel = vm;
 
         url_entry.connect("changed", (Runnable) () -> {
             var text = url_entry.getText();
@@ -67,8 +67,8 @@ public class WelcomePage extends Box {
             }
         });
 
-        ss.onNotify("connection-state", _ -> {
-            var state = ss.getConnectionState();
+        vm.onNotify("connection-state", _ -> {
+            var state = vm.getConnectionState();
             switch (state) {
                 case CONNECTING -> {
                     connect_button.setSensitive(false);
@@ -86,7 +86,7 @@ public class WelcomePage extends Box {
 
     @SuppressWarnings("unused")
     public void on_connect() {
-        if (serverState == null) return;
+        if (connectionViewModel == null) return;
         String url = url_entry.getText();
         String user = username_entry.getText();
         String pass = password_entry.getText();
@@ -96,7 +96,7 @@ public class WelcomePage extends Box {
         if (validateField(password_entry, pass, false)) return;
 
         log.info("Connecting to {} as {}", url, user);
-        serverState.startConnection(url, user, pass);
+        connectionViewModel.startConnection(url, user, pass);
     }
 
     private boolean validateField(EntryRow entry, String text, boolean isUrl) {

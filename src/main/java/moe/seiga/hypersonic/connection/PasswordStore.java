@@ -1,4 +1,4 @@
-package moe.seiga.hypersonic.service.api;
+package moe.seiga.hypersonic.connection;
 
 import lombok.extern.slf4j.Slf4j;
 import moe.seiga.Config;

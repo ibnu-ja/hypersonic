@@ -5,9 +5,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import moe.seiga.Config;
-import moe.seiga.hypersonic.navigation.settings.SettingWindow;
-import moe.seiga.hypersonic.player.controller.Player;
-import moe.seiga.hypersonic.service.api.ServerState;
+import moe.seiga.hypersonic.ui.SettingWindow;
+import moe.seiga.hypersonic.playback.PlaybackViewModel;
+import moe.seiga.hypersonic.connection.ConnectionViewModel;
+import moe.seiga.hypersonic.ui.Window;
 import org.gnome.gdk.Display;
 import org.gnome.gio.ApplicationFlags;
 import org.gnome.gio.File;
@@ -23,14 +24,17 @@ import java.util.List;
 @Slf4j
 public class Application extends org.gnome.adw.Application {
 
+    @SuppressWarnings("FieldMayBeFinal")
     @Getter
     private Settings settings;
 
+    @SuppressWarnings("FieldMayBeFinal")
     @Getter
-    private Player player;
+    private PlaybackViewModel playbackViewModel;
 
+    @SuppressWarnings("FieldMayBeFinal")
     @Getter
-    private ServerState serverState;
+    private ConnectionViewModel connectionViewModel;
 
     @Override
     public void activate() {
@@ -93,7 +97,7 @@ public class Application extends org.gnome.adw.Application {
         setResourceBasePath("/moe/seiga/Hypersonic");
 
         this.settings = new Settings(Config.APPLICATION_ID);
-        this.player = new Player();
-        this.serverState = new ServerState(settings);
+        this.playbackViewModel = new PlaybackViewModel();
+        this.connectionViewModel = new ConnectionViewModel(settings);
     }
 }

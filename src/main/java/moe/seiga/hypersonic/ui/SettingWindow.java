@@ -1,4 +1,4 @@
-package moe.seiga.hypersonic.navigation.settings;
+package moe.seiga.hypersonic.ui;
 
 import org.gnome.gio.Settings;
 import org.javagi.gobject.annotations.InstanceInit;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-@GtkTemplate(ui = "/moe/seiga/Hypersonic/components/settings/settings.ui", name = "Settings")
+@GtkTemplate(ui = "/moe/seiga/Hypersonic/settings.ui", name = "Settings")
 @SuppressWarnings({"java:S110", "java:S1192"})
 @EqualsAndHashCode(callSuper = true)
 public class SettingWindow extends PreferencesDialog {

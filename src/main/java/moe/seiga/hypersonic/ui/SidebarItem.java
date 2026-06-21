@@ -1,4 +1,4 @@
-package moe.seiga.hypersonic.navigation.sidebar;
+package moe.seiga.hypersonic.ui;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Slf4j
 @RegisteredType(name = "SidebarItem")
-@GtkTemplate(ui = "/moe/seiga/Hypersonic/components/sidebar/sidebar-item.ui", name = "SidebarItem")
+@GtkTemplate(ui = "/moe/seiga/Hypersonic/sidebar-item.ui", name = "SidebarItem")
 @SuppressWarnings({"java:S110", "java:S1192"})
 @EqualsAndHashCode(callSuper = true)
 public class SidebarItem extends org.gnome.adw.SidebarItem {

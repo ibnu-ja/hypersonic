@@ -23,9 +23,39 @@ public class GstBackend extends GObject {
     @Getter
     private String url;
 
+    @Getter
+    private long positionNanos = 0;
+
+    @Getter
+    private long durationNanos = 0;
+
+    private double volume = 1.0;
+
+    private boolean isTimerRunning = false;
+
     @Signal(name = "eos")
     public interface EosSignal {
         void run();
+    }
+
+    @Signal(name = "position-updated")
+    public interface PositionUpdatedSignal {
+        void run(long nanos);
+    }
+
+    @Signal(name = "duration-changed")
+    public interface DurationChangedSignal {
+        void run(long nanos);
+    }
+
+    @Signal(name = "state-changed")
+    public interface StateChangedSignal {
+        void run(int stateOrdinal);
+    }
+
+    @Signal(name = "error")
+    public interface ErrorSignal {
+        void run(String message);
     }
 
     public GstBackend() {
@@ -98,6 +128,7 @@ public class GstBackend extends GObject {
                 msg.parseError(errorOut, debugOut);
                 String errorMsg = errorOut.get() != null ? errorOut.get().readMessage() : "Unknown Error";
                 log.error("GStreamer Error: {} - Debug: {}", errorMsg, debugOut.get());
+                emit("error", errorMsg);
                 GLib.idleAdd(GLib.PRIORITY_DEFAULT_IDLE, () -> false);
             }
             else if (msgTypes.contains(MessageType.STATE_CHANGED)) {
@@ -112,10 +143,65 @@ public class GstBackend extends GObject {
                         log.debug("Backend state changed: {} -> {}", this.state, current);
                         this.state = current;
                         notify("state");
+                        assert current != null;
+                        emit("state-changed", current.ordinal());
+
+                        if (current == State.PLAYING && !isTimerRunning) {
+                            isTimerRunning = true;
+                            GLib.timeoutAdd(GLib.PRIORITY_DEFAULT, 250, (org.gnome.glib.SourceFunc) this::pollPosition);
+                        }
+                    }
+                }
+            }
+            else if (msgTypes.contains(MessageType.DURATION_CHANGED)) {
+                Out<Long> durOut = new Out<>();
+                if (playbin.queryDuration(Format.TIME, durOut)) {
+                    long dur = durOut.get();
+                    if (this.durationNanos != dur) {
+                        this.durationNanos = dur;
+                        notify("duration-nanos");
+                        emit("duration-changed", dur);
                     }
                 }
             }
         });
+    }
+
+    private boolean pollPosition() {
+        if (this.state != State.PLAYING) {
+            this.isTimerRunning = false;
+            return false;
+        }
+        Out<Long> posOut = new Out<>();
+        if (playbin.queryPosition(Format.TIME, posOut)) {
+            long pos = posOut.get();
+            if (this.positionNanos != pos) {
+                this.positionNanos = pos;
+                notify("position-nanos");
+                emit("position-updated", pos);
+            }
+        }
+        return true;
+    }
+
+    public void seek(long nanos) {
+        if (playbin != null) {
+            playbin.seekSimple(Format.TIME, java.util.EnumSet.of(SeekFlags.FLUSH, SeekFlags.KEY_UNIT), nanos);
+        }
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(double value) {
+        if (this.volume != value) {
+            this.volume = value;
+            if (playbin != null) {
+                playbin.set("volume", value);
+            }
+            notify("volume");
+        }
     }
 
     @Override

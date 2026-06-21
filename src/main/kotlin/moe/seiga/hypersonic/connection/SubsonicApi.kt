@@ -1,4 +1,4 @@
-package moe.seiga.hypersonic.service.api
+package moe.seiga.hypersonic.connection
 
 import dev.zt64.subsonic.api.model.Album
 import dev.zt64.subsonic.api.model.Playlist
@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.future.future
-import moe.seiga.hypersonic.player.controller.Song
+import moe.seiga.hypersonic.playback.Song
 import java.util.concurrent.CompletableFuture
 
 class SubsonicApi(private val client: SubsonicClient) : AutoCloseable {

@@ -1,13 +1,12 @@
-package moe.seiga.hypersonic;
+package moe.seiga.hypersonic.ui;
 
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import dev.zt64.subsonic.api.model.Playlist;
-import moe.seiga.hypersonic.navigation.connection.WelcomePage;
-import moe.seiga.hypersonic.navigation.sidebar.SidebarItem;
-import moe.seiga.hypersonic.player.Bar;
-import moe.seiga.hypersonic.service.api.ConnectionState;
-import moe.seiga.hypersonic.service.api.ServerState;
+import moe.seiga.hypersonic.Application;
+import moe.seiga.hypersonic.ui.player.PlayerBar;
+import moe.seiga.hypersonic.connection.ConnectionState;
+import moe.seiga.hypersonic.connection.ConnectionViewModel;
 import org.gnome.adw.ApplicationWindow;
 import org.gnome.adw.Sidebar;
 import org.gnome.adw.SidebarSection;
@@ -44,7 +43,7 @@ public class Window extends ApplicationWindow {
     public Stack contentStack;
 
     @GtkChild(name = "player_bar")
-    public Bar playerBar;
+    public PlayerBar playerBar;
 
     @GtkChild(name = "player_bar_revealer")
     public Revealer playerBarRevealer;
@@ -70,7 +69,7 @@ public class Window extends ApplicationWindow {
         settings.bind("is-maximized", this, "maximized", SettingsBindFlags.DEFAULT);
         settings.bind("is-fullscreen", this, "fullscreened", SettingsBindFlags.DEFAULT);
 
-        var ss = app.getServerState();
+        var ss = app.getConnectionViewModel();
         welcomePage.setup(ss);
 
         sidebar.onNotify("selected-item", pspec -> {
@@ -92,7 +91,7 @@ public class Window extends ApplicationWindow {
                 case CONNECTING -> mainStack.setVisibleChildName("loading");
                 case CONNECTED -> {
                     mainStack.setVisibleChildName("content");
-                    ss.connect("playlists-changed", (ServerState.PlaylistsChanged) () -> populatePlaylistSidebarSection(ss.getPlaylists()));
+                    ss.connect("playlists-changed", (ConnectionViewModel.PlaylistsChanged) () -> populatePlaylistSidebarSection(ss.getPlaylists()));
                     populatePlaylistSidebarSection(ss.getPlaylists());
                     contentStack.onNotify("visible-child-name", _ -> {
                         String visibleTag = contentStack.getVisibleChildName();
@@ -102,7 +101,7 @@ public class Window extends ApplicationWindow {
                             selectSidebar(visibleTag);
                         }
                     });
-                    playerBar.setup(app.getPlayer());
+                    playerBar.setup(app.getPlaybackViewModel());
                     var last = settings.getString("last-page");
                     if (!last.isBlank()) {
                         selectPage(last);

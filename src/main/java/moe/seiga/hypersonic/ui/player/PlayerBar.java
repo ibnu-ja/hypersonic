@@ -1,9 +1,9 @@
-package moe.seiga.hypersonic.player;
+package moe.seiga.hypersonic.ui.player;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import moe.seiga.hypersonic.player.controller.Player;
-import moe.seiga.hypersonic.player.controller.Song;
+import moe.seiga.hypersonic.playback.PlaybackViewModel;
+import moe.seiga.hypersonic.playback.Song;
+import moe.seiga.hypersonic.playback.PlayerViewModel;
 import org.gnome.gobject.ParamSpec;
 import org.gnome.gtk.Box;
 import org.gnome.gtk.Label;
@@ -13,8 +13,8 @@ import org.javagi.gtk.annotations.GtkTemplate;
 import java.lang.foreign.MemorySegment;
 
 @Slf4j
-@GtkTemplate(ui = "/moe/seiga/Hypersonic/components/player/bar.ui", name = "PlayerBar")
-public class Bar extends Box {
+@GtkTemplate(ui = "/moe/seiga/Hypersonic/player/player-bar.ui", name = "PlayerBar")
+public class PlayerBar extends Box {
 
     @GtkChild(name = "playback_controls")
     public PlaybackControls playbackControls;
@@ -31,18 +31,19 @@ public class Bar extends Box {
     @GtkChild
     public Label album;
 
-    public Bar() {
+    public PlayerBar() {
         super();
     }
 
-    public Bar(MemorySegment address) {
+    public PlayerBar(MemorySegment address) {
         super(address);
     }
 
-    public void setup(Player vm) {
+    public void setup(PlaybackViewModel vm) {
+        PlayerViewModel ps = vm.getPlayerViewModel();
 
-        vm.onNotify("current-song", (ParamSpec _) -> {
-            Song song = vm.getCurrentSong();
+        ps.onNotify("current-song", (ParamSpec _) -> {
+            Song song = ps.getCurrentSong();
             if (song != null) {
                 artist.setText(song.getArtist());
                 songName.setText(song.getTitle());

@@ -2,15 +2,19 @@ package moe.seiga.hypersonic;
 
 import lombok.extern.slf4j.Slf4j;
 import moe.seiga.Config;
-import moe.seiga.hypersonic.navigation.connection.WelcomePage;
-import moe.seiga.hypersonic.navigation.sidebar.SidebarItem;
-import moe.seiga.hypersonic.player.Bar;
-import moe.seiga.hypersonic.player.PlaybackControls;
-import moe.seiga.hypersonic.player.Seekbar;
-import moe.seiga.hypersonic.player.controller.PlaybackState;
-import moe.seiga.hypersonic.player.controller.RepeatMode;
-import moe.seiga.hypersonic.service.api.ConnectionState;
-import moe.seiga.hypersonic.service.api.ServerState;
+import moe.seiga.hypersonic.ui.WelcomePage;
+import moe.seiga.hypersonic.ui.SidebarItem;
+import moe.seiga.hypersonic.ui.player.PlayerBar;
+import moe.seiga.hypersonic.ui.player.PlaybackControls;
+import moe.seiga.hypersonic.ui.player.Seekbar;
+import moe.seiga.hypersonic.playback.PlaybackState;
+import moe.seiga.hypersonic.playback.RepeatMode;
+import moe.seiga.hypersonic.playback.PlayerViewModel;
+import moe.seiga.hypersonic.playback.Queue;
+import moe.seiga.hypersonic.connection.ConnectionState;
+import moe.seiga.hypersonic.connection.ConnectionViewModel;
+import moe.seiga.hypersonic.service.audio.GstBackend;
+import moe.seiga.hypersonic.playback.PlaybackViewModel;
 import org.freedesktop.gstreamer.gst.Gst;
 import org.gnome.gdkpixbuf.Pixbuf;
 import org.gnome.gio.Resource;
@@ -48,7 +52,7 @@ public class Main {
         resource.resourcesRegister();
 
         // Register Template Classes
-        TemplateTypes.register(Bar.class);
+        TemplateTypes.register(PlayerBar.class);
         TemplateTypes.register(PlaybackControls.class);
         TemplateTypes.register(Seekbar.class);
         TemplateTypes.register(WelcomePage.class);
@@ -57,7 +61,11 @@ public class Main {
         Types.register(PlaybackState.class);
         Types.register(RepeatMode.class);
         Types.register(ConnectionState.class);
-        Types.register(ServerState.class);
+        Types.register(ConnectionViewModel.class);
+        Types.register(PlayerViewModel.class);
+        Types.register(Queue.class);
+        Types.register(GstBackend.class);
+        Types.register(PlaybackViewModel.class);
 
         new Application().run(args);
     }

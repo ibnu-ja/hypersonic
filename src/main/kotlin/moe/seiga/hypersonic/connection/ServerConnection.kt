@@ -1,4 +1,4 @@
-package moe.seiga.hypersonic.service.api
+package moe.seiga.hypersonic.connection
 
 import java.lang.IllegalStateException
 

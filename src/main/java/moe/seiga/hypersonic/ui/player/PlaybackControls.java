@@ -1,9 +1,8 @@
-package moe.seiga.hypersonic.player;
+package moe.seiga.hypersonic.ui.player;
 
-import moe.seiga.hypersonic.player.controller.PlaybackState;
-import moe.seiga.hypersonic.player.controller.Player;
-import org.gnome.glib.Type;
-import org.gnome.gobject.ParamSpec;
+import moe.seiga.hypersonic.playback.PlaybackState;
+import moe.seiga.hypersonic.playback.PlaybackViewModel;
+import moe.seiga.hypersonic.playback.PlayerViewModel;
 import org.gnome.gtk.Box;
 import org.gnome.gtk.Button;
 import org.javagi.gtk.annotations.GtkChild;
@@ -11,7 +10,7 @@ import org.javagi.gtk.annotations.GtkTemplate;
 
 import java.lang.foreign.MemorySegment;
 
-@GtkTemplate(ui = "/moe/seiga/Hypersonic/components/player/playback-controls.ui", name = "PlaybackControls")
+@GtkTemplate(ui = "/moe/seiga/Hypersonic/player/playback-controls.ui", name = "PlaybackControls")
 public class PlaybackControls extends Box {
 
     public PlaybackControls() {
@@ -31,33 +30,23 @@ public class PlaybackControls extends Box {
     @GtkChild(name = "next_btn")
     public Button nextButton;
 
-    public void setup(Player vm) {
+    public void setup(PlaybackViewModel vm) {
+        PlayerViewModel ps = vm.getPlayerViewModel();
+
         // State changes → update button
-        vm.onNotify("state", pspec -> {
+        ps.onNotify("state", pspec -> {
             assert pspec != null;
-            PlaybackState state = getStateFromParamSpec(vm, pspec);
-            updatePlayPauseButton(state);
+            updatePlayPauseButton(ps.getState());
         });
 
         // Button click → action method
-        playPauseButton.onClicked(() -> {
-            vm.togglePlayback();
-        });
+        playPauseButton.onClicked(vm::togglePlayback);
 
-        nextButton.onClicked(() -> {
-            // TODO: implement next
-        });
+        nextButton.onClicked(vm::next);
 
-        previousButton.onClicked(() -> {
-            // TODO: implement previous
-        });
-        updatePlayPauseButton(vm.getState());
-    }
+        previousButton.onClicked(vm::previous);
 
-    private PlaybackState getStateFromParamSpec(Player player, ParamSpec pspec) {
-        String propertyName = pspec.getName();
-        var value = player.getProperty(propertyName);
-        return (PlaybackState) value;
+        updatePlayPauseButton(ps.getState());
     }
 
     private void updatePlayPauseButton(PlaybackState state) {

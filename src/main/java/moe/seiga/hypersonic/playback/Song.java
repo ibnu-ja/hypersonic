@@ -1,10 +1,10 @@
-package moe.seiga.hypersonic.player.controller;
+package moe.seiga.hypersonic.playback;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import moe.seiga.hypersonic.service.api.ServerConnection;
+import moe.seiga.hypersonic.connection.ServerConnection;
 import org.gnome.gobject.GObject;
 import org.javagi.gobject.annotations.RegisteredType;
 
