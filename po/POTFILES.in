@@ -5,11 +5,10 @@ data/moe.seiga.Hypersonic.metainfo.xml.in
 data/moe.seiga.Hypersonic.service.in
 
 # find src -name "*.blp" -print
-src/main/blueprints/components/connection/welcome-page.blp
-src/main/blueprints/components/sidebar/playlist-item.blp
-src/main/blueprints/components/sidebar/sidebar.blp
 src/main/blueprints/components/player/bar.blp
 src/main/blueprints/components/player/playback-controls.blp
 src/main/blueprints/components/player/seekbar.blp
+src/main/blueprints/components/connection/welcome-page.blp
+src/main/blueprints/components/sidebar/sidebar-item.blp
 src/main/blueprints/components/settings/settings.blp
 src/main/blueprints/window.blp

@@ -1,7 +1,7 @@
 #: data/moe.seiga.Hypersonic.desktop.in:2
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:7
 #: src/main/blueprints/components/connection/welcome-page.blp:63
-#: src/main/blueprints/window.blp:185
+#: src/main/blueprints/window.blp:247
 #, fuzzy
 msgid "Hypersonic"
 msgstr "Selamat datang di Hypersonic!"
@@ -25,78 +25,6 @@ msgstr ""
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:52
 #: data/moe.seiga.Hypersonic.metainfo.xml.in:56
 msgid "A caption"
-msgstr ""
-
-#: src/main/blueprints/components/connection/welcome-page.blp:23
-msgid "Server URL"
-msgstr ""
-
-#: src/main/blueprints/components/connection/welcome-page.blp:29
-msgid "Username"
-msgstr ""
-
-#: src/main/blueprints/components/connection/welcome-page.blp:35
-msgid "Password"
-msgstr ""
-
-#: src/main/blueprints/components/connection/welcome-page.blp:46
-msgid "Connect"
-msgstr ""
-
-#: src/main/blueprints/components/connection/welcome-page.blp:61
-msgid "Connect to your Subsonic-compatible server"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:23
-#: src/main/blueprints/window.blp:77
-msgid "Home"
-msgstr "Beranda"
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:41
-#: src/main/blueprints/window.blp:143
-msgid "Player"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:56
-msgid "Album"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:85
-msgid "All"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:103
-msgid "Random"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:121
-msgid "Favorites"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:139
-#, fuzzy
-msgid "Recently Added"
-msgstr "Trek baru diputar"
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:157
-#, fuzzy
-msgid "Recently Played"
-msgstr "Trek baru diputar"
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:175
-msgid "Most Played"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:193
-msgid "Artist"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:215
-msgid "Tracks"
-msgstr ""
-
-#: src/main/blueprints/components/sidebar/sidebar.blp:230
-msgid "Playlist"
 msgstr ""
 
 #: src/main/blueprints/components/player/bar.blp:21
@@ -125,6 +53,26 @@ msgstr ""
 
 #: src/main/blueprints/components/player/playback-controls.blp:54
 msgid "Shuffle Queue"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:23
+msgid "Server URL"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:29
+msgid "Username"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:35
+msgid "Password"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:46
+msgid "Connect"
+msgstr ""
+
+#: src/main/blueprints/components/connection/welcome-page.blp:61
+msgid "Connect to your Subsonic-compatible server"
 msgstr ""
 
 #: src/main/blueprints/components/settings/settings.blp:5
@@ -165,7 +113,49 @@ msgstr ""
 msgid "Connecting"
 msgstr ""
 
-#: src/main/blueprints/window.blp:192
+#: src/main/blueprints/window.blp:65 src/main/blueprints/window.blp:182
+msgid "Home"
+msgstr "Beranda"
+
+#: src/main/blueprints/window.blp:188
+msgid "Player"
+msgstr ""
+
+#: src/main/blueprints/window.blp:194
+msgid "Album"
+msgstr ""
+
+#: src/main/blueprints/window.blp:198
+msgid "All"
+msgstr ""
+
+#: src/main/blueprints/window.blp:204
+msgid "Random"
+msgstr ""
+
+#: src/main/blueprints/window.blp:210
+msgid "Favorites"
+msgstr ""
+
+#: src/main/blueprints/window.blp:216
+#, fuzzy
+msgid "Recently Added"
+msgstr "Trek baru diputar"
+
+#: src/main/blueprints/window.blp:222
+#, fuzzy
+msgid "Recently Played"
+msgstr "Trek baru diputar"
+
+#: src/main/blueprints/window.blp:230
+msgid "Tracks"
+msgstr ""
+
+#: src/main/blueprints/window.blp:236
+msgid "Artists"
+msgstr ""
+
+#: src/main/blueprints/window.blp:254
 msgid "Menu"
 msgstr ""
 

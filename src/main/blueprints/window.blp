@@ -62,9 +62,10 @@ template $Window: Adw.ApplicationWindow {
                       [top]
                       Adw.HeaderBar {
                         title-widget: Adw.WindowTitle {
-                          title: "Home_Page";
+                          title: _("Home");
                         };
 
+                        [start]
                         ToggleButton {
                           active: bind split_view.show-sidebar bidirectional;
                           icon-name: "sidebar-show-symbolic";
@@ -74,7 +75,6 @@ template $Window: Adw.ApplicationWindow {
                     };
 
                     name: "home_page";
-                    title: _("Home");
                   }
 
                   StackPage {
@@ -140,7 +140,6 @@ template $Window: Adw.ApplicationWindow {
                     };
 
                     name: "player_page";
-                    title: _("Player");
                   }
 
                   StackPage {
@@ -160,7 +159,6 @@ template $Window: Adw.ApplicationWindow {
                     };
 
                     name: "testing_page";
-                    title: "Testing";
                   }
                 }
 
@@ -177,7 +175,71 @@ template $Window: Adw.ApplicationWindow {
               max-sidebar-width: 240;
 
               sidebar: Adw.ToolbarView {
-                content: $Sidebar sidebar {};
+                content: Adw.Sidebar sidebar {
+                  Adw.SidebarSection {
+                    $SidebarItem {
+                      icon-name: "go-home-symbolic";
+                      title: _("Home");
+                      page-name: "home_page";
+                    }
+
+                    $SidebarItem {
+                      icon-name: "media-playback-start-symbolic";
+                      title: _("Player");
+                      page-name: "player_page";
+                    }
+                  }
+
+                  Adw.SidebarSection album_sidebar_section {
+                    title: _("Album");
+
+                    $SidebarItem {
+                      icon-name: "library-album-symbolic";
+                      title: _("All");
+                      page-name: "testing_page";
+                    }
+
+                    $SidebarItem {
+                      icon-name: "media-playlist-shuffle-symbolic";
+                      title: _("Random");
+                      page-name: "testing_page";
+                    }
+
+                    $SidebarItem {
+                      icon-name: "starred-symbolic";
+                      title: _("Favorites");
+                      page-name: "testing_page";
+                    }
+
+                    $SidebarItem {
+                      icon-name: "list-add-symbolic";
+                      title: _("Recently Added");
+                      page-name: "testing_page";
+                    }
+
+                    $SidebarItem {
+                      icon-name: "document-open-recent-symbolic";
+                      title: _("Recently Played");
+                      page-name: "testing_page";
+                    }
+                  }
+
+                  Adw.SidebarSection {
+                    $SidebarItem {
+                      icon-name: "library-music-symbolic";
+                      title: _("Tracks");
+                      page-name: "testing_page";
+                    }
+
+                    $SidebarItem {
+                      icon-name: "audio-input-microphone-symbolic";
+                      title: _("Artists");
+                      page-name: "testing_page";
+                    }
+                  }
+
+                  Adw.SidebarSection playlist_sidebar_section {}
+                };
 
                 [top]
                 Adw.HeaderBar {
@@ -239,3 +301,45 @@ Adw.AboutDialog about {
 }
 
 Adw.Toggle {}
+
+StackPage {
+  child: Label {
+    label: "Empty Page";
+  };
+}
+
+StackPage {
+  child: Label {
+    label: "Empty Page";
+  };
+}
+
+StackPage {
+  child: Label {
+    label: "Empty Page";
+  };
+}
+
+StackPage {
+  child: Label {
+    label: "Empty Page";
+  };
+}
+
+StackPage {
+  child: Label {
+    label: "Empty Page";
+  };
+}
+
+StackPage {
+  child: Label {
+    label: "Empty Page";
+  };
+}
+
+StackPage {
+  child: Label {
+    label: "Empty Page";
+  };
+}

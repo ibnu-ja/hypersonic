@@ -1,11 +1,17 @@
 package moe.seiga.hypersonic.service.api;
 
+import dev.zt64.subsonic.api.model.Playlist;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.gnome.gio.Settings;
+import org.gnome.glib.GLib;
 import org.gnome.gobject.GObject;
+import org.javagi.gobject.annotations.Property;
 import org.javagi.gobject.annotations.RegisteredType;
+import org.javagi.gobject.annotations.Signal;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -17,8 +23,13 @@ import javax.net.ssl.SSLHandshakeException;
 @RegisteredType(name = "ServerState")
 public class ServerState extends GObject {
 
+    @Signal(name = "playlists-changed")
+    public interface PlaylistsChanged {
+        void run();
+    }
+
     private Settings settings;
-    private PasswordStore passwordStore;
+    private final PasswordStore passwordStore;
 
     @Getter
     private ConnectionState connectionState = ConnectionState.NOT_CONNECTED;
@@ -33,11 +44,11 @@ public class ServerState extends GObject {
     private String serverVersion;
 
     private CompletableFuture<Void> pendingPing;
+    @Getter
     private SubsonicApi api;
 
-    public SubsonicApi getApi() {
-        return api;
-    }
+    @Getter
+    private List<Playlist> playlists = Collections.emptyList();
 
     public ServerState(Settings settings) {
         this.settings = settings;
@@ -111,8 +122,10 @@ public class ServerState extends GObject {
         try {
             api = SubsonicApi.create(url, user, pass);
             api.ping().get(15, TimeUnit.SECONDS);
+            ServerConnection.INSTANCE.setApi(api);
             serverVersion = "";
             setConnectionState(ConnectionState.CONNECTED);
+            fetchPlaylists();
         } catch (ExecutionException e) {
             var cause = e.getCause();
             if (cause instanceof SSLHandshakeException) {
@@ -135,6 +148,23 @@ public class ServerState extends GObject {
             log.error("Connection failed: {}", e.getMessage(), e);
             setConnectionState(ConnectionState.SERVER_UNREACHABLE);
         }
+    }
+
+    @Property(skip = true)
+    public void setPlaylists(List<Playlist> playlists) {
+        this.playlists = playlists != null ? playlists : Collections.emptyList();
+        emit("playlists-changed");
+    }
+
+    public void fetchPlaylists() {
+        if (api == null) return;
+        api.getPlaylists().whenComplete((result, ex) -> {
+            if (ex != null) {
+                log.warn("Failed to load playlists: {}", ex.getMessage());
+                return;
+            }
+            GLib.idleAddOnce(() -> setPlaylists(result));
+        });
     }
 
     @Override

@@ -3,8 +3,7 @@ package moe.seiga.hypersonic;
 import lombok.extern.slf4j.Slf4j;
 import moe.seiga.Config;
 import moe.seiga.hypersonic.navigation.connection.WelcomePage;
-import moe.seiga.hypersonic.navigation.sidebar.Sidebar;
-import moe.seiga.hypersonic.navigation.sidebar.PlaylistItem;
+import moe.seiga.hypersonic.navigation.sidebar.SidebarItem;
 import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.player.PlaybackControls;
 import moe.seiga.hypersonic.player.Seekbar;
@@ -46,17 +45,14 @@ public class Main {
 
         // Load GResource first so templates can read from it
         Resource resource = Resource.load(Config.RESOURCE_DIR + Config.RESOURCE_FILENAME);
-        if (resource != null) {
-            resource.resourcesRegister();
-        }
+        resource.resourcesRegister();
 
         // Register Template Classes
         TemplateTypes.register(Bar.class);
         TemplateTypes.register(PlaybackControls.class);
         TemplateTypes.register(Seekbar.class);
         TemplateTypes.register(WelcomePage.class);
-        TemplateTypes.register(Sidebar.class);
-        TemplateTypes.register(PlaylistItem.class);
+        TemplateTypes.register(SidebarItem.class);
 
         Types.register(PlaybackState.class);
         Types.register(RepeatMode.class);

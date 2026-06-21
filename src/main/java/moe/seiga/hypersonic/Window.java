@@ -2,20 +2,24 @@ package moe.seiga.hypersonic;
 
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import dev.zt64.subsonic.api.model.Playlist;
 import moe.seiga.hypersonic.navigation.connection.WelcomePage;
-import moe.seiga.hypersonic.navigation.sidebar.Sidebar;
+import moe.seiga.hypersonic.navigation.sidebar.SidebarItem;
 import moe.seiga.hypersonic.player.Bar;
 import moe.seiga.hypersonic.service.api.ConnectionState;
 import moe.seiga.hypersonic.service.api.ServerState;
 import org.gnome.adw.ApplicationWindow;
+import org.gnome.adw.Sidebar;
+import org.gnome.adw.SidebarSection;
 import org.gnome.gio.Settings;
 import org.gnome.gio.SettingsBindFlags;
-import org.gnome.glib.GLib;
 import org.gnome.gtk.Revealer;
 import org.gnome.gtk.Stack;
 import org.javagi.gobject.annotations.InstanceInit;
 import org.javagi.gtk.annotations.GtkChild;
 import org.javagi.gtk.annotations.GtkTemplate;
+
+import java.util.List;
 
 @GtkTemplate(ui = "/moe/seiga/Hypersonic/window.ui", name = "Window")
 @SuppressWarnings({"java:S110", "java:S112", "java:S125"})
@@ -45,6 +49,9 @@ public class Window extends ApplicationWindow {
     @GtkChild(name = "player_bar_revealer")
     public Revealer playerBarRevealer;
 
+    @GtkChild(name = "playlist_sidebar_section")
+    public SidebarSection playlistSidebarSection;
+
     public Window(Application app) {
         initApp = app;
         super();
@@ -66,15 +73,14 @@ public class Window extends ApplicationWindow {
         var ss = app.getServerState();
         welcomePage.setup(ss);
 
-        sidebar.sidebarList.connect("selected-rows-changed", (Runnable) () -> {
-            log.debug("changed sidebar item");
-            var row = sidebar.sidebarList.getSelectedRow();
-            if (row == null) return;
-            var name = row.getName();
-            var pageName = mapSidebarNameToPage(name);
-            if (pageName != null) {
-                contentStack.setVisibleChildName(pageName);
-                settings.setString("last-page", pageName);
+        sidebar.onNotify("selected-item", pspec -> {
+            var item = sidebar.getSelectedItem();
+            if (item instanceof SidebarItem myItem) {
+                String page = myItem.getPageName();
+                if (page != null && !page.equals(contentStack.getVisibleChildName())) {
+                    contentStack.setVisibleChildName(page);
+                    settings.setString("last-page", page);
+                }
             }
         });
 
@@ -86,15 +92,20 @@ public class Window extends ApplicationWindow {
                 case CONNECTING -> mainStack.setVisibleChildName("loading");
                 case CONNECTED -> {
                     mainStack.setVisibleChildName("content");
-                    populateSidebar(ss);
+                    ss.connect("playlists-changed", (ServerState.PlaylistsChanged) () -> populatePlaylistSidebarSection(ss.getPlaylists()));
+                    populatePlaylistSidebarSection(ss.getPlaylists());
                     contentStack.onNotify("visible-child-name", _ -> {
-                        playerBarRevealer.setRevealChild(!"player_page".equals(contentStack.getVisibleChildName()));
+                        String visibleTag = contentStack.getVisibleChildName();
+                        if (visibleTag != null) {
+                            playerBarRevealer.setRevealChild(!"player_page".equals(visibleTag));
+                            settings.setString("last-page", visibleTag);
+                            selectSidebar(visibleTag);
+                        }
                     });
                     playerBar.setup(app.getPlayer());
                     var last = settings.getString("last-page");
                     if (!last.isBlank()) {
-                        contentStack.setVisibleChildName(last);
-                        selectSidebarRow(last);
+                        selectPage(last);
                     }
                 }
             }
@@ -105,47 +116,40 @@ public class Window extends ApplicationWindow {
         }
     }
 
-    private void selectSidebarRow(String pageName) {
-        for (int i = 0; ; i++) {
-            var row = sidebar.sidebarList.getRowAtIndex(i);
-            if (row == null) break;
-            if (row.getSelectable()) {
-                var name = row.getName();
-                if (pageName.equals(mapSidebarNameToPage(name))) {
-                    sidebar.sidebarList.selectRow(row);
-                    return;
+    private void selectSidebar(String pageName) {
+        var model = sidebar.getItems();
+        int nItems = model.getNItems();
+        for (int i = 0; i < nItems; i++) {
+            var item = model.getItem(i);
+            if (item instanceof SidebarItem myItem && pageName.equals(myItem.getPageName())) {
+                if (sidebar.getSelectedItem() != myItem) {
+                    sidebar.setSelected(i);
                 }
+                break;
             }
         }
     }
 
-    private String mapSidebarNameToPage(String name) {
-        if (name == null) return null;
-        return switch (name) {
-            case "home" -> "home_page";
-            case "player" -> "player_page";
-            case "album_all", "album_random", "album_fav", "album_recently_added",
-                 "album_recently_played", "album_most_played", "artists", "tracks" -> "testing_page";
-            default -> null;
-        };
+    private void selectPage(String targetPageName) {
+        selectSidebar(targetPageName);
+        if (!targetPageName.equals(contentStack.getVisibleChildName())) {
+            contentStack.setVisibleChildName(targetPageName);
+        }
+        settings.setString("last-page", targetPageName);
     }
 
-    private void populateSidebar(ServerState ss) {
-        var api = ss.getApi();
-        if (api == null) return;
-        api.getPlaylists().whenComplete((playlists, ex) -> {
-            if (ex != null) {
-                log.warn("Failed to load playlists: {}", ex.getMessage());
-                return;
-            }
-            GLib.idleAddOnce(() -> {
-                var count = 0;
-                for (var p : playlists) {
-                    if (count >= 4) break;
-                    sidebar.addItem(null, p.getName());
-                    count++;
-                }
-            });
-        });
+
+
+    private void populatePlaylistSidebarSection(List<Playlist> playlists) {
+        // todo: check if sidebar can support paginations
+        // todo check if loading many playlist (100++ playlists) will break the app
+        var count = 0;
+        for (var p : playlists) {
+            if (count >= 4) break;
+            // todo when playlist page done, add property page_name
+            var playlistItem = SidebarItem.builder().title(p.getName()).build();
+            playlistSidebarSection.append(playlistItem);
+            count++;
+        }
     }
 }

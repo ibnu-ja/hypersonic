@@ -48,8 +48,7 @@ glibBuildTools {
                 "src/main/blueprints/components/player/seekbar.blp",
                 "src/main/blueprints/components/settings/settings.blp",
                 "src/main/blueprints/components/connection/welcome-page.blp",
-                "src/main/blueprints/components/sidebar/playlist-item.blp",
-                "src/main/blueprints/components/sidebar/sidebar.blp",
+                "src/main/blueprints/components/sidebar/sidebar-item.blp",
             )
         }
 
